@@ -1,13 +1,12 @@
 import React from "react";
 import ProjectCard from "./ProjectCard";
-import InfiniteScroll from "./Animations/InfiniteScroll/InfiniteScroll";
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
-} from "@/components/ui/carousel"
+} from "@/Components/ui/carousel"
 
 
 

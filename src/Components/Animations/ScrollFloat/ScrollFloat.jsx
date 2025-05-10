@@ -19,9 +19,13 @@ const ScrollFloat = ({
 
   const splitText = useMemo(() => {
     const text = typeof children === "string" ? children : "";
-    return text.split("").map((char, index) => (
-      <span className="inline-block" key={index}>
-        {char === " " ? "\u00A0" : char}
+    return text.split(" ").map((word, wordIndex) => (
+      <span className="inline-block mr-2" key={wordIndex}>
+        {word.split("").map((char, charIndex) => (
+          <span className="inline-block" key={charIndex}>
+            {char}
+          </span>
+        ))}
       </span>
     ));
   }, [children]);

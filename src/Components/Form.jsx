@@ -85,16 +85,14 @@ function Form() {
             <div className="flex justify-center">
                 <button
                     type="submit"
-                    className="text-white py-2 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-white-500"
+                    className="text-white py-2 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-white-500 cursor-pointer active:scale-95 transition-all duration-500  hover:bg-[rgb(34,34,34)] border border-[rgb(53,53,53)]"
                 >
-
                     <ShinyText
                         text="Submit"
                         disabled={false}
                         speed={3}
                         className="text-3xl "
                     />
-
                 </button>
             </div>
         </form>

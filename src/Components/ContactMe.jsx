@@ -22,7 +22,7 @@ function ContactMe() {
                         Fill out the form — or get to know me better through my links!”</h1>
                     <div className="flex flex-row justify-between mt-20">
                         <a
-                            href="https://github.com/Nadeem-2005?tab=repositories"
+                            href="https://github.com/Nadeem-2005"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-2xl text-blue-300 m-2"
@@ -31,7 +31,7 @@ function ContactMe() {
                         </a>
 
                         <a
-                            href="https://linkedin.com/in/yourusername"
+                            href="www.linkedin.com/in/mohammed-nadeem-s-80628a266"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-2xl text-blue-300 m-2"
@@ -42,7 +42,7 @@ function ContactMe() {
                         </a>
 
                         <a
-                            href=""
+                            href="https://www.instagram.com/nadeem._005?igsh=ZWtwMHdoaThmb3Vw&utm_source=qr"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-2xl text-blue-300 m-2"

@@ -14,7 +14,7 @@ function ProjectCard(props) {
 
             {/* Text Section */}
             <div className="flex flex-col gap-4 mt-4 md:mt-0">
-                <p id="projectTitle" className="text-2xl sm:text-3xl lg:text-5xl font-serif text-center md:text-left">
+                <p id="projectTitle" className="text-2xl sm:text-3xl lg:text-5xl space-grotesk text-center md:text-left">
                     {props.title}
                 </p>
                 <p className="italic text-center md:text-left">{props.techStack}</p>

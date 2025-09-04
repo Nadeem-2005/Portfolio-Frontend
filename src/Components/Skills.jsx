@@ -1,14 +1,54 @@
-import React from "react";
+import { useRef, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ScrollReveal from "./Animations/ScrollReveal/ScrollReveal";
 import SkillCard from "./SkillCard";
-import ScrollFloat from "./Animations/ScrollFloat/ScrollFloat"
+import ScrollFloat from "./Animations/ScrollFloat/ScrollFloat";
 import ShinyText from './Animations/ShinyText/ShinyText';
 
+gsap.registerPlugin(ScrollTrigger);
 
 function Skills() {
+    const skillSectionsRef = useRef([]);
+
+    useEffect(() => {
+        const sections = skillSectionsRef.current;
+
+        sections.forEach((section, index) => {
+            if (section) {
+                const cards = section.querySelectorAll('.skill-card');
+                
+                gsap.fromTo(cards, 
+                    {
+                        y: 50,
+                        opacity: 0,
+                        scale: 0.8
+                    },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        scale: 1,
+                        duration: 0.6,
+                        ease: "power2.out",
+                        stagger: 0.1,
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 85%",
+                            end: "bottom 15%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            }
+        });
+
+        return () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
+    }, []);
 
     return (
-        <div className="text-white min-h-screen p-20" id="Skill">
+        <div className="text-white min-h-screen p-8 md:p-20" id="Skill">
             <ScrollReveal
                 baseOpacity={1}
                 enableBlur={true}
@@ -17,50 +57,80 @@ function Skills() {
                 textClassName="text-center"
                 wordAnimationEnd="bottom bottom"
             >
-                “A skill is not lost when the hands grow weary, nor when the world turns its back. A skill dies only when it is abandoned and forgotten.”
+                "A skill is not lost when the hands grow weary, nor when the world turns its back. A skill dies only when it is abandoned and forgotten."
             </ScrollReveal>
-            <div className="flex flex-wrap justify-between mt-20">
-                <SkillCard imgURL={"/SkillIcons/c.svg"} name={"C"} />
-                <SkillCard imgURL={"/SkillIcons/c++.svg"} name={"C++"} />
-                <SkillCard imgURL={"/SkillIcons/java.svg"} name={"Java"} />
-                <SkillCard imgURL={"/SkillIcons/python.svg"} name={"Python"} />
-                <SkillCard imgURL={"/SkillIcons/swift.svg"} name={"Swift"} />
-                <SkillCard imgURL={"/SkillIcons/html.svg"} name={"HTML"} />
-                <SkillCard imgURL={"/SkillIcons/css.svg"} name={"CSS"} />
-                <SkillCard imgURL={"/SkillIcons/javascript.svg"} name={"Javascript"} />
 
+            {/* Programming Languages */}
+            <div className="mt-16 md:mt-20 mb-12">
+                <h3 className="text-2xl md:text-3xl font-semibold text-cyan-300 text-center mb-8 space-grotesk">
+                    Programming Languages
+                </h3>
+                <div 
+                    ref={el => skillSectionsRef.current[0] = el}
+                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 max-w-6xl mx-auto"
+                >
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/c.svg"} name={"C"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/c++.svg"} name={"C++"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/java.svg"} name={"Java"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/python.svg"} name={"Python"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/swift.svg"} name={"Swift"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/html.svg"} name={"HTML"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/css.svg"} name={"CSS"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/javascript.svg"} name={"Javascript"} /></div>
+                </div>
             </div>
-            <div className="flex flex-wrap justify-between m-20 ">
-                <SkillCard imgURL={"/SkillIcons/FrameWorks/node-js.svg"} name={"Node.Js"} />
-                <SkillCard imgURL={"/SkillIcons/FrameWorks/react.svg"} name={"React.Js"} />
-                <SkillCard imgURL={"/SkillIcons/FrameWorks/express-js.svg"} name={"Express.Js"} />
-                <SkillCard imgURL={"/SkillIcons/FrameWorks/ejs.svg"} name={"EJS"} />
-                <SkillCard imgURL={"/SkillIcons/FrameWorks/bootstrap.svg"} name={"Bootstrap"} />
-                <SkillCard imgURL={"/SkillIcons/FrameWorks/tailwind-css.svg"} name={"Tailwind CSS"} />
-                <SkillCard imgURL={"/SkillIcons/FrameWorks/shadcn-ui.svg"} name={"Shadcn"} />
+
+            {/* Frameworks & Libraries */}
+            <div className="mb-12">
+                <h3 className="text-2xl md:text-3xl font-semibold text-cyan-300 text-center mb-8 space-grotesk">
+                    Frameworks & Libraries
+                </h3>
+                <div 
+                    ref={el => skillSectionsRef.current[1] = el}
+                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-4 max-w-6xl mx-auto"
+                >
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/node-js.svg"} name={"Node.Js"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/react.svg"} name={"React.Js"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/express-js.svg"} name={"Express.Js"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/ejs.svg"} name={"EJS"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/bootstrap.svg"} name={"Bootstrap"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/tailwind-css.svg"} name={"Tailwind CSS"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/shadcn-ui.svg"} name={"Shadcn"} /></div>
+                </div>
             </div>
+
             <ScrollFloat
                 animationDuration={1}
                 ease='back.inOut(2)'
                 scrollStart='center bottom+=50%'
                 scrollEnd='bottom bottom-=40%'
                 stagger={0.03}
-                containerClassName="text-center"
-                textClassName="text-2xl"
-
+                containerClassName="text-center my-16"
+                textClassName="text-xl md:text-2xl"
             >
-                “Tools don’t build dreams — but knowing how to use them does.”
+                "Tools don't build dreams — but knowing how to use them does."
             </ScrollFloat>
-            <div className="flex flex-wrap justify-between m-20 ">
-                <SkillCard imgURL={"/SkillIcons/Tools/aws.svg"} name={"aws"} />
-                <SkillCard imgURL={"/SkillIcons/Tools/azure.svg"} name={"Azure"} />
-                <SkillCard imgURL={"/SkillIcons/Tools/bash.svg"} name={"bash"} />
-                <SkillCard imgURL={"/SkillIcons/Tools/firebase.svg"} name={"Firebase"} />
-                <SkillCard imgURL={"/SkillIcons/Tools/github.svg"} name={"github"} />
-                <SkillCard imgURL={"/SkillIcons/Tools/git.svg"} name={"git"} />
-                <SkillCard imgURL={"/SkillIcons/Tools/vs-code.svg"} name={"VS Code"} />
-                <SkillCard imgURL={"/SkillIcons/Tools/xcode.svg"} name={"XCode"} />
+
+            {/* Tools & Technologies */}
+            <div className="mb-16">
+                <h3 className="text-2xl md:text-3xl font-semibold text-cyan-300 text-center mb-8 space-grotesk">
+                    Tools & Technologies
+                </h3>
+                <div 
+                    ref={el => skillSectionsRef.current[2] = el}
+                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 max-w-6xl mx-auto"
+                >
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/aws.svg"} name={"AWS"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/azure.svg"} name={"Azure"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/bash.svg"} name={"Bash"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/firebase.svg"} name={"Firebase"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/github.svg"} name={"GitHub"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/git.svg"} name={"Git"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/vs-code.svg"} name={"VS Code"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/xcode.svg"} name={"XCode"} /></div>
+                </div>
             </div>
+
             <div className="text-center">
                 <a
                     href="https://icons8.com/icons"
@@ -76,7 +146,6 @@ function Skills() {
                     />
                 </a>
             </div>
-
         </div>
     )
 }

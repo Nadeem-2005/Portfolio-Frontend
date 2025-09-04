@@ -1,4 +1,3 @@
-import React from "react";
 
 function smoothScroll(e, targetId) {
     e.preventDefault(); // Prevent the default anchor behavior

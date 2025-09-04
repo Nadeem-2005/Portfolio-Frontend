@@ -14,7 +14,7 @@ function Skills() {
     useEffect(() => {
         const sections = skillSectionsRef.current;
 
-        sections.forEach((section, index) => {
+        sections.forEach((section) => {
             if (section) {
                 const cards = section.querySelectorAll('.skill-card');
                 

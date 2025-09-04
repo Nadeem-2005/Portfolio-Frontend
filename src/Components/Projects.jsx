@@ -8,7 +8,6 @@ import ParticleField from "./Animations/ParticleField/ParticleField";
 gsap.registerPlugin(ScrollTrigger);
 
 function Projects() {
-    const containerRef = useRef(null);
     const cardsRef = useRef([]);
 
     // Sample project data - replace with your actual projects

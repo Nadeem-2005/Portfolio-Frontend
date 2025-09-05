@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 const PillNav = ({
     logo,
     logoAlt = 'Logo',
+    name = 'Your Name', // Add name prop
     items,
     activeHref,
     className = '',
@@ -93,12 +94,13 @@ const PillNav = ({
         }
 
         if (initialLoadAnimation) {
-            const logo = logoRef.current;
+            const logoElement = logoRef.current;
             const navItems = navItemsRef.current;
 
-            if (logo) {
-                gsap.set(logo, { scale: 0 });
-                gsap.to(logo, {
+            // Only animate logo if it's an image, not text
+            if (logoElement && logo) {
+                gsap.set(logoElement, { scale: 0 });
+                gsap.to(logoElement, {
                     scale: 1,
                     duration: 0.6,
                     ease
@@ -116,7 +118,7 @@ const PillNav = ({
         }
 
         return () => window.removeEventListener('resize', onResize);
-    }, [items, ease, initialLoadAnimation]);
+    }, [items, ease, initialLoadAnimation, logo]);
 
     const handleEnter = i => {
         const tl = tlRefs.current[i];
@@ -141,6 +143,8 @@ const PillNav = ({
     };
 
     const handleLogoEnter = () => {
+        // Only rotate if it's an image logo
+        if (!logo) return;
         const img = logoImgRef.current;
         if (!img) return;
         logoTweenRef.current?.kill();
@@ -232,41 +236,81 @@ const PillNav = ({
                 aria-label="Primary"
                 style={cssVars}
             >
-                {isRouterLink(items?.[0]?.href) ? (
-                    <Link
-                        to={items[0].href}
-                        aria-label="Home"
-                        onMouseEnter={handleLogoEnter}
-                        role="menuitem"
-                        ref={el => {
-                            logoRef.current = el;
-                        }}
-                        className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden"
-                        style={{
-                            width: 'var(--nav-h)',
-                            height: 'var(--nav-h)',
-                            background: 'var(--base, #000)'
-                        }}
-                    >
-                        <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-cover block" />
-                    </Link>
+                {/* Logo/Name Section */}
+                {logo ? (
+                    // If logo is provided, show image
+                    isRouterLink(items?.[0]?.href) ? (
+                        <Link
+                            to={items[0].href}
+                            aria-label="Home"
+                            onMouseEnter={handleLogoEnter}
+                            role="menuitem"
+                            ref={el => {
+                                logoRef.current = el;
+                            }}
+                            className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden"
+                            style={{
+                                width: 'var(--nav-h)',
+                                height: 'var(--nav-h)',
+                                background: 'var(--base, #000)'
+                            }}
+                        >
+                            <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-cover block" />
+                        </Link>
+                    ) : (
+                        <a
+                            href={items?.[0]?.href || '#'}
+                            aria-label="Home"
+                            onMouseEnter={handleLogoEnter}
+                            ref={el => {
+                                logoRef.current = el;
+                            }}
+                            className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden"
+                            style={{
+                                width: 'var(--nav-h)',
+                                height: 'var(--nav-h)',
+                                background: 'var(--base, #000)'
+                            }}
+                        >
+                            <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-cover block" />
+                        </a>
+                    )
                 ) : (
-                    <a
-                        href={items?.[0]?.href || '#'}
-                        aria-label="Home"
-                        onMouseEnter={handleLogoEnter}
-                        ref={el => {
-                            logoRef.current = el;
-                        }}
-                        className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden"
-                        style={{
-                            width: 'var(--nav-h)',
-                            height: 'var(--nav-h)',
-                            background: 'var(--base, #000)'
-                        }}
-                    >
-                        <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-cover block" />
-                    </a>
+                    // If no logo, show name as text
+                    isRouterLink(items?.[0]?.href) ? (
+                        <Link
+                            to={items[0].href}
+                            aria-label="Home"
+                            role="menuitem"
+                            ref={el => {
+                                logoRef.current = el;
+                            }}
+                            className="rounded-full px-4 inline-flex items-center justify-center font-bold text-lg"
+                            style={{
+                                height: 'var(--nav-h)',
+                                background: 'var(--pill-bg, #000)',
+                                color: 'var(--pill-text, #fff)'
+                            }}
+                        >
+                            {name}
+                        </Link>
+                    ) : (
+                        <a
+                            href={items?.[0]?.href || '#'}
+                            aria-label="Home"
+                            ref={el => {
+                                logoRef.current = el;
+                            }}
+                            className="rounded-full px-4 inline-flex items-center justify-center font-bold text-lg"
+                            style={{
+                                height: 'var(--nav-h)',
+                                background: 'var(--pill-bg, #000)',
+                                color: 'var(--pill-text, #fff)'
+                            }}
+                        >
+                            {name}
+                        </a>
+                    )
                 )}
 
                 <div
@@ -308,7 +352,10 @@ const PillNav = ({
                                     <span className="label-stack relative inline-block leading-[1] z-[2]">
                                         <span
                                             className="pill-label relative z-[2] inline-block leading-[1]"
-                                            style={{ willChange: 'transform' }}
+                                            style={{
+                                                willChange: 'transform',
+                                                color: 'var(--pill-text, #000)'
+                                            }}
                                         >
                                             {item.label}
                                         </span>
@@ -407,7 +454,7 @@ const PillNav = ({
                             color: 'var(--pill-text, #fff)'
                         };
                         const hoverIn = e => {
-                            e.currentTarget.style.background = 'var(--base)';
+                            e.currentTarget.style.background = 'var(--pill-text, #fff)';
                             e.currentTarget.style.color = 'var(--hover-text, #fff)';
                         };
                         const hoverOut = e => {

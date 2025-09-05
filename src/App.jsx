@@ -11,7 +11,8 @@ function App() {
   return (
     <div>
       <PillNav
-        logo={null}  // your logo path
+        logo={null}
+        name="نديم"
         items={[
           { href: "#about", label: "About" },
           { href: "#Skill", label: "Skills" },
@@ -19,12 +20,12 @@ function App() {
           { href: "#Experience", label: "Experience" },
           { href: "#Contact", label: "Contact" },
         ]}
-        activeHref="/"  // optional, to highlight the active section
-        baseColor="transparent"  // navbar background
-        pillColor="#f3f4f6"       // pill background
-        pillTextColor="#000000"   // text color
-        hoveredPillTextColor="#1a1a1a"
-        initialLoadAnimation="true"
+        activeHref="/"
+        baseColor="#000000"              // Dark background for navbar
+        pillColor="#f3f4f6"             // Light gray pill background (default state)
+        pillTextColor="#000000"         // Dark text (default state)
+        hoveredPillTextColor="#ffffff"  // White text when hovered
+        initialLoadAnimation={true}
         ease="power2.easeOut"
       />
       <Hero />

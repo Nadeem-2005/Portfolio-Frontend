@@ -17,8 +17,8 @@ function Skills() {
         sections.forEach((section) => {
             if (section) {
                 const cards = section.querySelectorAll('.skill-card');
-                
-                gsap.fromTo(cards, 
+
+                gsap.fromTo(cards,
                     {
                         y: 50,
                         opacity: 0,
@@ -62,7 +62,7 @@ function Skills() {
 
             {/* Programming Languages */}
             <div className="mt-16 md:mt-20 mb-12">
-                <h3 
+                <h3
                     className="text-2xl md:text-3xl font-semibold text-white text-center mb-8 space-grotesk"
                     style={{
                         textShadow: '0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.4)'
@@ -70,24 +70,25 @@ function Skills() {
                 >
                     Programming Languages
                 </h3>
-                <div 
+                <div
                     ref={el => skillSectionsRef.current[0] = el}
                     className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 max-w-6xl mx-auto"
                 >
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/c.svg"} name={"C"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/c++.svg"} name={"C++"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/java.svg"} name={"Java"} /></div>
-                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/python.svg"} name={"Python"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/swift.svg"} name={"Swift"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/objective-c.svg"} name={"Objective-C"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/html.svg"} name={"HTML"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/css.svg"} name={"CSS"} /></div>
-                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/javascript.svg"} name={"Javascript"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/javascript.svg"} name={"JavaScript"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/typescript.svg"} name={"TypeScript"} /></div>
                 </div>
             </div>
 
             {/* Frameworks & Libraries */}
             <div className="mb-12">
-                <h3 
+                <h3
                     className="text-2xl md:text-3xl font-semibold text-white text-center mb-8 space-grotesk"
                     style={{
                         textShadow: '0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.4)'
@@ -95,17 +96,19 @@ function Skills() {
                 >
                     Frameworks & Libraries
                 </h3>
-                <div 
+                <div
                     ref={el => skillSectionsRef.current[1] = el}
                     className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-4 max-w-6xl mx-auto"
                 >
-                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/node-js.svg"} name={"Node.Js"} /></div>
-                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/react.svg"} name={"React.Js"} /></div>
-                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/express-js.svg"} name={"Express.Js"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/node-js.svg"} name={"Node.js"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/react.svg"} name={"React.js"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/nextjs.svg"} name={"Next.js"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/express-js.svg"} name={"Express.js"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/ejs.svg"} name={"EJS"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/bootstrap.svg"} name={"Bootstrap"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/tailwind-css.svg"} name={"Tailwind CSS"} /></div>
-                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/shadcn-ui.svg"} name={"Shadcn"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/shadcn-ui.svg"} name={"Shadcn UI"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/FrameWorks/unity.svg"} name={"Unity"} /></div>
                 </div>
             </div>
 
@@ -123,7 +126,7 @@ function Skills() {
 
             {/* Tools & Technologies */}
             <div className="mb-16">
-                <h3 
+                <h3
                     className="text-2xl md:text-3xl font-semibold text-white text-center mb-8 space-grotesk"
                     style={{
                         textShadow: '0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.4)'
@@ -131,7 +134,7 @@ function Skills() {
                 >
                     Tools & Technologies
                 </h3>
-                <div 
+                <div
                     ref={el => skillSectionsRef.current[2] = el}
                     className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 max-w-6xl mx-auto"
                 >
@@ -141,8 +144,12 @@ function Skills() {
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/firebase.svg"} name={"Firebase"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/github.svg"} name={"GitHub"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/git.svg"} name={"Git"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/unix.svg"} name={"Unix Shell"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/vs-code.svg"} name={"VS Code"} /></div>
-                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/xcode.svg"} name={"XCode"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/xcode.svg"} name={"Xcode"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/vercel.svg"} name={"Vercel"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/pycharm.svg"} name={"PyCharm"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Tools/unityhub.svg"} name={"Unity Hub"} /></div>
                 </div>
             </div>
 
@@ -166,4 +173,3 @@ function Skills() {
 }
 
 export default Skills;
-

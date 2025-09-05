@@ -49,13 +49,32 @@ function ExperienceCard({
     return (
         <div
             ref={cardRef}
-            className={`relative bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-xl p-6 transition-all duration-300 hover:border-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/10 ${isLeft ? 'md:mr-8 lg:mr-16' : 'md:ml-8 lg:ml-16'
+            className={`relative bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-xl p-6 transition-all duration-300 hover:border-white/70 ${isLeft ? 'md:mr-8 lg:mr-16' : 'md:ml-8 lg:ml-16'
                 }`}
+            style={{
+                transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 255, 255, 0.3), 0 0 50px rgba(255, 255, 255, 0.2), 0 0 70px rgba(255, 255, 255, 0.1)';
+            }}
+            onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = '';
+            }}
         >
             {/* Timeline Connector */}
-            <div className={`hidden md:block absolute top-8 w-4 h-4 bg-cyan-500 rounded-full ${isLeft ? '-right-2' : '-left-2'
-                }`}>
-                <div className="absolute inset-1 bg-cyan-300 rounded-full animate-pulse" />
+            <div 
+                className={`hidden md:block absolute top-8 w-4 h-4 bg-white rounded-full ${isLeft ? '-right-2' : '-left-2'
+                }`}
+                style={{
+                    boxShadow: '0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.6), 0 0 35px rgba(255, 255, 255, 0.4)'
+                }}
+            >
+                <div 
+                    className="absolute inset-1 bg-gray-200 rounded-full animate-pulse" 
+                    style={{
+                        boxShadow: '0 0 10px rgba(255, 255, 255, 0.6)'
+                    }}
+                />
             </div>
 
             {/* Company & Role */}
@@ -63,7 +82,12 @@ function ExperienceCard({
                 <h3 className="text-xl md:text-2xl font-semibold text-white space-grotesk mb-2">
                     {role}
                 </h3>
-                <p className="text-cyan-300 font-medium text-lg mb-1">
+                <p 
+                    className="text-white font-medium text-lg mb-1" 
+                    style={{
+                        textShadow: '0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4)'
+                    }}
+                >
                     {company}
                 </p>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 text-gray-400 text-sm">
@@ -113,7 +137,11 @@ function ExperienceCard({
                     {technologies.map((tech, index) => (
                         <span
                             key={index}
-                            className="px-2 py-1 bg-cyan-500/20 text-cyan-300 rounded text-xs border border-cyan-500/30"
+                            className="px-2 py-1 bg-white/20 text-white rounded text-xs border border-white/30"
+                            style={{
+                                boxShadow: '0 0 8px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.2)',
+                                textShadow: '0 0 5px rgba(255, 255, 255, 0.6)'
+                            }}
                         >
                             {tech}
                         </span>
@@ -126,7 +154,11 @@ function ExperienceCard({
                     {languages.map((tech, index) => (
                         <span
                             key={index}
-                            className="px-2 py-1 bg-cyan-500/20 text-cyan-300 rounded text-xs border border-cyan-500/30"
+                            className="px-2 py-1 bg-white/20 text-white rounded text-xs border border-white/30"
+                            style={{
+                                boxShadow: '0 0 8px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.2)',
+                                textShadow: '0 0 5px rgba(255, 255, 255, 0.6)'
+                            }}
                         >
                             {tech}
                         </span>

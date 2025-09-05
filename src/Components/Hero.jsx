@@ -49,7 +49,10 @@ function Hero() {
                         through code. When I’m not coding, you’ll find me
                         <RotatingText
                             texts={["playing sports", "hitting the gym", "or gaming"]}
-                            mainClassName="inline-block px-2 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg w-fit"
+                            mainClassName="inline-block px-2 sm:px-2 md:px-3 bg-white text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg w-fit"
+                            style={{
+                                boxShadow: '0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4), 0 0 40px rgba(255, 255, 255, 0.2)'
+                            }}
                             staggerFrom={"last"}
                             initial={{ y: "100%" }}
                             animate={{ y: 0 }}

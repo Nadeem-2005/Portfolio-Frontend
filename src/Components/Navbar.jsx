@@ -26,7 +26,7 @@ function Navbar() {
                     <li>
                         <a
                             href="#about"
-                            className="hover:text-cyan-300 transition-colors duration-200"
+                            className="hover:text-white transition-colors duration-200"
                             title="About section"
                             onClick={(e) => smoothScroll(e, "about")}
                         >
@@ -36,7 +36,7 @@ function Navbar() {
                     <li>
                         <a
                             href="#Skill"
-                            className="hover:text-cyan-300 transition-colors duration-200"
+                            className="hover:text-white transition-colors duration-200"
                             title="Skills section"
                             onClick={(e) => smoothScroll(e, "Skill")}
                         >
@@ -46,7 +46,7 @@ function Navbar() {
                     <li>
                         <a
                             href="#Projects"
-                            className="hover:text-cyan-300 transition-colors duration-200"
+                            className="hover:text-white transition-colors duration-200"
                             title="My Projects"
                             onClick={(e) => smoothScroll(e, "Projects")}
                         >
@@ -63,7 +63,7 @@ function Navbar() {
                     <li>
                         <a
                             href="#Experience"
-                            className="hover:text-cyan-300 transition-colors duration-200"
+                            className="hover:text-white transition-colors duration-200"
                             title="My Experience"
                             onClick={(e) => smoothScroll(e, "Experience")}
                         >
@@ -78,7 +78,7 @@ function Navbar() {
                     <li>
                         <a
                             href="#Contact"
-                            className="hover:text-cyan-300 transition-colors duration-200"
+                            className="hover:text-white transition-colors duration-200"
                             title="Let's Connect"
                             onClick={(e) => smoothScroll(e, "Contact")}
                         >

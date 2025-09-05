@@ -62,7 +62,12 @@ function Skills() {
 
             {/* Programming Languages */}
             <div className="mt-16 md:mt-20 mb-12">
-                <h3 className="text-2xl md:text-3xl font-semibold text-cyan-300 text-center mb-8 space-grotesk">
+                <h3 
+                    className="text-2xl md:text-3xl font-semibold text-white text-center mb-8 space-grotesk"
+                    style={{
+                        textShadow: '0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.4)'
+                    }}
+                >
                     Programming Languages
                 </h3>
                 <div 
@@ -82,7 +87,12 @@ function Skills() {
 
             {/* Frameworks & Libraries */}
             <div className="mb-12">
-                <h3 className="text-2xl md:text-3xl font-semibold text-cyan-300 text-center mb-8 space-grotesk">
+                <h3 
+                    className="text-2xl md:text-3xl font-semibold text-white text-center mb-8 space-grotesk"
+                    style={{
+                        textShadow: '0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.4)'
+                    }}
+                >
                     Frameworks & Libraries
                 </h3>
                 <div 
@@ -113,7 +123,12 @@ function Skills() {
 
             {/* Tools & Technologies */}
             <div className="mb-16">
-                <h3 className="text-2xl md:text-3xl font-semibold text-cyan-300 text-center mb-8 space-grotesk">
+                <h3 
+                    className="text-2xl md:text-3xl font-semibold text-white text-center mb-8 space-grotesk"
+                    style={{
+                        textShadow: '0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.4)'
+                    }}
+                >
                     Tools & Technologies
                 </h3>
                 <div 

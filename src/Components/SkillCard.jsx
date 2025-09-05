@@ -48,7 +48,21 @@ function SkillCard(props) {
                     className="w-full h-full object-contain filter group-hover:brightness-110 transition-all duration-300"
                 />
             </div>
-            <p className="text-lg md:text-xl font-medium text-white group-hover:text-cyan-300 transition-colors duration-300">
+            <p 
+                className="text-lg md:text-xl font-medium text-white transition-all duration-300"
+                style={{
+                    filter: 'brightness(1)',
+                    transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                    e.currentTarget.style.textShadow = '0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.6)';
+                    e.currentTarget.style.filter = 'brightness(1.2)';
+                }}
+                onMouseLeave={(e) => {
+                    e.currentTarget.style.textShadow = '';
+                    e.currentTarget.style.filter = 'brightness(1)';
+                }}
+            >
                 {props.name}
             </p>
         </div>

@@ -135,10 +135,14 @@ function Experience() {
                 {/* Timeline Line */}
                 <div
                     ref={timelineRef}
-                    className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-cyan-500 via-cyan-400 to-cyan-500 hidden md:block"
-                    style={{ height: '100%' }}
+                    className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-white via-gray-100 to-white hidden md:block"
+                    style={{ 
+                        height: '100%',
+                        boxShadow: '0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.4)'
+                    }}
                 >
-                    <div className="absolute inset-0 bg-cyan-300 blur-sm opacity-50" />
+                    <div className="absolute inset-0 bg-white blur-md opacity-80" />
+                    <div className="absolute -inset-2 bg-white blur-xl opacity-40" />
                 </div>
 
                 {/* Experience Cards */}

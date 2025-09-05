@@ -450,15 +450,17 @@ const PillNav = ({
                 <ul className="list-none m-0 p-[3px] flex flex-col gap-[3px]">
                     {items.map(item => {
                         const defaultStyle = {
-                            background: 'var(--pill-bg, #fff)',
-                            color: 'var(--pill-text, #fff)'
+                            background: 'rgba(255, 255, 255, 0.2)',
+                            color: 'var(--pill-text, #fff)',
+                            backdropFilter: 'blur(10px)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)'
                         };
                         const hoverIn = e => {
-                            e.currentTarget.style.background = 'var(--pill-text, #fff)';
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
                             e.currentTarget.style.color = 'var(--hover-text, #fff)';
                         };
                         const hoverOut = e => {
-                            e.currentTarget.style.background = 'var(--pill-bg, #fff)';
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
                             e.currentTarget.style.color = 'var(--pill-text, #fff)';
                         };
 

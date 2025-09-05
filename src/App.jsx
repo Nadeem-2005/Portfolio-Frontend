@@ -19,11 +19,13 @@ function App() {
           { href: "#Projects", label: "Projects" },
           { href: "#Experience", label: "Experience" },
           { href: "#Contact", label: "Contact" },
+          { href: "https://nadeemresume.blob.core.windows.net/$web/Resume-Mohammed-Nadeem.pdf", label: "Resume" },
+
         ]}
         activeHref="/"
-        baseColor="#000000"              // Dark background for navbar
-        pillColor="#f3f4f6"             // Light gray pill background (default state)
-        pillTextColor="#000000"         // Dark text (default state)
+        baseColor="#000000"              // Dark background for navbar container
+        pillColor="#f3f4f6"             // Light gray pill background
+        pillTextColor="#000000"         // Dark text
         hoveredPillTextColor="#ffffff"  // White text when hovered
         initialLoadAnimation={true}
         ease="power2.easeOut"

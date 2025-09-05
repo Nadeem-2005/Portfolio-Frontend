@@ -31,7 +31,7 @@ function ContactMe() {
                         </a>
 
                         <a
-                            href="https://www.linkedin.com/in/mohammed-nadeem-s-80628a266"
+                            href="https://www.linkedin.com/in/mohammed-nadeem-80628a266"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-2xl text-blue-300 m-2"

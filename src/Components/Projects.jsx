@@ -8,6 +8,7 @@ import ParticleField from "./Animations/ParticleField/ParticleField";
 gsap.registerPlugin(ScrollTrigger);
 
 function Projects() {
+    const containerRef = useRef(null);
     const cardsRef = useRef([]);
 
     // Sample project data - replace with your actual projects
@@ -62,11 +63,11 @@ function Projects() {
 
     useEffect(() => {
         const cards = cardsRef.current;
-        
+
         // Animate cards on scroll
         cards.forEach((card, index) => {
             if (card) {
-                gsap.fromTo(card, 
+                gsap.fromTo(card,
                     {
                         y: 100,
                         opacity: 0,
@@ -98,7 +99,7 @@ function Projects() {
     return (
         <div className="relative min-h-screen text-white p-8 md:p-20" id="Projects">
             {/* Background Animation */}
-            <ParticleField 
+            <ParticleField
                 particleCount={30}
                 color="#06b6d4"
                 opacity={0.15}
@@ -123,7 +124,7 @@ function Projects() {
             {/* Projects Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                 {projects.map((project, index) => (
-                    <div 
+                    <div
                         key={index}
                         ref={el => cardsRef.current[index] = el}
                     >

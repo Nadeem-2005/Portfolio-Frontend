@@ -13,57 +13,47 @@ function Experience() {
     // Sample experience data - replace with your actual experience
     const experiences = [
         {
-            company: "Tech Innovations Corp",
-            role: "Senior Full Stack Developer",
+            company: "Verizon",
+            role: "Incoming Software Developer Intern",
+            duration: "2025 - Upcoming",
+            location: "Chennai, India",
+            description: "Will be contributing to large-scale enterprise projects, enhancing full stack applications, and collaborating with cross-functional teams to deliver scalable solutions.",
+            achievements: [
+                "Selected as an incoming developer at Verizon",
+                "Will gain exposure to telecom-grade software systems",
+                "Will work on projects involving large-scale distributed systems"
+            ],
+            technologies: ["React", "Node.js", "Java", "Cloud Technologies"],
+            languages: ["JavaScript", "TypeScript", "Java", "SQL"]
+        },
+        {
+            company: "Adappt Mobile Cloud Applications Pvt Ltd",
+            role: "Software Developer Intern",
+            duration: "May 2025 - June 2025",
+            location: "Pondicherry, India",
+            description: "Contributed to enterprise-level healthcare management systems, optimizing performance and deployment pipelines.",
+            achievements: [
+                "Implemented Redis caching and background job processing",
+                "Delivered measurable performance improvements in production",
+                "Gained hands-on experience with scalable architecture and code review processes"
+            ],
+            technologies: ["Redis", "Node.js", "React", "PostgreSQL", "Real-time Communication"],
+            languages: ["JavaScript", "TypeScript", "SQL"]
+        },
+        {
+            company: "Freelance / Personal Projects",
+            role: "Full Stack & iOS Developer",
             duration: "2023 - Present",
-            location: "San Francisco, CA",
-            description: "Leading development of scalable web applications and mentoring junior developers in modern frameworks and best practices.",
-            achievements: [
-                "Architected microservices reducing system response time by 40%",
-                "Led a team of 5 developers on critical client projects",
-                "Implemented CI/CD pipeline improving deployment efficiency by 60%"
-            ],
-            technologies: ["React", "Node.js", "AWS", "Docker", "MongoDB"]
-        },
-        {
-            company: "Digital Solutions LLC",
-            role: "Full Stack Developer",
-            duration: "2021 - 2023",
             location: "Remote",
-            description: "Developed and maintained multiple client applications using modern web technologies and cloud services.",
+            description: "Developed multiple full stack and mobile applications, focusing on healthcare, video conferencing, and climate monitoring solutions.",
             achievements: [
-                "Built 15+ responsive web applications from concept to deployment",
-                "Reduced application load times by 50% through optimization",
-                "Collaborated with UX/UI teams to improve user experience"
+                "Built CliniCall, a production-grade healthcare platform with Redis caching and BullMQ job queues",
+                "Created Connect+, a video conferencing web app with Clerk Auth, Firebase, and Stream SDK",
+                "Developed The Climate, an iOS app with Core Location and OpenWeather API achieving 92%+ data accuracy"
             ],
-            technologies: ["JavaScript", "Python", "Express", "Firebase", "Tailwind CSS"]
+            technologies: ["Next.js", "React", "Node.js", "Firebase", "Prisma", "Swift", "Core Location", "Tailwind CSS"],
+            languages: ["JavaScript", "TypeScript", "Swift", "Objective-C", "SQL"]
         },
-        {
-            company: "StartupXYZ",
-            role: "Frontend Developer",
-            duration: "2020 - 2021",
-            location: "New York, NY",
-            description: "Focused on creating intuitive user interfaces and implementing responsive designs for various client projects.",
-            achievements: [
-                "Developed mobile-first responsive designs for 20+ projects",
-                "Implemented modern JavaScript frameworks and libraries",
-                "Improved website performance scores by average of 35%"
-            ],
-            technologies: ["HTML5", "CSS3", "JavaScript", "React", "Bootstrap"]
-        },
-        {
-            company: "Freelance",
-            role: "Web Developer",
-            duration: "2019 - 2020",
-            location: "Remote",
-            description: "Provided web development services to small businesses and startups, creating custom solutions tailored to their needs.",
-            achievements: [
-                "Successfully delivered 25+ projects on time and within budget",
-                "Maintained 98% client satisfaction rate",
-                "Established long-term partnerships with 8 recurring clients"
-            ],
-            technologies: ["HTML", "CSS", "JavaScript", "PHP", "WordPress"]
-        }
     ];
 
     useEffect(() => {
@@ -72,7 +62,7 @@ function Experience() {
 
         // Animate timeline line
         if (timeline) {
-            gsap.fromTo(timeline, 
+            gsap.fromTo(timeline,
                 {
                     scaleY: 0,
                     transformOrigin: "top center"
@@ -95,7 +85,7 @@ function Experience() {
         cards.forEach((card, index) => {
             if (card) {
                 const isLeft = index % 2 === 0;
-                gsap.fromTo(card, 
+                gsap.fromTo(card,
                     {
                         x: isLeft ? -100 : 100,
                         opacity: 0,
@@ -143,7 +133,7 @@ function Experience() {
             {/* Timeline Container */}
             <div className="relative max-w-6xl mx-auto">
                 {/* Timeline Line */}
-                <div 
+                <div
                     ref={timelineRef}
                     className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-cyan-500 via-cyan-400 to-cyan-500 hidden md:block"
                     style={{ height: '100%' }}
@@ -156,7 +146,7 @@ function Experience() {
                     {experiences.map((experience, index) => {
                         const isLeft = index % 2 === 0;
                         return (
-                            <div 
+                            <div
                                 key={index}
                                 ref={el => cardsRef.current[index] = el}
                                 className={`flex ${isLeft ? 'md:justify-start' : 'md:justify-end'}`}
@@ -170,6 +160,7 @@ function Experience() {
                                         description={experience.description}
                                         achievements={experience.achievements}
                                         technologies={experience.technologies}
+                                        languages={experience.languages}
                                         isLeft={isLeft}
                                     />
                                 </div>

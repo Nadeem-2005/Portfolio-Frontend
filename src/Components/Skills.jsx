@@ -78,7 +78,7 @@ function Skills() {
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/c++.svg"} name={"C++"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/java.svg"} name={"Java"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/swift.svg"} name={"Swift"} /></div>
-                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/objective-c.svg"} name={"Objective-C"} /></div>
+                    <div className="skill-card"><SkillCard imgURL={"/SkillIcons/Objective-C.svg"} name={"Objective-C"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/html.svg"} name={"HTML"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/css.svg"} name={"CSS"} /></div>
                     <div className="skill-card"><SkillCard imgURL={"/SkillIcons/javascript.svg"} name={"JavaScript"} /></div>

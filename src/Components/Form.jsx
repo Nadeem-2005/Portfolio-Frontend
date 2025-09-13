@@ -19,7 +19,7 @@ function Form() {
         e.preventDefault();
         try {
             console.log("Submitted")
-            const response = await axios.post('https://portfolio-backend-q1tq.onrender.com/send-mail', formData);
+            const response = await axios.post('https://portfolio-backend-0kco.onrender.com/send-mail', formData);
             console.log(response.data);
         } catch (error) {
             console.error(error);

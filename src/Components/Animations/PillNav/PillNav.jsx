@@ -230,7 +230,7 @@ const PillNav = ({
     };
 
     return (
-        <div className="sticky top-4 z-[1000] flex justify-center w-full">
+        <div className="sticky top-4 z-[1000] flex justify-center w-full ">
             <nav
                 className={`w-full md:w-max flex items-center justify-between md:justify-start box-border px-4 md:px-0 ${className}`}
                 aria-label="Primary"

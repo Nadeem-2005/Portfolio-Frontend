@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 const PillNav = ({
     logo,
     logoAlt = 'Logo',
-    name = 'Your Name', // Add name prop
+    name = 'Your Name',
     items,
     activeHref,
     className = '',
@@ -15,7 +15,11 @@ const PillNav = ({
     hoveredPillTextColor = '#060010',
     pillTextColor,
     onMobileMenuClick,
-    initialLoadAnimation = true
+    initialLoadAnimation = true,
+    // New glass effect props
+    glassBackground = 'rgba(255, 255, 255, 0.1)',
+    glassBlur = '20px',
+    glassBorder = 'null'
 }) => {
     const resolvedPillTextColor = pillTextColor ?? baseColor;
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -28,6 +32,7 @@ const PillNav = ({
     const mobileMenuRef = useRef(null);
     const navItemsRef = useRef(null);
     const logoRef = useRef(null);
+    const glassBackgroundRef = useRef(null);
 
     useEffect(() => {
         const layout = () => {
@@ -96,6 +101,18 @@ const PillNav = ({
         if (initialLoadAnimation) {
             const logoElement = logoRef.current;
             const navItems = navItemsRef.current;
+            const glassBackground = glassBackgroundRef.current;
+
+            // Animate glass background
+            if (glassBackground) {
+                gsap.set(glassBackground, { opacity: 0, scale: 0.95 });
+                gsap.to(glassBackground, {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    ease
+                });
+            }
 
             // Only animate logo if it's an image, not text
             if (logoElement && logo) {
@@ -103,6 +120,7 @@ const PillNav = ({
                 gsap.to(logoElement, {
                     scale: 1,
                     duration: 0.6,
+                    delay: 0.2,
                     ease
                 });
             }
@@ -112,6 +130,7 @@ const PillNav = ({
                 gsap.to(navItems, {
                     width: 'auto',
                     duration: 0.6,
+                    delay: 0.2,
                     ease
                 });
             }
@@ -230,237 +249,256 @@ const PillNav = ({
     };
 
     return (
-        <div className="sticky top-4 z-[1000] flex justify-center w-full ">
-            <nav
-                className={`w-full md:w-max flex items-center justify-between md:justify-start box-border px-4 md:px-0 ${className}`}
-                aria-label="Primary"
-                style={cssVars}
-            >
-                {/* Logo/Name Section */}
-                {logo ? (
-                    // If logo is provided, show image
-                    isRouterLink(items?.[0]?.href) ? (
-                        <Link
-                            to={items[0].href}
-                            aria-label="Home"
-                            onMouseEnter={handleLogoEnter}
-                            role="menuitem"
-                            ref={el => {
-                                logoRef.current = el;
-                            }}
-                            className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden"
-                            style={{
-                                width: 'var(--nav-h)',
-                                height: 'var(--nav-h)',
-                                background: 'var(--base, #000)'
-                            }}
-                        >
-                            <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-cover block" />
-                        </Link>
-                    ) : (
-                        <a
-                            href={items?.[0]?.href || '#'}
-                            aria-label="Home"
-                            onMouseEnter={handleLogoEnter}
-                            ref={el => {
-                                logoRef.current = el;
-                            }}
-                            className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden"
-                            style={{
-                                width: 'var(--nav-h)',
-                                height: 'var(--nav-h)',
-                                background: 'var(--base, #000)'
-                            }}
-                        >
-                            <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-cover block" />
-                        </a>
-                    )
-                ) : (
-                    // If no logo, show name as text
-                    isRouterLink(items?.[0]?.href) ? (
-                        <Link
-                            to={items[0].href}
-                            aria-label="Home"
-                            role="menuitem"
-                            ref={el => {
-                                logoRef.current = el;
-                            }}
-                            className="rounded-full px-4 inline-flex items-center justify-center font-bold text-lg"
-                            style={{
-                                height: 'var(--nav-h)',
-                                background: 'var(--pill-bg, #000)',
-                                color: 'var(--pill-text, #fff)'
-                            }}
-                        >
-                            {name}
-                        </Link>
-                    ) : (
-                        <a
-                            href={items?.[0]?.href || '#'}
-                            aria-label="Home"
-                            ref={el => {
-                                logoRef.current = el;
-                            }}
-                            className="rounded-full px-4 inline-flex items-center justify-center font-bold text-lg"
-                            style={{
-                                height: 'var(--nav-h)',
-                                background: 'var(--pill-bg, #000)',
-                                color: 'var(--pill-text, #fff)'
-                            }}
-                        >
-                            {name}
-                        </a>
-                    )
-                )}
+        <div className="sticky top-0 z-[1000] w-full">
+            {/* Glass Background - Full Width */}
+            <div
+                ref={glassBackgroundRef}
+                className="absolute inset-0 w-full"
+                style={{
+                    background: glassBackground,
+                    backdropFilter: `blur(${glassBlur})`,
+                    WebkitBackdropFilter: `blur(${glassBlur})`,
+                    borderBottom: `1px solid ${glassBorder}`,
+                    height: 'calc(var(--nav-h) + 2rem)', // Match navbar height + padding
+                }}
+            />
 
-                <div
-                    ref={navItemsRef}
-                    className="relative items-center rounded-full hidden md:flex ml-2"
-                    style={{
-                        height: 'var(--nav-h)',
-                        background: 'var(--base, #000)'
-                    }}
+            {/* Navigation Content */}
+            <div className="relative z-10 flex justify-center w-full py-4">
+                <nav
+                    className={`w-full md:w-max flex items-center justify-between md:justify-start box-border px-4 md:px-0 ${className}`}
+                    aria-label="Primary"
+                    style={cssVars}
                 >
-                    <ul
-                        role="menubar"
-                        className="list-none flex items-stretch m-0 p-[3px] h-full"
-                        style={{ gap: 'var(--pill-gap)' }}
+                    {/* Logo/Name Section */}
+                    {logo ? (
+                        // If logo is provided, show image
+                        isRouterLink(items?.[0]?.href) ? (
+                            <Link
+                                to={items[0].href}
+                                aria-label="Home"
+                                onMouseEnter={handleLogoEnter}
+                                role="menuitem"
+                                ref={el => {
+                                    logoRef.current = el;
+                                }}
+                                className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden"
+                                style={{
+                                    width: 'var(--nav-h)',
+                                    height: 'var(--nav-h)',
+                                    background: 'var(--base, #000)'
+                                }}
+                            >
+                                <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-cover block" />
+                            </Link>
+                        ) : (
+                            <a
+                                href={items?.[0]?.href || '#'}
+                                aria-label="Home"
+                                onMouseEnter={handleLogoEnter}
+                                ref={el => {
+                                    logoRef.current = el;
+                                }}
+                                className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden"
+                                style={{
+                                    width: 'var(--nav-h)',
+                                    height: 'var(--nav-h)',
+                                    background: 'var(--base, #000)'
+                                }}
+                            >
+                                <img src={logo} alt={logoAlt} ref={logoImgRef} className="w-full h-full object-cover block" />
+                            </a>
+                        )
+                    ) : (
+                        // If no logo, show name as text
+                        isRouterLink(items?.[0]?.href) ? (
+                            <Link
+                                to={items[0].href}
+                                aria-label="Home"
+                                role="menuitem"
+                                ref={el => {
+                                    logoRef.current = el;
+                                }}
+                                className="rounded-full px-4 inline-flex items-center justify-center font-bold text-lg"
+                                style={{
+                                    height: 'var(--nav-h)',
+                                    background: 'var(--pill-bg, #000)',
+                                    color: 'var(--pill-text, #fff)'
+                                }}
+                            >
+                                {name}
+                            </Link>
+                        ) : (
+                            <a
+                                href={items?.[0]?.href || '#'}
+                                aria-label="Home"
+                                ref={el => {
+                                    logoRef.current = el;
+                                }}
+                                className="rounded-full px-4 inline-flex items-center justify-center font-bold text-lg"
+                                style={{
+                                    height: 'var(--nav-h)',
+                                    background: 'var(--pill-bg, #000)',
+                                    color: 'var(--pill-text, #fff)'
+                                }}
+                            >
+                                {name}
+                            </a>
+                        )
+                    )}
+
+                    <div
+                        ref={navItemsRef}
+                        className="relative items-center rounded-full hidden md:flex ml-2"
+                        style={{
+                            height: 'var(--nav-h)',
+                            background: 'var(--base, #000)'
+                        }}
                     >
-                        {items.map((item, i) => {
-                            const isActive = activeHref === item.href;
+                        <ul
+                            role="menubar"
+                            className="list-none flex items-stretch m-0 p-[3px] h-full"
+                            style={{ gap: 'var(--pill-gap)' }}
+                        >
+                            {items.map((item, i) => {
+                                const isActive = activeHref === item.href;
 
-                            const pillStyle = {
-                                background: 'var(--pill-bg, #fff)',
-                                color: 'var(--pill-text, var(--base, #000))',
-                                paddingLeft: 'var(--pill-pad-x)',
-                                paddingRight: 'var(--pill-pad-x)'
-                            };
+                                const pillStyle = {
+                                    background: 'var(--pill-bg, #fff)',
+                                    color: 'var(--pill-text, var(--base, #000))',
+                                    paddingLeft: 'var(--pill-pad-x)',
+                                    paddingRight: 'var(--pill-pad-x)'
+                                };
 
-                            const PillContent = (
-                                <>
-                                    <span
-                                        className="hover-circle absolute left-1/2 bottom-0 rounded-full z-[1] block pointer-events-none"
-                                        style={{
-                                            background: 'var(--base, #000)',
-                                            willChange: 'transform'
-                                        }}
-                                        aria-hidden="true"
-                                        ref={el => {
-                                            circleRefs.current[i] = el;
-                                        }}
-                                    />
-                                    <span className="label-stack relative inline-block leading-[1] z-[2]">
+                                const PillContent = (
+                                    <>
                                         <span
-                                            className="pill-label relative z-[2] inline-block leading-[1]"
+                                            className="hover-circle absolute left-1/2 bottom-0 rounded-full z-[1] block pointer-events-none"
                                             style={{
-                                                willChange: 'transform',
-                                                color: 'var(--pill-text, #000)'
-                                            }}
-                                        >
-                                            {item.label}
-                                        </span>
-                                        <span
-                                            className="pill-label-hover absolute left-0 top-0 z-[3] inline-block"
-                                            style={{
-                                                color: 'var(--hover-text, #fff)',
-                                                willChange: 'transform, opacity'
+                                                background: 'var(--base, #000)',
+                                                willChange: 'transform'
                                             }}
                                             aria-hidden="true"
-                                        >
-                                            {item.label}
-                                        </span>
-                                    </span>
-                                    {isActive && (
-                                        <span
-                                            className="absolute left-1/2 -bottom-[6px] -translate-x-1/2 w-3 h-3 rounded-full z-[4]"
-                                            style={{ background: 'var(--base, #000)' }}
-                                            aria-hidden="true"
+                                            ref={el => {
+                                                circleRefs.current[i] = el;
+                                            }}
                                         />
-                                    )}
-                                </>
-                            );
+                                        <span className="label-stack relative inline-block leading-[1] z-[2]">
+                                            <span
+                                                className="pill-label relative z-[2] inline-block leading-[1]"
+                                                style={{
+                                                    willChange: 'transform',
+                                                    color: 'var(--pill-text, #000)'
+                                                }}
+                                            >
+                                                {item.label}
+                                            </span>
+                                            <span
+                                                className="pill-label-hover absolute left-0 top-0 z-[3] inline-block"
+                                                style={{
+                                                    color: 'var(--hover-text, #fff)',
+                                                    willChange: 'transform, opacity'
+                                                }}
+                                                aria-hidden="true"
+                                            >
+                                                {item.label}
+                                            </span>
+                                        </span>
+                                        {isActive && (
+                                            <span
+                                                className="absolute left-1/2 -bottom-[6px] -translate-x-1/2 w-3 h-3 rounded-full z-[4]"
+                                                style={{ background: 'var(--base, #000)' }}
+                                                aria-hidden="true"
+                                            />
+                                        )}
+                                    </>
+                                );
 
-                            const basePillClasses =
-                                'relative overflow-hidden inline-flex items-center justify-center h-full no-underline rounded-full box-border font-semibold text-[16px] leading-[0] uppercase tracking-[0.2px] whitespace-nowrap cursor-pointer px-0';
+                                const basePillClasses =
+                                    'relative overflow-hidden inline-flex items-center justify-center h-full no-underline rounded-full box-border font-semibold text-[16px] leading-[0] uppercase tracking-[0.2px] whitespace-nowrap cursor-pointer px-0';
 
-                            return (
-                                <li key={item.href} role="none" className="flex h-full">
-                                    {isRouterLink(item.href) ? (
-                                        <Link
-                                            role="menuitem"
-                                            to={item.href}
-                                            className={basePillClasses}
-                                            style={pillStyle}
-                                            aria-label={item.ariaLabel || item.label}
-                                            onMouseEnter={() => handleEnter(i)}
-                                            onMouseLeave={() => handleLeave(i)}
-                                        >
-                                            {PillContent}
-                                        </Link>
-                                    ) : (
-                                        <a
-                                            role="menuitem"
-                                            href={item.href}
-                                            className={basePillClasses}
-                                            style={pillStyle}
-                                            aria-label={item.ariaLabel || item.label}
-                                            onMouseEnter={() => handleEnter(i)}
-                                            onMouseLeave={() => handleLeave(i)}
-                                        >
-                                            {PillContent}
-                                        </a>
-                                    )}
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div>
+                                return (
+                                    <li key={item.href} role="none" className="flex h-full">
+                                        {isRouterLink(item.href) ? (
+                                            <Link
+                                                role="menuitem"
+                                                to={item.href}
+                                                className={basePillClasses}
+                                                style={pillStyle}
+                                                aria-label={item.ariaLabel || item.label}
+                                                onMouseEnter={() => handleEnter(i)}
+                                                onMouseLeave={() => handleLeave(i)}
+                                            >
+                                                {PillContent}
+                                            </Link>
+                                        ) : (
+                                            <a
+                                                role="menuitem"
+                                                href={item.href}
+                                                className={basePillClasses}
+                                                style={pillStyle}
+                                                aria-label={item.ariaLabel || item.label}
+                                                onMouseEnter={() => handleEnter(i)}
+                                                onMouseLeave={() => handleLeave(i)}
+                                            >
+                                                {PillContent}
+                                            </a>
+                                        )}
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
 
-                <button
-                    ref={hamburgerRef}
-                    onClick={toggleMobileMenu}
-                    aria-label="Toggle menu"
-                    aria-expanded={isMobileMenuOpen}
-                    className="md:hidden rounded-full border-0 flex flex-col items-center justify-center gap-1 cursor-pointer p-0 relative"
-                    style={{
-                        width: 'var(--nav-h)',
-                        height: 'var(--nav-h)',
-                        background: 'var(--base, #000)'
-                    }}
-                >
-                    <span
-                        className="hamburger-line w-4 h-0.5 rounded origin-center transition-all duration-[10ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
-                        style={{ background: 'var(--pill-bg, #fff)' }}
-                    />
-                    <span
-                        className="hamburger-line w-4 h-0.5 rounded origin-center transition-all duration-[10ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
-                        style={{ background: 'var(--pill-bg, #fff)' }}
-                    />
-                </button>
-            </nav>
+                    <button
+                        ref={hamburgerRef}
+                        onClick={toggleMobileMenu}
+                        aria-label="Toggle menu"
+                        aria-expanded={isMobileMenuOpen}
+                        className="md:hidden rounded-full border-0 flex flex-col items-center justify-center gap-1 cursor-pointer p-0 relative"
+                        style={{
+                            width: 'var(--nav-h)',
+                            height: 'var(--nav-h)',
+                            background: 'var(--base, #000)'
+                        }}
+                    >
+                        <span
+                            className="hamburger-line w-4 h-0.5 rounded origin-center transition-all duration-[10ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
+                            style={{ background: 'var(--pill-bg, #fff)' }}
+                        />
+                        <span
+                            className="hamburger-line w-4 h-0.5 rounded origin-center transition-all duration-[10ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
+                            style={{ background: 'var(--pill-bg, #fff)' }}
+                        />
+                    </button>
+                </nav>
+            </div>
 
             <div
                 ref={mobileMenuRef}
-                className="md:hidden absolute top-[3em] left-4 right-4 rounded-[27px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] z-[998] origin-top"
+                className="md:hidden absolute top-full left-4 right-4 rounded-[27px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] z-[998] origin-top mt-2"
                 style={{
                     ...cssVars,
-                    background: 'var(--base, #f0f0f0)'
+                    background: glassBackground,
+                    backdropFilter: `blur(${glassBlur})`,
+                    WebkitBackdropFilter: `blur(${glassBlur})`,
+                    border: `1px solid ${glassBorder}`
                 }}
             >
                 <ul className="list-none m-0 p-[3px] flex flex-col gap-[3px]">
                     {items.map(item => {
                         const defaultStyle = {
-                            background: 'rgba(255, 255, 255, 0.2)',
+                            background: 'rgba(255, 255, 255, 0.1)',
                             color: 'var(--pill-text, #fff)',
                             backdropFilter: 'blur(10px)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)'
+                            border: '1px solid rgba(255, 255, 255, 0.05)'
                         };
                         const hoverIn = e => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
                             e.currentTarget.style.color = 'var(--hover-text, #fff)';
                         };
                         const hoverOut = e => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
                             e.currentTarget.style.color = 'var(--pill-text, #fff)';
                         };
 

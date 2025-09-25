@@ -1,9 +1,11 @@
 import React from "react";
 
-export function dummy() {
+const Dummy = () => {
     return (
         <div>
-            hello
+            <h1 className="text-white">Hello</h1>
         </div>
     )
 }
+
+export default Dummy;

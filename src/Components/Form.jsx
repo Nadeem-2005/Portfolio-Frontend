@@ -20,6 +20,12 @@ function Form() {
         try {
             console.log("Submitted")
             const response = await axios.post('https://portfolio-backend-0kco.onrender.com/send-mail', formData);
+            setFormData({
+                name: '',
+                email: '',
+                phone: '',
+                message: '',
+            })
             console.log(response.data);
         } catch (error) {
             console.error(error);

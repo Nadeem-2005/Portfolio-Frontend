@@ -51,7 +51,7 @@ function Experience() {
                 "Created Connect+, a video conferencing web app with Clerk Auth, Firebase, and Stream SDK",
                 "Developed The Climate, an iOS app with Core Location and OpenWeather API achieving 92%+ data accuracy"
             ],
-            technologies: ["Next.js", "React", "Node.js", "Firebase", "Prisma", "Swift", "Core Location", "Tailwind CSS"],
+            technologies: ["Next.js", "React", "Node.js", "Firebase", "Prisma", "Swift-Core Location", "Tailwind CSS"],
             languages: ["JavaScript", "TypeScript", "Swift", "Objective-C", "SQL"]
         },
     ];
@@ -136,7 +136,7 @@ function Experience() {
                 <div
                     ref={timelineRef}
                     className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-white via-gray-100 to-white hidden md:block"
-                    style={{ 
+                    style={{
                         height: '100%',
                         boxShadow: '0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.4)'
                     }}

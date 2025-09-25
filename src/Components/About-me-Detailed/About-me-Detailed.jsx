@@ -56,14 +56,13 @@ const AboutMeDetailed = () => {
 
     const extracurricularData = [
         {
-            activity: "Computer Science Club",
-            role: "Vice President",
-            duration: "2023 - 2024",
-            description: "Led technical workshops and organized coding competitions for 200+ students",
+            activity: "ISTE Student Chapter",
+            role: "Junior Core Member",
+            duration: "2022 - 2023",
+            description: "Helped in conducting technical workshops and organized coding competitions for 200+ students",
             achievements: [
-                "Organized annual hackathon with 500+ participants",
-                "Increased club membership by 150%",
-                "Secured sponsorships worth $50,000"
+                "Helped in organizing an annual hackathon with 500+ participants",
+                "Increased club membership by pitching to juniors",
             ]
         },
         {
@@ -121,37 +120,37 @@ const AboutMeDetailed = () => {
 
     const leadershipData = [
         {
-            position: "Technical Lead - Student Innovation Lab",
-            organization: "University Innovation Center",
-            duration: "2023 - 2024",
-            description: "Led a team of 12 developers across 4 major projects",
+            position: "Student Coordinator - GraVITas 2024",
+            organization: "Guest Care Committee, VIT",
+            duration: "2024",
+            description: "Coordinated guest management and documentation for GraVITas, VIT's annual international tech fest",
             responsibilities: [
-                "Managed project timelines and deliverables",
-                "Conducted code reviews and technical mentoring",
-                "Coordinated with stakeholders and clients",
-                "Implemented agile development practices"
+                "Handled documentation and records of 1000+ guests and participants",
+                "Coordinated with volunteers to manage guest accommodations and event logistics",
+                "Assisted foreign and national participants ensuring smooth onboarding",
+                "Collaborated with event teams to streamline escort and dorm allocation processes"
             ],
             achievements: [
-                "Delivered 100% of projects on time",
-                "Improved team productivity by 40%",
-                "Mentored 8 junior developers"
+                "Successfully managed guest records with 100% accuracy",
+                "Ensured seamless hospitality for all participants",
+                "Recognized for efficient handling of documentation and logistics"
             ]
         },
         {
-            position: "Event Coordinator - TechFest 2023",
-            organization: "University Technical Society",
-            duration: "2023",
-            description: "Organized the largest technical festival with 2000+ attendees",
+            position: "Student Coordinator - Riviera 2025",
+            organization: "Guest Care Committee, VIT",
+            duration: "2025",
+            description: "Organized guest hospitality and documentation for Riviera, VIT's annual cultural fest",
             responsibilities: [
-                "Coordinated with 50+ volunteers",
-                "Managed budget of $100,000",
-                "Secured partnerships with major tech companies",
-                "Oversaw logistics and event execution"
+                "Maintained detailed Excel records of 1500+ external participants",
+                "Coordinated accommodation, escorts, and event schedules with volunteers",
+                "Assisted in verifying proofs, receipts, and documentation for participants",
+                "Supported coordinators in handling foreign participants and special guests"
             ],
             achievements: [
-                "2000+ attendees across 3 days",
-                "Generated $150,000 in sponsorships",
-                "98% attendee satisfaction rating"
+                "Achieved smooth coordination of 1500+ external participants",
+                "Streamlined documentation process for faster onboarding",
+                "Praised by Organizers for maintaining accurate and organized records"
             ]
         }
     ];

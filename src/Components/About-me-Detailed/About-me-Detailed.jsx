@@ -16,41 +16,41 @@ const AboutMeDetailed = () => {
     const academicData = {
         education: [
             {
-                institution: "Your University Name",
-                degree: "Bachelor of Technology in Computer Science",
-                duration: "2021 - 2025",
-                gpa: "8.5/10",
+                institution: "Vellore Institute of Technology",
+                degree: "Bachelor of Technology in Computer Science and Engineering",
+                duration: "2022 - 2026",
+                gpa: "9.15/10",
                 achievements: [
-                    "Dean's List for Academic Excellence",
+                    "Maintained a GPA of 9+ across all the semesters",
                     "Top 10% of graduating class",
                     "Outstanding Student in Data Structures & Algorithms"
                 ],
-                location: "City, Country"
+                location: "Vellore, India"
             }
         ]
     };
 
     const certificationsData = [
         {
-            title: "AWS Certified Developer Associate",
+            title: "AWS Certified Cloud Practitioner",
             issuer: "Amazon Web Services",
             date: "2024",
             description: "Cloud development and deployment expertise",
-            credentialId: "AWS-CDA-2024-001"
+            ValidationLink: "https://aws.amazon.com/verification/387b521ad1ae44098b7a6a62365c17ad"
         },
         {
-            title: "React Developer Certification",
-            issuer: "Meta",
-            date: "2023",
-            description: "Advanced React.js development skills",
-            credentialId: "META-REACT-2023-156"
+            title: "Azure: AI Fundamentals (AI-900)",
+            issuer: "Microsoft",
+            date: "2025",
+            description: "Learnt Microsoft Azure AI services and concepts",
+            ValidationLink: "https://www.credly.com/badges/45af566e-63bf-40f7-89c1-1fe10104b298/public_url"
         },
         {
-            title: "Node.js Application Development",
-            issuer: "IBM",
-            date: "2023",
-            description: "Backend development with Node.js",
-            credentialId: "IBM-NODE-2023-789"
+            title: "Introduction to MCP",
+            issuer: "Anthropic INC.",
+            date: "2025",
+            description: "Learnt Basics of Model-Context-Protocol",
+            ValidationLink: "https://cc.sj-cdn.net/certificate/47ajyxsragmw/certificate-5ijxo2rpmz5o-1757266456.pdf?response-content-disposition=attachment&Expires=1758826442&Signature=s~GHIu0mg8Fngzth2qQPWydftmuWnIpB0A7QRXs1FFr7lX0zm1hukZPdWE75Xi1wopwUxKoo6pw-ev5aZ-3le36gexaMt0U~sBNi4Ctxm-m5w10s6jC57iO1eSBfFv5xgG1zgRjQqLMMaEx8wPSz2PEByGyd4Z6C1MqtCS0Gih4GcnSd6WgeDij~2hgn7~ypt6CjbIz7X4zg~YjCegX6KYUzBl~xi3sQHSjgtcIlQJquSyFGIhzYRl2~a58VnlQU7kD0ShfkKm3gJAfu7cle4GR-oRtI5pcbeSf7yCHzl1P4r4vi0g8KFmsC8pXsSQ8dc3eVCKYvsozJjsgbn80seQ__&Key-Pair-Id=APKAI3B7HFD2VYJQK4MQ"
         }
     ];
 
@@ -443,7 +443,7 @@ const AboutMeDetailed = () => {
                                 <p className="text-gray-300 mb-3">{cert.description}</p>
 
                                 <div className="text-xs text-gray-500">
-                                    ID: {cert.credentialId}
+                                    <a href={cert.ValidationLink} target="new">Validation Link</a>
                                 </div>
                             </DetailCard>
                         ))}

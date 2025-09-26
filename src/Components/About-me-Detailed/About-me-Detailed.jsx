@@ -64,28 +64,28 @@ const AboutMeDetailed = () => {
                 "Increased club membership by pitching to juniors",
             ]
         },
-        {
-            activity: "Volunteer Coding Instructor",
-            role: "Instructor",
-            duration: "2022 - Present",
-            description: "Teaching programming fundamentals to underprivileged students",
-            achievements: [
-                "Taught 50+ students basic programming",
-                "100% student satisfaction rate",
-                "Developed custom curriculum for beginners"
-            ]
-        },
-        {
-            activity: "University Football Team",
-            role: "Team Member",
-            duration: "2021 - 2023",
-            description: "Balanced athletics with academics, developing teamwork and discipline",
-            achievements: [
-                "Regional championship finalist",
-                "Team captain for 2023 season",
-                "Perfect attendance for 2 years"
-            ]
-        }
+        // {
+        //     activity: "Volunteer Coding Instructor",
+        //     role: "Instructor",
+        //     duration: "2022 - Present",
+        //     description: "Teaching programming fundamentals to underprivileged students",
+        //     achievements: [
+        //         "Taught 50+ students basic programming",
+        //         "100% student satisfaction rate",
+        //         "Developed custom curriculum for beginners"
+        //     ]
+        // },
+        // {
+        //     activity: "University Football Team",
+        //     role: "Team Member",
+        //     duration: "2021 - 2023",
+        //     description: "Balanced athletics with academics, developing teamwork and discipline",
+        //     achievements: [
+        //         "Regional championship finalist",
+        //         "Team captain for 2023 season",
+        //         "Perfect attendance for 2 years"
+        //     ]
+        // }
     ];
 
     const researchData = [

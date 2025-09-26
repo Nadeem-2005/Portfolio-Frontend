@@ -12,7 +12,6 @@ const AboutMeDetailed = () => {
     const backButtonRef = useRef(null);
     const heroRef = useRef(null);
 
-    // Sample data - replace with actual information
     const academicData = {
         education: [
             {
@@ -187,6 +186,12 @@ const AboutMeDetailed = () => {
 
     useEffect(() => {
         // Hero section animation
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+        }, 0);
+
         if (heroRef.current) {
             gsap.fromTo(heroRef.current.children,
                 {

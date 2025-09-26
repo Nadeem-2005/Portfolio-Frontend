@@ -3,6 +3,7 @@ import Threads from "./Animations/Threads/Threads";
 import RotatingText from "./Animations/RotatingText/RotatingText";
 import TextPressure from "./Animations/TextPressure/TextPressure";
 import DecryptedText from "./Animations/DecryptedText/DecryptedText";
+import { Link } from "react-router-dom";
 
 function Hero() {
     return (
@@ -66,16 +67,18 @@ function Hero() {
                         — always pushing limits, both on and off the screen.
                     </p>
                     <p className="text-center md:text-left mt-6 text-lg sm:text-xl md:text-2xl underline decoration-dotted underline-offset-8 decoration-white/50 hover:decoration-white cursor-pointer w-fit mx-auto md:mx-0">
-                        <DecryptedText
-                            text="Click here to know more about me"
-                            speed={100}
-                            maxIterations={20}
-                            characters="ABCD1234!?"
-                            className="revealed"
-                            parentClassName="all-letters"
-                            encryptedClassName="encrypted"
-                            animateOn="view"
-                        />
+                        <Link to="/about-me-detailed" className="z-10 relative" >
+                            <DecryptedText
+                                text="Click here to know more about me"
+                                speed={100}
+                                maxIterations={20}
+                                characters="ABCD1234!?"
+                                className="revealed"
+                                parentClassName="all-letters"
+                                encryptedClassName="encrypted"
+                                animateOn="view"
+                            />
+                        </Link>
                     </p>
                 </div>
             </div>

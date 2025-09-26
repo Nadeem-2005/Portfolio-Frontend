@@ -90,29 +90,47 @@ const AboutMeDetailed = () => {
 
     const researchData = [
         {
-            title: "Machine Learning in Healthcare: Predictive Analysis for Patient Outcomes",
-            duration: "2023 - 2024",
-            supervisor: "Dr. Jane Smith",
-            description: "Developed ML models to predict patient recovery times with 87% accuracy",
-            technologies: ["Python", "TensorFlow", "Pandas", "Scikit-learn"],
-            status: "Published in Journal of Medical Informatics",
+            title: "Database Security: Access Control Models and Implementation",
+            duration: "2024 - 2025",
+            supervisor: "Course Faculty - BCSE323L",
+            description: "Comprehensive analysis and review of database security research focusing on discretionary and mandatory access control models, polyinstantiation, and multilevel security frameworks",
+            technologies: ["Database Security", "Access Control Models", "Bell-LaPadula Model", "System R Authorization", "Security Analysis"],
+            status: "Academic Research Review",
             achievements: [
-                "87% accuracy in predictions",
-                "Reduced analysis time by 60%",
-                "Presented at International Conference"
+                "Analyzed cutting-edge access control mechanisms for database systems",
+                "Evaluated Discretionary Access Control (DAC) and Mandatory Access Control (MAC) models",
+                "Reviewed polyinstantiation techniques for multilevel security databases",
+                "Identified future research directions in role-based access control"
             ]
         },
         {
-            title: "Blockchain-based Supply Chain Management System",
-            duration: "2022 - 2023",
-            supervisor: "Prof. John Doe",
-            description: "Created a transparent supply chain tracking system using blockchain technology",
-            technologies: ["Solidity", "Ethereum", "Web3.js", "React"],
-            status: "Patent Pending",
+            title: "Robust Digital Watermarking using DWT-SVD Hybrid Approach",
+            duration: "2024 - 2025",
+            supervisor: "Course Faculty - BCSE323L",
+            description: "Developed and implemented a robust digital watermarking system combining Discrete Wavelet Transform and Singular Value Decomposition for copyright protection in digital images",
+            technologies: ["MATLAB", "Discrete Wavelet Transform", "Singular Value Decomposition", "Image Processing", "Digital Signal Processing"],
+            status: "Implementation Complete",
             achievements: [
-                "99.9% data integrity maintained",
-                "Reduced fraud by 45%",
-                "Filed provisional patent"
+                "Achieved PSNR values of 69.20 dB for watermarked images without attacks",
+                "Demonstrated robustness against Gaussian noise (40.74 dB PSNR after attack)",
+                "Successfully embedded dual watermarks in HL and LH subbands",
+                "Maintained high correlation coefficients (close to 1.0) for watermark extraction",
+                "Implemented comprehensive attack simulation including noise, blur, and compression"
+            ]
+        },
+        {
+            title: "Advanced Steganography Implementation using DWT Domain",
+            duration: "2024 - 2025",
+            supervisor: "Course Faculty - BCSE323L",
+            description: "Implemented steganographic techniques in both LL and HH domains of DWT for secure message embedding with comparative analysis of domain robustness",
+            technologies: ["MATLAB", "Steganography", "Discrete Wavelet Transform", "Image Processing", "Security Analysis"],
+            status: "Research Implementation",
+            achievements: [
+                "Successfully embedded text messages in wavelet transform coefficients",
+                "Implemented extraction algorithms for both LL and HH domains",
+                "Conducted comprehensive attack analysis on 10+ different attack vectors",
+                "Evaluated robustness using PSNR, SNR, and SSIM metrics",
+                "Compared domain-specific vulnerabilities and strengths"
             ]
         }
     ];
@@ -174,7 +192,6 @@ const AboutMeDetailed = () => {
         currentlyLearning: [
             "Swift & iOS Development",
             "Docker & Kubernetes",
-            "GraphQL & Apollo",
             "Microservices Architecture",
             "System Design Patterns"
         ]

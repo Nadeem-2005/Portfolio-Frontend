@@ -19,7 +19,7 @@ function Hero() {
                     zIndex: -1,
                 }}
             >
-                <Threads amplitude={1} distance={0.4} enableMouseInteraction={true} />
+                <Threads amplitude={1} distance={0.4} enableMouseInteraction={false} />
             </div>
 
             {/* Foreground content */}

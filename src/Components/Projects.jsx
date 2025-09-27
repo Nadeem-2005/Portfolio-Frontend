@@ -1,67 +1,81 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProjectCard from "./ProjectCard";
 import ScrollReveal from "./Animations/ScrollReveal/ScrollReveal";
 import ParticleField from "./Animations/ParticleField/ParticleField";
+import githubService from "../services/githubService";
+import { featuredRepositories, githubUsername, maxRepositories, repositoryConfig } from "../config/featuredRepositories";
 
 gsap.registerPlugin(ScrollTrigger);
 
 function Projects() {
-    const containerRef = useRef(null);
     const cardsRef = useRef([]);
+    const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Sample project data - replace with your actual projects
-    const projects = [
-        {
-            title: "E-Commerce Platform",
-            description: "A full-stack e-commerce solution with user authentication, product management, and payment integration. Built with modern technologies for optimal performance.",
-            techStack: ["React", "Node.js", "Express", "MongoDB", "Stripe"],
-            githubUrl: "https://github.com/yourusername/ecommerce",
-            liveUrl: "https://your-ecommerce-demo.com",
-            imageUrl: "/api/placeholder/400/300"
-        },
-        {
-            title: "Task Management App",
-            description: "A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
-            techStack: ["React", "Firebase", "Tailwind CSS", "Framer Motion"],
-            githubUrl: "https://github.com/yourusername/task-manager",
-            liveUrl: "https://your-task-app-demo.com",
-            imageUrl: "/api/placeholder/400/300"
-        },
-        {
-            title: "Weather Dashboard",
-            description: "A responsive weather application with location-based forecasts, interactive maps, and detailed weather analytics.",
-            techStack: ["JavaScript", "OpenWeather API", "Chart.js", "CSS3"],
-            githubUrl: "https://github.com/yourusername/weather-app",
-            liveUrl: "https://your-weather-demo.com",
-            imageUrl: "/api/placeholder/400/300"
-        },
-        {
-            title: "Social Media Analytics",
-            description: "A comprehensive analytics dashboard for social media metrics with data visualization and automated reporting features.",
-            techStack: ["Python", "Django", "PostgreSQL", "D3.js", "AWS"],
-            githubUrl: "https://github.com/yourusername/social-analytics",
-            imageUrl: "/api/placeholder/400/300"
-        },
-        {
-            title: "Mobile Fitness Tracker",
-            description: "iOS application for fitness tracking with workout plans, progress monitoring, and social features for motivation.",
-            techStack: ["Swift", "Core Data", "HealthKit", "Firebase"],
-            githubUrl: "https://github.com/yourusername/fitness-tracker",
-            imageUrl: "/api/placeholder/400/300"
-        },
-        {
-            title: "AI Chat Application",
-            description: "Real-time chat application with AI integration, sentiment analysis, and smart response suggestions.",
-            techStack: ["Node.js", "Socket.io", "OpenAI API", "React", "Redis"],
-            githubUrl: "https://github.com/yourusername/ai-chat",
-            liveUrl: "https://your-chat-demo.com",
-            imageUrl: "/api/placeholder/400/300"
-        }
-    ];
+    const username = import.meta.env.VITE_GITHUB_USERNAME || githubUsername;
 
     useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+
+                // Fetch specific featured repositories
+                const repositories = await githubService.fetchFeaturedRepositories(
+                    username,
+                    featuredRepositories.slice(0, maxRepositories),
+                    repositoryConfig.fallbackToRecent
+                );
+
+                setProjects(repositories);
+            } catch (err) {
+                console.error('Failed to fetch GitHub repositories:', err);
+                setError('Failed to load projects. Please try again later.');
+
+                // Fallback to placeholder data only if no repositories were found
+                if (repositoryConfig.fallbackToRecent) {
+                    try {
+                        // Last resort: try to fetch recent repositories
+                        const fallbackRepos = await githubService.fetchRepositories(username, maxRepositories);
+                        setProjects(fallbackRepos);
+                        setError(null); // Clear error if fallback succeeds
+                    } catch (fallbackErr) {
+                        console.error('Fallback also failed:', fallbackErr);
+                        // Only show placeholder data if everything fails
+                        setProjects([
+                            {
+                                id: 'placeholder-1',
+                                title: "Portfolio Website",
+                                description: "A modern, responsive portfolio website built with React and advanced animations.",
+                                techStack: ["React", "Tailwind CSS", "Framer Motion", "GSAP"],
+                                githubUrl: `https://github.com/${username}`,
+                                imageUrl: "/api/placeholder/400/300"
+                            },
+                            {
+                                id: 'placeholder-2',
+                                title: "Web Development Projects",
+                                description: "Collection of web development projects showcasing various technologies and frameworks.",
+                                techStack: ["JavaScript", "React", "Node.js", "CSS3"],
+                                githubUrl: `https://github.com/${username}`,
+                                imageUrl: "/api/placeholder/400/300"
+                            }
+                        ]);
+                    }
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProjects();
+    }, [username]);
+
+    useEffect(() => {
+        if (loading || projects.length === 0) return;
+
         const cards = cardsRef.current;
 
         // Animate cards on scroll
@@ -94,7 +108,7 @@ function Projects() {
         return () => {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
-    }, []);
+    }, [loading, projects]);
 
     return (
         <div className="relative min-h-screen text-white p-8 md:p-20" id="Projects">
@@ -121,25 +135,54 @@ function Projects() {
                 </ScrollReveal>
             </div>
 
-            {/* Projects Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                {projects.map((project, index) => (
-                    <div
-                        key={index}
-                        ref={el => cardsRef.current[index] = el}
+            {/* Loading State */}
+            {loading && (
+                <div className="flex justify-center items-center min-h-[400px]">
+                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-400"></div>
+                </div>
+            )}
+
+            {/* Error State */}
+            {error && !loading && (
+                <div className="text-center py-12">
+                    <div className="text-red-400 text-lg mb-4">⚠️ {error}</div>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="px-6 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg transition-colors"
                     >
-                        <ProjectCard
-                            title={project.title}
-                            description={project.description}
-                            techStack={project.techStack}
-                            githubUrl={project.githubUrl}
-                            liveUrl={project.liveUrl}
-                            imageUrl={project.imageUrl}
-                            imageAlt={`${project.title} screenshot`}
-                        />
-                    </div>
-                ))}
-            </div>
+                        Retry
+                    </button>
+                </div>
+            )}
+
+            {/* Projects Grid */}
+            {!loading && !error && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    {projects.map((project, index) => (
+                        <div
+                            key={project.id || index}
+                            ref={el => cardsRef.current[index] = el}
+                        >
+                            <ProjectCard
+                                title={project.title}
+                                description={project.description}
+                                techStack={project.techStack}
+                                githubUrl={project.githubUrl}
+                                liveUrl={project.liveUrl}
+                                imageUrl={project.imageUrl}
+                                imageAlt={`${project.title} screenshot`}
+                            />
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* No Projects State */}
+            {!loading && !error && projects.length === 0 && (
+                <div className="text-center py-12">
+                    <div className="text-gray-400 text-lg">No projects found</div>
+                </div>
+            )}
 
             {/* Bottom Quote */}
             <div className="mt-20 text-center">

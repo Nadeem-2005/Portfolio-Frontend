@@ -59,10 +59,11 @@ function Experience() {
     useEffect(() => {
         const timeline = timelineRef.current;
         const cards = cardsRef.current;
+        const componentTriggers = [];
 
         // Animate timeline line
         if (timeline) {
-            gsap.fromTo(timeline,
+            const timelineAnimation = gsap.fromTo(timeline,
                 {
                     scaleY: 0,
                     transformOrigin: "top center"
@@ -79,13 +80,14 @@ function Experience() {
                     }
                 }
             );
+            componentTriggers.push(timelineAnimation.scrollTrigger);
         }
 
         // Animate experience cards
         cards.forEach((card, index) => {
             if (card) {
                 const isLeft = index % 2 === 0;
-                gsap.fromTo(card,
+                const cardAnimation = gsap.fromTo(card,
                     {
                         x: isLeft ? -100 : 100,
                         opacity: 0,
@@ -106,11 +108,15 @@ function Experience() {
                         delay: index * 0.1
                     }
                 );
+                componentTriggers.push(cardAnimation.scrollTrigger);
             }
         });
 
         return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            // Only kill ScrollTrigger instances created by this component
+            componentTriggers.forEach(trigger => {
+                if (trigger) trigger.kill();
+            });
         };
     }, []);
 

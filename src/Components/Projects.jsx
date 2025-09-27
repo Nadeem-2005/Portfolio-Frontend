@@ -121,11 +121,12 @@ function Projects() {
         if (loading || projects.length === 0) return;
 
         const cards = cardsRef.current;
+        const cardTriggers = [];
 
         // Animate cards on scroll
         cards.forEach((card, index) => {
             if (card) {
-                gsap.fromTo(card,
+                const animation = gsap.fromTo(card,
                     {
                         y: 100,
                         opacity: 0,
@@ -146,11 +147,15 @@ function Projects() {
                         delay: index * 0.1
                     }
                 );
+                cardTriggers.push(animation.scrollTrigger);
             }
         });
 
         return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            // Only kill ScrollTrigger instances for our cards
+            cardTriggers.forEach(trigger => {
+                if (trigger) trigger.kill();
+            });
         };
     }, [loading, projects]);
 

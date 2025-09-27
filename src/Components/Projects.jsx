@@ -23,6 +23,14 @@ function Projects() {
                 setLoading(true);
                 setError(null);
 
+                // Validate environment first
+                try {
+                    githubService.validateEnvironment();
+                } catch (validationError) {
+                    console.warn('Environment validation warning:', validationError.message);
+                    // Continue anyway - might work with fallbacks
+                }
+
                 // Fetch specific featured repositories
                 const repositories = await githubService.fetchFeaturedRepositories(
                     username,
@@ -33,37 +41,73 @@ function Projects() {
                 setProjects(repositories);
             } catch (err) {
                 console.error('Failed to fetch GitHub repositories:', err);
-                setError('Failed to load projects. Please try again later.');
 
-                // Fallback to placeholder data only if no repositories were found
+                // Enhanced error messages based on error type
+                let errorMessage = 'Failed to load projects. Please try again later.';
+
+                if (err.message.includes('token is invalid')) {
+                    errorMessage = 'GitHub token is invalid. Please check the configuration.';
+                } else if (err.message.includes('rate limit')) {
+                    errorMessage = 'GitHub API rate limit exceeded. Please try again in a few minutes.';
+                } else if (err.message.includes('not found')) {
+                    errorMessage = 'Some repositories were not found. Showing available projects.';
+                } else if (err.message.includes('Network error')) {
+                    errorMessage = 'Network error. Please check your internet connection and try again.';
+                }
+
+                setError(errorMessage);
+
+                // Enhanced fallback mechanism
                 if (repositoryConfig.fallbackToRecent) {
                     try {
-                        // Last resort: try to fetch recent repositories
+                        console.log('Attempting fallback to recent repositories...');
                         const fallbackRepos = await githubService.fetchRepositories(username, maxRepositories);
-                        setProjects(fallbackRepos);
-                        setError(null); // Clear error if fallback succeeds
+
+                        if (fallbackRepos && fallbackRepos.length > 0) {
+                            setProjects(fallbackRepos);
+                            setError(null); // Clear error if fallback succeeds
+                            console.log(`Fallback successful: loaded ${fallbackRepos.length} repositories`);
+                        } else {
+                            throw new Error('No repositories found in fallback');
+                        }
                     } catch (fallbackErr) {
                         console.error('Fallback also failed:', fallbackErr);
-                        // Only show placeholder data if everything fails
-                        setProjects([
+
+                        // Enhanced placeholder data with better variety
+                        const placeholderProjects = [
                             {
                                 id: 'placeholder-1',
                                 title: "Portfolio Website",
-                                description: "A modern, responsive portfolio website built with React and advanced animations.",
-                                techStack: ["React", "Tailwind CSS", "Framer Motion", "GSAP"],
+                                description: "A modern, responsive portfolio website built with React and advanced animations using GSAP and Tailwind CSS.",
+                                techStack: ["React", "Tailwind CSS", "GSAP", "JavaScript"],
                                 githubUrl: `https://github.com/${username}`,
-                                imageUrl: "/api/placeholder/400/300"
+                                imageUrl: "https://ui-avatars.com/api/?name=Portfolio+Website&size=400&background=0ea5e9&color=fff&bold=true&format=png"
                             },
                             {
                                 id: 'placeholder-2',
-                                title: "Web Development Projects",
-                                description: "Collection of web development projects showcasing various technologies and frameworks.",
-                                techStack: ["JavaScript", "React", "Node.js", "CSS3"],
+                                title: "Full Stack Web Application",
+                                description: "A complete web application demonstrating modern full-stack development practices with React frontend and Node.js backend.",
+                                techStack: ["React", "Node.js", "Express", "MongoDB"],
                                 githubUrl: `https://github.com/${username}`,
-                                imageUrl: "/api/placeholder/400/300"
+                                imageUrl: "https://ui-avatars.com/api/?name=Full+Stack+App&size=400&background=10b981&color=fff&bold=true&format=png"
+                            },
+                            {
+                                id: 'placeholder-3',
+                                title: "API Development Project",
+                                description: "RESTful API development project showcasing backend development skills with proper authentication and data validation.",
+                                techStack: ["Node.js", "Express", "JWT", "PostgreSQL"],
+                                githubUrl: `https://github.com/${username}`,
+                                imageUrl: "https://ui-avatars.com/api/?name=API+Project&size=400&background=f59e0b&color=fff&bold=true&format=png"
                             }
-                        ]);
+                        ];
+
+                        setProjects(placeholderProjects.slice(0, maxRepositories));
+                        setError('Unable to load GitHub projects. Showing sample projects.');
                     }
+                } else {
+                    // If fallback is disabled, still provide some placeholder content
+                    setProjects([]);
+                    setError('Unable to load projects. Please check your network connection.');
                 }
             } finally {
                 setLoading(false);
@@ -146,12 +190,33 @@ function Projects() {
             {error && !loading && (
                 <div className="text-center py-12">
                     <div className="text-red-400 text-lg mb-4">⚠️ {error}</div>
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="px-6 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg transition-colors"
-                    >
-                        Retry
-                    </button>
+                    {!error.includes('sample projects') && !error.includes('Unable to load GitHub projects') && (
+                        <div className="flex gap-4 justify-center">
+                            <button
+                                onClick={() => {
+                                    setError(null);
+                                    window.location.reload();
+                                }}
+                                className="px-6 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg transition-colors"
+                            >
+                                Retry
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setError(null);
+                                    setProjects([]);
+                                }}
+                                className="px-6 py-3 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors"
+                            >
+                                Dismiss
+                            </button>
+                        </div>
+                    )}
+                    {(error.includes('sample projects') || error.includes('Unable to load GitHub projects')) && (
+                        <div className="text-gray-400 text-sm mt-2">
+                            Showing placeholder content. Check your network connection or GitHub token configuration.
+                        </div>
+                    )}
                 </div>
             )}
 

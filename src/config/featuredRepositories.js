@@ -25,5 +25,5 @@ export const repositoryConfig = {
     excludeForks: true,
 
     // Whether to only show public repositories
-    publicOnly: true
+    publicOnly: false
 };

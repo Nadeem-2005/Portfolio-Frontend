@@ -23,7 +23,7 @@ const ScrollReveal = ({
     return text.split(/(\s+)/).map((word, index) => {
       if (word.match(/^\s+$/)) return word;
       return (
-        <span className="inline-block" key={index}>
+        <span className="inline-block word" key={index}>
           {word}
         </span>
       );
@@ -94,7 +94,13 @@ const ScrollReveal = ({
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      // Only kill ScrollTrigger instances associated with this element
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.trigger === el ||
+            (trigger.vars && trigger.vars.trigger === el)) {
+          trigger.kill();
+        }
+      });
     };
   }, [
     scrollContainerRef,

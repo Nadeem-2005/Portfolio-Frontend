@@ -13,12 +13,13 @@ function Skills() {
 
     useEffect(() => {
         const sections = skillSectionsRef.current;
+        const sectionTriggers = [];
 
         sections.forEach((section) => {
             if (section) {
                 const cards = section.querySelectorAll('.skill-card');
 
-                gsap.fromTo(cards,
+                const sectionAnimation = gsap.fromTo(cards,
                     {
                         y: 50,
                         opacity: 0,
@@ -39,11 +40,15 @@ function Skills() {
                         }
                     }
                 );
+                sectionTriggers.push(sectionAnimation.scrollTrigger);
             }
         });
 
         return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            // Only kill ScrollTrigger instances created by this component
+            sectionTriggers.forEach(trigger => {
+                if (trigger) trigger.kill();
+            });
         };
     }, []);
 

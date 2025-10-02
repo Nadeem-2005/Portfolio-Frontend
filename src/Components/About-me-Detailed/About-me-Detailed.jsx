@@ -49,7 +49,14 @@ const AboutMeDetailed = () => {
             issuer: "Anthropic INC.",
             date: "2025",
             description: "Learnt Basics of Model-Context-Protocol",
-            ValidationLink: "https://cc.sj-cdn.net/certificate/47ajyxsragmw/certificate-5ijxo2rpmz5o-1757266456.pdf?response-content-disposition=attachment&Expires=1758826442&Signature=s~GHIu0mg8Fngzth2qQPWydftmuWnIpB0A7QRXs1FFr7lX0zm1hukZPdWE75Xi1wopwUxKoo6pw-ev5aZ-3le36gexaMt0U~sBNi4Ctxm-m5w10s6jC57iO1eSBfFv5xgG1zgRjQqLMMaEx8wPSz2PEByGyd4Z6C1MqtCS0Gih4GcnSd6WgeDij~2hgn7~ypt6CjbIz7X4zg~YjCegX6KYUzBl~xi3sQHSjgtcIlQJquSyFGIhzYRl2~a58VnlQU7kD0ShfkKm3gJAfu7cle4GR-oRtI5pcbeSf7yCHzl1P4r4vi0g8KFmsC8pXsSQ8dc3eVCKYvsozJjsgbn80seQ__&Key-Pair-Id=APKAI3B7HFD2VYJQK4MQ"
+            ValidationLink: "https://verify.skilljar.com/c/5ijxo2rpmz5o"
+        },
+        {
+            title: "Model Context Protocol: Advanced Topics",
+            issuer: "Anthropic INC.",
+            date: "2025",
+            description: "Learnt Advanced topics and features of Model-Context-Protocol",
+            ValidationLink: "https://verify.skilljar.com/c/nkrh9stbw27u"
         }
     ];
 

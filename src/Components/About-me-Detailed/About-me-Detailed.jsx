@@ -57,6 +57,13 @@ const AboutMeDetailed = () => {
             date: "2025",
             description: "Learnt Advanced topics and features of Model-Context-Protocol",
             ValidationLink: "https://verify.skilljar.com/c/nkrh9stbw27u"
+        },
+        {
+            title: "Prompt Engineering with ChatGPT",
+            issuer: "Great Learning",
+            date: "2025",
+            description: "Learnt basics and advanced concepts of Prompt Engineering and its applications",
+            // ValidationLink: "https://verify.skilljar.com/c/nkrh9stbw27u"
         }
     ];
 
@@ -471,7 +478,10 @@ const AboutMeDetailed = () => {
                                 <p className="text-gray-300 mb-3">{cert.description}</p>
 
                                 <div className="text-xs text-gray-500">
-                                    <a href={cert.ValidationLink} target="new">Validation Link</a>
+                                    {
+                                        cert.ValidationLink ? (<a href={cert.ValidationLink} target="new">Validation Link</a>) : (<div></div>)
+                                    }
+
                                 </div>
                             </DetailCard>
                         ))}

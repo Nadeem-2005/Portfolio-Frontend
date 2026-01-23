@@ -13,9 +13,23 @@ function Experience() {
     // Sample experience data - replace with your actual experience
     const experiences = [
         {
+            company: "Jar",
+            role: "Backend Engineering Intern",
+            duration: "2026 - Upcoming",
+            location: "Bangalore, India",
+            description: "Will be contributing to large-scale enterprise projects, enhancing full stack applications, and collaborating with cross-functional teams to deliver scalable solutions.",
+            achievements: [
+                "Selected as an backend intern at Jar",
+                "Will get to experience working with cutting-edge backend technologies",
+                "Will work on projects involving large-scale distributed systems"
+            ],
+            technologies: ["React", "Next.js", "Node.js", "Java", "Cloud Technologies"],
+            languages: ["JavaScript", "TypeScript", "Java", "SQL"]
+        },
+        {
             company: "Verizon",
-            role: "Incoming Software Developer Intern",
-            duration: "2025 - Upcoming",
+            role: "Incoming Software Developer Engineer",
+            duration: "2026 - Upcoming",
             location: "Chennai, India",
             description: "Will be contributing to large-scale enterprise projects, enhancing full stack applications, and collaborating with cross-functional teams to deliver scalable solutions.",
             achievements: [

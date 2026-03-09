@@ -1,5 +1,30 @@
 @import "tailwindcss";
 
+/* ============ TAILWIND 4 THEME ============ */
+@theme {
+  --color-bg:        #0A0908;
+  --color-bg-2:      #100F0E;
+  --color-bg-3:      #161412;
+  --color-surface:   #1E1C1A;
+  --color-surface-2: #252220;
+  --color-cream:     #F0EBE0;
+  --color-cream-dim: rgba(240,235,224,0.55);
+  --color-cream-faint: rgba(240,235,224,0.1);
+  --color-gold:      #C9A35E;
+  --color-gold-glow: rgba(201,163,94,0.18);
+  --color-gold-dim:  rgba(201,163,94,0.4);
+  --color-sage:      #6E9E78;
+  --color-sage-glow: rgba(110,158,120,0.18);
+  --color-terra:     #B8735A;
+  --color-terra-glow: rgba(184,115,90,0.18);
+  --color-sky:       #7BA8C4;
+  --color-border:    rgba(240,235,224,0.08);
+  --color-border-2:  rgba(240,235,224,0.14);
+  --font-family-display: 'Cormorant Garamond', Georgia, serif;
+  --font-family-body:    'DM Sans', system-ui, sans-serif;
+  --font-family-mono:    'Space Mono', monospace;
+}
+
 /* ============================================
    DESIGN SYSTEM — NADEEM PORTFOLIO
    Warm Editorial · Art-Meets-Engineering
@@ -362,4 +387,48 @@ body::after {
   border-radius: 50%;
   filter: blur(80px);
   pointer-events: none;
+}
+
+/* ============ FOCUS VISIBLE ============ */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+/* ============ TOUCH DEVICES ============ */
+@media (pointer: coarse) {
+  *, *::before, *::after { cursor: auto !important; }
+  .cursor-dot, .cursor-ring { display: none !important; }
+}
+
+/* ============ REDUCED MOTION ============ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============ SKIP TO CONTENT ============ */
+.skip-to-content {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 100000;
+  padding: 0.75rem 1.5rem;
+  background: var(--gold);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 0 0 4px 4px;
+  transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+  top: 0;
 }

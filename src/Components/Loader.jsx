@@ -350,7 +350,7 @@ export default function Loader({ onComplete, geoRef }) {
             style={{
               position:        "absolute",
               inset:           0,
-              background:      "var(--gold)",
+              background:      "var(--cream)",
               transformOrigin: "left center",
               transform:       "scaleX(0)",
             }}

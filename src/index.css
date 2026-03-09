@@ -2,17 +2,14 @@
 
 /* ============ TAILWIND 4 THEME ============ */
 @theme {
-  --color-bg:        #0A0908;
-  --color-bg-2:      #100F0E;
-  --color-bg-3:      #161412;
-  --color-surface:   #1E1C1A;
-  --color-surface-2: #252220;
+  --color-bg:        #000000;
+  --color-bg-2:      #050505;
+  --color-bg-3:      #0A0A0A;
+  --color-surface:   #111111;
+  --color-surface-2: #181818;
   --color-cream:     #F0EBE0;
   --color-cream-dim: rgba(240,235,224,0.55);
   --color-cream-faint: rgba(240,235,224,0.1);
-  --color-gold:      #C9A35E;
-  --color-gold-glow: rgba(201,163,94,0.18);
-  --color-gold-dim:  rgba(201,163,94,0.4);
   --color-sage:      #6E9E78;
   --color-sage-glow: rgba(110,158,120,0.18);
   --color-terra:     #B8735A;
@@ -25,18 +22,14 @@
   --font-family-mono:    'Space Mono', monospace;
 }
 
-/* ============================================
-   DESIGN SYSTEM — NADEEM PORTFOLIO
-   Warm Editorial · Art-Meets-Engineering
-   ============================================ */
 
 :root {
-  /* Backgrounds — warm dark */
-  --bg:        #0A0908;
-  --bg-2:      #100F0E;
-  --bg-3:      #161412;
-  --surface:   #1E1C1A;
-  --surface-2: #252220;
+  /* Backgrounds — pitch black */
+  --bg:        #000000;
+  --bg-2:      #050505;
+  --bg-3:      #0A0A0A;
+  --surface:   #111111;
+  --surface-2: #181818;
 
   /* Borders */
   --border:    rgba(240,235,224,0.08);
@@ -47,11 +40,7 @@
   --cream-dim: rgba(240,235,224,0.55);
   --cream-faint: rgba(240,235,224,0.1);
 
-  /* Accent palette — jewel tones */
-  --gold:      #C9A35E;          /* warm amber gold  */
-  --gold-glow: rgba(201,163,94,0.18);
-  --gold-dim:  rgba(201,163,94,0.4);
-
+  /* Accent palette */
   --sage:      #6E9E78;          /* muted sage green */
   --sage-glow: rgba(110,158,120,0.18);
 
@@ -105,10 +94,10 @@ body::after {
 /* ============ SCROLLBAR ============ */
 ::-webkit-scrollbar { width: 1px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+::-webkit-scrollbar-thumb { background: var(--cream-dim); }
 
 /* ============ SELECTION ============ */
-::selection { background: var(--gold); color: var(--bg); }
+::selection { background: var(--cream); color: var(--bg); }
 
 /* ============ CUSTOM CURSOR ============ */
 .cursor-dot {
@@ -140,8 +129,8 @@ body::after {
 
 .cursor-ring.hovered {
   width: 56px; height: 56px;
-  border-color: var(--gold);
-  background: var(--gold-glow);
+  border-color: var(--cream);
+  background: var(--cream-faint);
 }
 
 /* ============ LOADER ============ */
@@ -175,7 +164,7 @@ body::after {
   font-size: 0.65rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--cream-dim);
   margin-bottom: 2rem;
   display: flex;
   align-items: center;
@@ -186,7 +175,7 @@ body::after {
   content: '';
   display: block;
   width: 1.5rem; height: 1px;
-  background: var(--gold);
+  background: var(--cream-dim);
 }
 
 /* ============ HERO ============ */
@@ -275,12 +264,12 @@ body::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--gold-glow);
+  background: var(--cream-faint);
   transform: translateX(-101%);
   transition: transform 0.4s var(--ease-expo);
 }
 
-.skill-chip:hover { border-color: var(--gold-dim); color: var(--cream); }
+.skill-chip:hover { border-color: var(--border-2); color: var(--cream); }
 .skill-chip:hover::before { transform: translateX(0); }
 
 /* ============ PROJECT CARD ============ */
@@ -296,13 +285,13 @@ body::after {
   flex-shrink: 0;
 }
 
-.proj-card:hover { border-color: var(--gold-dim); }
+.proj-card:hover { border-color: var(--border-2); }
 
 .proj-card-inner {
   position: absolute;
   bottom: 0; left: 0; right: 0;
   padding: 2rem;
-  background: linear-gradient(to top, rgba(10,9,8,0.97) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(0,0,0,0.97) 0%, transparent 100%);
   padding-top: 6rem;
 }
 
@@ -316,7 +305,7 @@ body::after {
 }
 
 .exp-card:hover {
-  border-color: var(--gold-dim);
+  border-color: var(--border-2);
   transform: translateX(6px);
 }
 
@@ -334,7 +323,7 @@ body::after {
   transition: border-color 0.3s ease;
 }
 
-.contact-input:focus { border-color: var(--gold); }
+.contact-input:focus { border-color: var(--cream); }
 .contact-input::placeholder { color: var(--cream-dim); }
 
 /* ============ CONTACT BTN ============ */
@@ -391,7 +380,7 @@ body::after {
 
 /* ============ FOCUS VISIBLE ============ */
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--cream);
   outline-offset: 4px;
 }
 
@@ -418,7 +407,7 @@ body::after {
   left: 1rem;
   z-index: 100000;
   padding: 0.75rem 1.5rem;
-  background: var(--gold);
+  background: var(--cream);
   color: var(--bg);
   font-family: var(--font-mono);
   font-size: 0.75rem;

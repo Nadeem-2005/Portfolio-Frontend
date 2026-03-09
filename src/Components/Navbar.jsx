@@ -1,94 +1,113 @@
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 
-function smoothScroll(e, targetId) {
-    e.preventDefault(); // Prevent the default anchor behavior
-    const target = document.getElementById(targetId);
-    target?.scrollIntoView({ behavior: 'smooth' });
-}
+const navItems = [
+  { href: "#about",      label: "About"      },
+  { href: "#identity",   label: "Identity"   },
+  { href: "#skills",     label: "Skills"     },
+  { href: "#projects",   label: "Projects"   },
+  { href: "#experience", label: "Experience" },
+  { href: "#contact",    label: "Contact"    },
+];
 
-function Navbar() {
-    return (
-        <>
-            <div className="flex flex-row justify-between items-center text-white p-5 m-4 text-4xl tangerine-bold">
-                <div className="text-6xl changa mb-4 md:mb-0">
-                    <h1>نديم</h1>
-                </div>
-                <ul className="flex flex-row md:flex-row justify-between items-center gap-2 md:gap-4">
-                    <li>
-                        <a
-                            href="/Resume_updated.pdf"
-                            download
-                            className="hover:text-gray-300 transition-colors duration-200"
-                            title="Download my Resume"
-                        >
-                            <img src="/resume.svg" alt="Resume icon" className="w-10 h-10 md:w-12 md:h-12" />
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#about"
-                            className="hover:text-white transition-colors duration-200"
-                            title="About section"
-                            onClick={(e) => smoothScroll(e, "about")}
-                        >
-                            <img src="/about.svg" alt="about icon" className="w-10 h-10 md:w-12 md:h-12" />
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#Skill"
-                            className="hover:text-white transition-colors duration-200"
-                            title="Skills section"
-                            onClick={(e) => smoothScroll(e, "Skill")}
-                        >
-                            <img src="/skill.svg" alt="skill icon" className="w-10 h-10 md:w-12 md:h-12" />
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#Projects"
-                            className="hover:text-white transition-colors duration-200"
-                            title="My Projects"
-                            onClick={(e) => smoothScroll(e, "Projects")}
-                        >
-                            <svg width="40" height="40" className="md:w-12 md:h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                                <line x1="8" y1="21" x2="16" y2="21"/>
-                                <line x1="12" y1="17" x2="12" y2="21"/>
-                                <circle cx="7" cy="8" r="1"/>
-                                <circle cx="12" cy="8" r="1"/>
-                                <circle cx="17" cy="8" r="1"/>
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#Experience"
-                            className="hover:text-white transition-colors duration-200"
-                            title="My Experience"
-                            onClick={(e) => smoothScroll(e, "Experience")}
-                        >
-                            <svg width="40" height="40" className="md:w-12 md:h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-                                <circle cx="8" cy="11" r="2"/>
-                                <path d="M12 11h4"/>
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#Contact"
-                            className="hover:text-white transition-colors duration-200"
-                            title="Let's Connect"
-                            onClick={(e) => smoothScroll(e, "Contact")}
-                        >
-                            <img src="/email-svgrepo-com.svg" alt="contact me icon" className="w-12 h-12 md:w-16 md:h-16" />
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </>
+export default function Navbar({ visible = true }) {
+  const navRef = useRef(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!visible) return;
+    gsap.fromTo(navRef.current,
+      { y: -20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.1, ease: "power3.out", delay: 0.3 }
     );
-}
+  }, [visible]);
 
-export default Navbar;
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const handleNav = (e, href) => {
+    e.preventDefault();
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <nav ref={navRef} style={{
+      position: "fixed",
+      top: 0, left: 0, right: 0,
+      zIndex: 1000,
+      padding: "1.75rem 3rem",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      opacity: 0,
+      background: scrolled ? "rgba(10,9,8,0.88)" : "transparent",
+      backdropFilter: scrolled ? "blur(24px)" : "none",
+      borderBottom: scrolled ? "1px solid var(--border)" : "none",
+      transition: "background 0.5s ease, backdrop-filter 0.5s ease, border 0.5s ease",
+    }}>
+      {/* Logo */}
+      <span style={{
+        fontFamily: "var(--font-display)",
+        fontStyle: "italic",
+        fontWeight: 300,
+        fontSize: "1.4rem",
+        letterSpacing: "0.04em",
+        color: "var(--cream)",
+      }}>
+        Nadeem
+      </span>
+
+      {/* Links */}
+      <ul style={{ display: "flex", alignItems: "center", gap: "2.5rem", listStyle: "none" }}>
+        {navItems.map(item => (
+          <li key={item.href}>
+            <a
+              href={item.href}
+              onClick={e => handleNav(e, item.href)}
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.65rem",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "var(--cream)",
+                textDecoration: "none",
+                opacity: 0.6,
+                transition: "opacity 0.3s ease",
+              }}
+              onMouseEnter={e => e.currentTarget.style.opacity = "1"}
+              onMouseLeave={e => e.currentTarget.style.opacity = "0.6"}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href="https://nadeemresume.blob.core.windows.net/$web/Resume-Mohammed-Nadeem.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.65rem",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              padding: "0.45rem 1.1rem",
+              border: "1px solid rgba(240,235,224,0.25)",
+              color: "var(--cream)",
+              textDecoration: "none",
+              borderRadius: "2px",
+              transition: "all 0.35s ease",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = "var(--cream)"; e.currentTarget.style.color = "var(--bg)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--cream)"; }}
+          >
+            Résumé
+          </a>
+        </li>
+      </ul>
+    </nav>
+  );
+}

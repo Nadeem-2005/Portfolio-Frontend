@@ -1,35 +1,365 @@
 @import "tailwindcss";
 
-html {
-  scroll-behavior: smooth;
+/* ============================================
+   DESIGN SYSTEM — NADEEM PORTFOLIO
+   Warm Editorial · Art-Meets-Engineering
+   ============================================ */
+
+:root {
+  /* Backgrounds — warm dark */
+  --bg:        #0A0908;
+  --bg-2:      #100F0E;
+  --bg-3:      #161412;
+  --surface:   #1E1C1A;
+  --surface-2: #252220;
+
+  /* Borders */
+  --border:    rgba(240,235,224,0.08);
+  --border-2:  rgba(240,235,224,0.14);
+
+  /* Text */
+  --cream:     #F0EBE0;
+  --cream-dim: rgba(240,235,224,0.55);
+  --cream-faint: rgba(240,235,224,0.1);
+
+  /* Accent palette — jewel tones */
+  --gold:      #C9A35E;          /* warm amber gold  */
+  --gold-glow: rgba(201,163,94,0.18);
+  --gold-dim:  rgba(201,163,94,0.4);
+
+  --sage:      #6E9E78;          /* muted sage green */
+  --sage-glow: rgba(110,158,120,0.18);
+
+  --terra:     #B8735A;          /* terracotta       */
+  --terra-glow: rgba(184,115,90,0.18);
+
+  --sky:       #7BA8C4;          /* dusty blue       */
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --font-mono:    'Space Mono', monospace;
+
+  /* Easing */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.87, 0, 0.13, 1);
 }
 
-body {
-  background-color: black;
+/* ============ BASE ============ */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-.tangerine-bold {
-  font-family: "Tangerine", cursive;
-  font-weight: 700;
-  font-style: normal;
+html { scroll-behavior: auto; }
+
+body {
+  background-color: var(--bg);
+  color: var(--cream);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
 }
 
-.space-grotesk {
-  font-family: "Space Grotesk", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
+*, *::before, *::after { cursor: none !important; }
+
+/* ============ FILM GRAIN ============ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px;
 }
 
-.changa {
-  font-family: "Changa", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: normal;
+/* ============ SCROLLBAR ============ */
+::-webkit-scrollbar { width: 1px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+
+/* ============ SELECTION ============ */
+::selection { background: var(--gold); color: var(--bg); }
+
+/* ============ CUSTOM CURSOR ============ */
+.cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--cream);
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  mix-blend-mode: difference;
 }
 
-input{
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(240,235,224,0.35);
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s var(--ease-expo), height 0.4s var(--ease-expo),
+              border-color 0.3s ease, background 0.3s ease;
+  will-change: transform;
+}
+
+.cursor-ring.hovered {
+  width: 56px; height: 56px;
+  border-color: var(--gold);
+  background: var(--gold-glow);
+}
+
+/* ============ LOADER ============ */
+/* Dark overlay (z:99996) sits BELOW <GeometricLines> (z:99997) so
+   the thin architectural lines are visible during the loading sequence. */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99996;
+}
+
+/* ============ NAVBAR ============ */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 1.75rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ============ SECTIONS ============ */
+.section {
+  padding: 9rem 3rem;
+  position: relative;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.section-label::before {
+  content: '';
+  display: block;
+  width: 1.5rem; height: 1px;
+  background: var(--gold);
+}
+
+/* ============ HERO ============ */
+.hero-display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 0.9;
+  color: var(--cream);
+}
+
+.hero-display-italic {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 0.9;
+  color: var(--cream);
+}
+
+/* ============ IDENTITY PANEL ============ */
+.id-panel {
+  flex: 1;
+  padding: 3rem;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  position: relative;
+  transition: flex 0.9s var(--ease-expo);
+  min-height: 60vh;
+}
+
+.id-panel:last-child { border-right: none; }
+.id-panel:hover { flex: 1.5; }
+
+.id-panel-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+
+.id-panel:hover .id-panel-glow { opacity: 1; }
+
+.id-panel-desc {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.45s ease 0.1s, transform 0.45s ease 0.1s;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--cream-dim);
+  max-width: 280px;
+  margin-top: 1rem;
+}
+
+.id-panel:hover .id-panel-desc { opacity: 1; transform: translateY(0); }
+
+.id-panel-kws {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  opacity: 0;
+  transition: opacity 0.4s ease 0.2s;
+}
+
+.id-panel:hover .id-panel-kws { opacity: 1; }
+
+/* ============ SKILL CHIP ============ */
+.skill-chip {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--border);
+  color: var(--cream-dim);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.35s ease, color 0.35s ease;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+
+.skill-chip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold-glow);
+  transform: translateX(-101%);
+  transition: transform 0.4s var(--ease-expo);
+}
+
+.skill-chip:hover { border-color: var(--gold-dim); color: var(--cream); }
+.skill-chip:hover::before { transform: translateX(0); }
+
+/* ============ PROJECT CARD ============ */
+.proj-card {
+  position: relative;
+  min-width: min(480px, 85vw);
+  height: 340px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg-2);
+  border-radius: 4px;
+  transition: border-color 0.35s ease;
+  flex-shrink: 0;
+}
+
+.proj-card:hover { border-color: var(--gold-dim); }
+
+.proj-card-inner {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 2rem;
+  background: linear-gradient(to top, rgba(10,9,8,0.97) 0%, transparent 100%);
+  padding-top: 6rem;
+}
+
+/* ============ EXP CARD ============ */
+.exp-card {
+  padding: 2.25rem 2.5rem;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  border-radius: 4px;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.exp-card:hover {
+  border-color: var(--gold-dim);
+  transform: translateX(6px);
+}
+
+/* ============ CONTACT INPUT ============ */
+.contact-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-2);
+  padding: 1rem 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--cream);
   width: 100%;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.contact-input:focus { border-color: var(--gold); }
+.contact-input::placeholder { color: var(--cream-dim); }
+
+/* ============ CONTACT BTN ============ */
+.cta-btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 1rem 2.5rem;
+  border: 1px solid var(--cream-dim);
+  color: var(--cream);
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.4s ease;
+  border-radius: 2px;
+}
+
+.cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--cream);
+  transform: translateY(101%);
+  transition: transform 0.4s var(--ease-expo);
+}
+
+.cta-btn:hover { color: var(--bg); }
+.cta-btn:hover::before { transform: translateY(0); }
+.cta-btn span { position: relative; z-index: 1; }
+
+/* ============ MARQUEE ============ */
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ============ SCROLL LINE (hero) ============ */
+@keyframes scrollLine {
+  0%, 100% { transform: scaleY(0) translateY(0); transform-origin: top; }
+  50%       { transform: scaleY(1) translateY(0); transform-origin: top; }
+}
+
+/* ============ DIVIDER ============ */
+.divider { width: 100%; height: 1px; background: var(--border); }
+
+/* ============ ABSTRACT GRADIENT ============ */
+.grad-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
 }

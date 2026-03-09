@@ -1,213 +1,145 @@
-import { useRef, useEffect } from "react";
-import { gsap } from "gsap";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ExperienceCard from "./ExperienceCard";
-import ScrollReveal from "./Animations/ScrollReveal/ScrollReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function Experience() {
-    const timelineRef = useRef(null);
-    const cardsRef = useRef([]);
+const experiences = [
+  {
+    company: "Jar",
+    role: "Backend Engineering Intern",
+    duration: "2026 — Upcoming",
+    location: "Bangalore, India",
+    desc: "Joining the fintech infrastructure team to work on distributed backend systems — the kind of problems that demand precision at scale.",
+    tags: ["Java", "Node.js", "Distributed Systems", "Cloud"],
+    status: "upcoming",
+    accent: "var(--gold)",
+  },
+  {
+    company: "Verizon",
+    role: "Software Developer Engineer",
+    duration: "2026 — Upcoming",
+    location: "Chennai, India",
+    desc: "Incoming role at one of the world's largest telecom operators — building enterprise-grade software that serves millions.",
+    tags: ["Java", "React", "Cloud", "Enterprise"],
+    status: "upcoming",
+    accent: "var(--sage)",
+  },
+  {
+    company: "Adappt Mobile Cloud",
+    role: "Software Developer Intern",
+    duration: "May 2025 — Jun 2025",
+    location: "Pondicherry, India",
+    desc: "Redesigned the job-processing pipeline for a healthcare platform using Redis + BullMQ. Delivered measurable performance gains in a real production environment.",
+    tags: ["Redis", "BullMQ", "Node.js", "PostgreSQL"],
+    status: "completed",
+    accent: "var(--terra)",
+  },
+  {
+    company: "Freelance & Personal",
+    role: "Full Stack & iOS Developer",
+    duration: "2023 — Present",
+    location: "Remote",
+    desc: "Shipped three production-grade products: CliniCall (healthcare), Connect+ (video conferencing), and The Climate (iOS). Each one pushed me further.",
+    tags: ["Next.js", "Swift", "Firebase", "Prisma"],
+    status: "ongoing",
+    accent: "var(--sky)",
+  },
+];
 
-    // Sample experience data - replace with your actual experience
-    const experiences = [
-        {
-            company: "Jar",
-            role: "Backend Engineering Intern",
-            duration: "2026 - Upcoming",
-            location: "Bangalore, India",
-            description: "Will be contributing to large-scale enterprise projects, enhancing full stack applications, and collaborating with cross-functional teams to deliver scalable solutions.",
-            achievements: [
-                "Selected as an backend intern at Jar",
-                "Will get to experience working with cutting-edge backend technologies",
-                "Will work on projects involving large-scale distributed systems"
-            ],
-            technologies: ["React", "Next.js", "Node.js", "Java", "Cloud Technologies"],
-            languages: ["JavaScript", "TypeScript", "Java", "SQL"]
-        },
-        {
-            company: "Verizon",
-            role: "Incoming Software Developer Engineer",
-            duration: "2026 - Upcoming",
-            location: "Chennai, India",
-            description: "Will be contributing to large-scale enterprise projects, enhancing full stack applications, and collaborating with cross-functional teams to deliver scalable solutions.",
-            achievements: [
-                "Selected as an incoming developer at Verizon",
-                "Will gain exposure to telecom-grade software systems",
-                "Will work on projects involving large-scale distributed systems"
-            ],
-            technologies: ["React", "Node.js", "Java", "Cloud Technologies"],
-            languages: ["JavaScript", "TypeScript", "Java", "SQL"]
-        },
-        {
-            company: "Adappt Mobile Cloud Applications Pvt Ltd",
-            role: "Software Developer Intern",
-            duration: "May 2025 - June 2025",
-            location: "Pondicherry, India",
-            description: "Contributed to enterprise-level healthcare management systems, optimizing performance and deployment pipelines.",
-            achievements: [
-                "Implemented Redis caching and background job processing",
-                "Delivered measurable performance improvements in production",
-                "Gained hands-on experience with scalable architecture and code review processes"
-            ],
-            technologies: ["Redis", "Node.js", "React", "PostgreSQL", "Real-time Communication"],
-            languages: ["JavaScript", "TypeScript", "SQL"]
-        },
-        {
-            company: "Freelance / Personal Projects",
-            role: "Full Stack & iOS Developer",
-            duration: "2023 - Present",
-            location: "Remote",
-            description: "Developed multiple full stack and mobile applications, focusing on healthcare, video conferencing, and climate monitoring solutions.",
-            achievements: [
-                "Built CliniCall, a production-grade healthcare platform with Redis caching and BullMQ job queues",
-                "Created Connect+, a video conferencing web app with Clerk Auth, Firebase, and Stream SDK",
-                "Developed The Climate, an iOS app with Core Location and OpenWeather API achieving 92%+ data accuracy"
-            ],
-            technologies: ["Next.js", "React", "Node.js", "Firebase", "Prisma", "Swift-Core Location", "Tailwind CSS"],
-            languages: ["JavaScript", "TypeScript", "Swift", "Objective-C", "SQL"]
-        },
-    ];
+const statusLabel = { upcoming: "Upcoming", completed: "Completed", ongoing: "Ongoing" };
 
-    useEffect(() => {
-        const timeline = timelineRef.current;
-        const cards = cardsRef.current;
-        const componentTriggers = [];
+export default function Experience() {
+  const titleRef = useRef(null);
+  const lineRef  = useRef(null);
+  const cardsRef = useRef([]);
 
-        // Animate timeline line
-        if (timeline) {
-            const timelineAnimation = gsap.fromTo(timeline,
-                {
-                    scaleY: 0,
-                    transformOrigin: "top center"
-                },
-                {
-                    scaleY: 1,
-                    duration: 1.5,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: timeline,
-                        start: "top 80%",
-                        end: "bottom 20%",
-                        scrub: 1
-                    }
-                }
-            );
-            componentTriggers.push(timelineAnimation.scrollTrigger);
-        }
-
-        // Animate experience cards
-        cards.forEach((card, index) => {
-            if (card) {
-                const isLeft = index % 2 === 0;
-                const cardAnimation = gsap.fromTo(card,
-                    {
-                        x: isLeft ? -100 : 100,
-                        opacity: 0,
-                        scale: 0.8
-                    },
-                    {
-                        x: 0,
-                        opacity: 1,
-                        scale: 1,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: card,
-                            start: "top 85%",
-                            end: "bottom 15%",
-                            toggleActions: "play none none reverse"
-                        },
-                        delay: index * 0.1
-                    }
-                );
-                componentTriggers.push(cardAnimation.scrollTrigger);
-            }
-        });
-
-        return () => {
-            // Only kill ScrollTrigger instances created by this component
-            componentTriggers.forEach(trigger => {
-                if (trigger) trigger.kill();
-            });
-        };
-    }, []);
-
-    return (
-        <div className="relative min-h-screen text-white p-8 md:p-20" id="Experience">
-            {/* Section Header */}
-            <div className="text-center mb-16">
-                <ScrollReveal
-                    baseOpacity={1}
-                    enableBlur={true}
-                    baseRotation={3}
-                    blurStrength={10}
-                    textClassName="text-center"
-                    wordAnimationEnd="bottom bottom"
-                >
-                    "Experience is the teacher of all things — and code is no exception."
-                </ScrollReveal>
-            </div>
-
-            {/* Timeline Container */}
-            <div className="relative max-w-6xl mx-auto">
-                {/* Timeline Line */}
-                <div
-                    ref={timelineRef}
-                    className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-white via-gray-100 to-white hidden md:block"
-                    style={{
-                        height: '100%',
-                        boxShadow: '0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6), 0 0 60px rgba(255, 255, 255, 0.4)'
-                    }}
-                >
-                    <div className="absolute inset-0 bg-white blur-md opacity-80" />
-                    <div className="absolute -inset-2 bg-white blur-xl opacity-40" />
-                </div>
-
-                {/* Experience Cards */}
-                <div className="space-y-12 md:space-y-16">
-                    {experiences.map((experience, index) => {
-                        const isLeft = index % 2 === 0;
-                        return (
-                            <div
-                                key={index}
-                                ref={el => cardsRef.current[index] = el}
-                                className={`flex ${isLeft ? 'md:justify-start' : 'md:justify-end'}`}
-                            >
-                                <div className={`w-full ${isLeft ? 'md:w-5/12' : 'md:w-5/12'}`}>
-                                    <ExperienceCard
-                                        company={experience.company}
-                                        role={experience.role}
-                                        duration={experience.duration}
-                                        location={experience.location}
-                                        description={experience.description}
-                                        achievements={experience.achievements}
-                                        technologies={experience.technologies}
-                                        languages={experience.languages}
-                                        isLeft={isLeft}
-                                    />
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
-
-            {/* Bottom Quote */}
-            <div className="mt-20 text-center">
-                <ScrollReveal
-                    baseOpacity={0.8}
-                    enableBlur={false}
-                    baseRotation={1}
-                    textClassName="text-center"
-                    wordAnimationEnd="bottom bottom"
-                >
-                    "Every challenge faced is a skill earned, every problem solved is wisdom gained."
-                </ScrollReveal>
-            </div>
-        </div>
+  useEffect(() => {
+    gsap.fromTo(titleRef.current,
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 1.1, ease: "power4.out", scrollTrigger: { trigger: titleRef.current, start: "top 82%" } }
     );
-}
+    gsap.fromTo(lineRef.current,
+      { scaleY: 0, transformOrigin: "top" },
+      { scaleY: 1, duration: 2, ease: "power2.out", scrollTrigger: { trigger: lineRef.current, start: "top 80%", end: "bottom 20%", scrub: 1 } }
+    );
+    cardsRef.current.forEach((el, i) => {
+      if (!el) return;
+      gsap.fromTo(el,
+        { opacity: 0, x: -24 },
+        { opacity: 1, x: 0, duration: 0.9, ease: "power3.out", delay: i * 0.07, scrollTrigger: { trigger: el, start: "top 88%" } }
+      );
+    });
+  }, []);
 
-export default Experience;
+  return (
+    <section id="experience" style={{ position: "relative", borderTop: "1px solid var(--border)", padding: "8rem 3rem" }}>
+      {/* Header */}
+      <div className="section-label">Journey</div>
+      <div ref={titleRef} style={{ opacity: 0, marginBottom: "6rem" }}>
+        <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 300, fontSize: "clamp(3rem, 9vw, 9rem)", lineHeight: 0.88, color: "var(--cream)", letterSpacing: "-0.01em" }}>
+          The road
+        </h2>
+        <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 300, fontStyle: "italic", fontSize: "clamp(3rem, 9vw, 9rem)", lineHeight: 0.88, WebkitTextStroke: "1px rgba(240,235,224,0.2)", color: "transparent", letterSpacing: "-0.01em" }}>
+          so far.
+        </h2>
+      </div>
+
+      {/* Timeline */}
+      <div style={{ position: "relative", maxWidth: "860px" }}>
+        <div ref={lineRef} style={{
+          position: "absolute", left: 0, top: 0, bottom: 0, width: "1px",
+          background: "linear-gradient(to bottom, var(--gold), rgba(201,163,94,0.05))",
+        }} />
+
+        <div style={{ paddingLeft: "3rem", display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+          {experiences.map((exp, i) => (
+            <div key={i} ref={el => cardsRef.current[i] = el} style={{ position: "relative", opacity: 0 }}>
+              {/* Timeline dot */}
+              <div style={{
+                position: "absolute", left: "-3.37rem", top: "2rem",
+                width: "7px", height: "7px", borderRadius: "50%",
+                background: exp.accent,
+                boxShadow: `0 0 12px ${exp.accent}`,
+              }} />
+
+              <div
+                className="exp-card"
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--gold-dim)"; e.currentTarget.style.transform = "translateX(6px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.transform = "translateX(0)"; }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "0.85rem" }}>
+                  <div>
+                    <div style={{ fontFamily: "var(--font-display)", fontWeight: 300, fontStyle: "italic", fontSize: "1.8rem", lineHeight: 1, color: "var(--cream)", marginBottom: "0.2rem" }}>
+                      {exp.role}
+                    </div>
+                    <div style={{ fontFamily: "var(--font-display)", fontWeight: 300, fontSize: "0.95rem", color: exp.accent }}>
+                      {exp.company}
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", letterSpacing: "0.15em", color: "var(--cream-dim)", textTransform: "uppercase" }}>{exp.duration}</div>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.58rem", letterSpacing: "0.1em", color: "var(--cream-dim)", marginTop: "0.15rem" }}>{exp.location}</div>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.58rem", letterSpacing: "0.2em", textTransform: "uppercase", color: exp.accent, marginTop: "0.35rem" }}>{statusLabel[exp.status]}</div>
+                  </div>
+                </div>
+                <p style={{ fontFamily: "var(--font-body)", fontWeight: 300, fontSize: "0.85rem", color: "var(--cream-dim)", lineHeight: 1.75, marginBottom: "1.25rem" }}>
+                  {exp.desc}
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                  {exp.tags.map(t => (
+                    <span key={t} style={{
+                      fontFamily: "var(--font-mono)", fontSize: "0.58rem",
+                      letterSpacing: "0.1em", padding: "0.2rem 0.55rem",
+                      border: `1px solid ${exp.accent}45`, color: exp.accent, borderRadius: "2px",
+                    }}>{t}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

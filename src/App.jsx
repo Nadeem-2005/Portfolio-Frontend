@@ -3,6 +3,7 @@ import Loader from "./Components/Loader";
 import CustomCursor from "./Components/CustomCursor";
 import GeometricLines from "./Components/GeometricLines";
 import HeroFrame from "./Components/HeroFrame";
+import HeroVideo from "./Components/HeroVideo";
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -11,6 +12,7 @@ function App() {
 
   return (
     <>
+      <HeroVideo loaded={loaded} />
       <GeometricLines ref={geoRef} />
       <CustomCursor />
       {!loaded && (
@@ -21,7 +23,7 @@ function App() {
         />
       )}
       <HeroFrame ref={heroTextRef} loaded={loaded} geoRef={geoRef} />
-      <main className="relative z-[2]">
+      <main className="relative z-[2]" style={{ background: "transparent" }}>
         {/* Scroll spacer — will be replaced by actual sections */}
         <div style={{ height: "200vh" }} />
       </main>

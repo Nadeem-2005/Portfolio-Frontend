@@ -1,6 +1,7 @@
 import {
   forwardRef,
   useRef,
+  useState,
   useEffect,
   useLayoutEffect,
   useCallback,
@@ -20,6 +21,7 @@ const NAV_ITEMS = [
 ];
 
 const DOT_COUNT = 15;
+const MOBILE_BP = 768;
 
 const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
   const containerRef = useRef(null);
@@ -27,9 +29,18 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
   const navRef = useRef(null);
   const dotsRefs = useRef([]);
   const scrollTriggerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Expose title element to parent so Loader can animate it
+  // Expose title element so Loader can animate it
   useImperativeHandle(ref, () => titleRef.current);
+
+  // ── Mobile detection ──
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= MOBILE_BP);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   // ── Set initial GSAP transforms (before paint) ──
   useLayoutEffect(() => {
@@ -86,9 +97,9 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
     return () => tl.kill();
   }, [loaded]);
 
-  // ── Scroll-driven repositioning ──
+  // ── Scroll-driven repositioning (desktop only) ──
   useEffect(() => {
-    if (!loaded) return;
+    if (!loaded || isMobile) return;
     const title = titleRef.current;
     const nav = navRef.current;
     if (!title || !nav) return;
@@ -101,6 +112,10 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
         scrub: 0.6,
         onUpdate: (self) => {
           const p = self.progress;
+          const vh = window.innerHeight;
+          const navH = nav.offsetHeight;
+          // Pin nav bottom 2.5rem above viewport bottom
+          const finalNavTop = ((vh - navH - 40) / vh) * 100;
 
           // Title: top-of-box → top-left corner
           gsap.set(title, {
@@ -108,22 +123,23 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
             left: `${gsap.utils.interpolate(50, 4, p)}%`,
             xPercent: gsap.utils.interpolate(-50, 0, p),
             yPercent: gsap.utils.interpolate(-50, 0, p),
-            scale: gsap.utils.interpolate(1, 0.5, p),
+            scale: gsap.utils.interpolate(1, 0.55, p),
             transformOrigin: "top left",
+            force3D: true,
           });
 
-          // Nav: below title → bottom-left
+          // Nav: below title → bottom-left (all links visible)
           gsap.set(nav, {
-            top: `${gsap.utils.interpolate(46, 80, p)}%`,
+            top: `${gsap.utils.interpolate(46, finalNavTop, p)}%`,
             left: `${gsap.utils.interpolate(50, 4, p)}%`,
             xPercent: gsap.utils.interpolate(-50, 0, p),
+            force3D: true,
           });
 
           // Geo box: fade out on scroll
           const svg = geoRef?.current;
           if (svg) {
-            const boxes = svg.querySelectorAll(".geo-box");
-            gsap.set(boxes, { opacity: 1 - p });
+            gsap.set(svg.querySelectorAll(".geo-box"), { opacity: 1 - p });
           }
         },
       });
@@ -133,7 +149,35 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
       clearTimeout(delay);
       scrollTriggerRef.current?.kill();
     };
-  }, [loaded]);
+  }, [loaded, isMobile, geoRef]);
+
+  // ── Mobile: scroll whole frame up ──
+  useEffect(() => {
+    if (!loaded || !isMobile) return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    const delay = setTimeout(() => {
+      scrollTriggerRef.current = ScrollTrigger.create({
+        trigger: document.body,
+        start: "top top",
+        end: "+=400",
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const p = self.progress;
+          gsap.set(container, {
+            y: `${-p * 100}%`,
+            force3D: true,
+          });
+        },
+      });
+    }, 3500);
+
+    return () => {
+      clearTimeout(delay);
+      scrollTriggerRef.current?.kill();
+    };
+  }, [loaded, isMobile]);
 
   // ── Dot hover handlers ──
   const handleMouseEnter = useCallback((index) => {
@@ -152,7 +196,6 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
         ease: "back.out(2.5)",
       }
     );
-    // Ripple wave
     gsap.to(dotEls, {
       y: -2.5,
       duration: 0.25,
@@ -187,6 +230,29 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
         pointerEvents: "none",
       }}
     >
+      {/* ── Mobile: "View on desktop" banner ── */}
+      {isMobile && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: "2rem",
+            left: "50%",
+            transform: "translateX(-50%)",
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.55rem",
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+            color: "var(--cream-dim)",
+            whiteSpace: "nowrap",
+            opacity: loaded ? 1 : 0,
+            transition: "opacity 0.8s ease 2s",
+            pointerEvents: "none",
+          }}
+        >
+          Best viewed on desktop
+        </div>
+      )}
+
       {/* ── Title ── */}
       <div
         ref={titleRef}
@@ -197,12 +263,15 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
           textAlign: "left",
           whiteSpace: "nowrap",
           opacity: 0,
+          willChange: "transform",
+          backfaceVisibility: "hidden",
+          mixBlendMode: "difference",
         }}
       >
         <div
           style={{
             fontFamily: "var(--font-display)",
-            fontWeight: 300,
+            fontWeight: 500,
             fontStyle: "italic",
             fontSize: "clamp(2.4rem, 4.5vw, 4.2rem)",
             color: "var(--cream)",
@@ -215,7 +284,7 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
         <div
           style={{
             fontFamily: "var(--font-body)",
-            fontWeight: 300,
+            fontWeight: 400,
             fontSize: "clamp(0.7rem, 1.3vw, 1rem)",
             color: "var(--cream-dim)",
             lineHeight: 1.2,
@@ -237,6 +306,9 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
           left: "50%",
           opacity: 0,
           pointerEvents: "auto",
+          willChange: "transform",
+          backfaceVisibility: "hidden",
+          mixBlendMode: "difference",
         }}
       >
         {NAV_ITEMS.map((item, i) => (
@@ -261,7 +333,7 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "0.82rem",
-                fontWeight: 400,
+                fontWeight: 500,
                 color: "var(--cream)",
                 letterSpacing: "0.02em",
                 whiteSpace: "nowrap",

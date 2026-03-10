@@ -7,8 +7,12 @@ import gsap from "gsap";
  * A 2D noise field (value noise + radial bias) is pre-computed once.
  * Each frame, a threshold sweeps from 0→1. Pixels whose noise value
  * falls below the threshold become transparent (burned away). Pixels
- * near the threshold glow white/cream (the burn front). Center burns
- * first thanks to the radial bias — exactly like paper burning inward.
+ * near the threshold glow white/cream (the burn front). Two burn
+ * origins near the hero box corners create a dual-point dissolve.
+ *
+ * The hero text ("The Art of Engineering") lives in App.jsx as a
+ * persistent element. This component animates it via heroTextRef
+ * so it survives the burn transition and stays on the main page.
  */
 
 // ── Value noise helpers (module-level, no React dependency) ──────────
@@ -49,10 +53,9 @@ function fbm(x, y) {
 
 // ── Component ────────────────────────────────────────────────────────
 
-export default function Loader({ onComplete, geoRef }) {
+export default function Loader({ onComplete, geoRef, heroTextRef }) {
   const wrapperRef  = useRef(null);
   const canvasRef   = useRef(null);
-  const textRef     = useRef(null);
   const barRef      = useRef(null);
   const counterRef  = useRef(null);
   const progressRef = useRef(null);
@@ -74,8 +77,10 @@ export default function Loader({ onComplete, geoRef }) {
         // Normalized coords: center = (0,0), corners = (-1,-1)..(1,1)
         const nx = (x / S - 0.5) * 2;
         const ny = (y / S - 0.5) * 2;
-        // Radial distance: 0 at center, ~1.41 at corners
-        const dist = Math.sqrt(nx * nx + ny * ny);
+        // Two burn origins — near box top-left and bottom-right
+        const d1 = Math.sqrt((nx + 0.22) * (nx + 0.22) + (ny + 0.18) * (ny + 0.18));
+        const d2 = Math.sqrt((nx - 0.22) * (nx - 0.22) + (ny - 0.18) * (ny - 0.18));
+        const dist = Math.min(d1, d2);
         // Fractal noise
         const n = fbm(x * 0.015 + 3.7, y * 0.015 + 7.1);
         // Combine: center has LOW values (burns first), edges HIGH
@@ -125,19 +130,19 @@ export default function Loader({ onComplete, geoRef }) {
       if (v < threshold) {
         // Burned away — fully transparent
         data[px] = 0; data[px + 1] = 0; data[px + 2] = 0; data[px + 3] = 0;
-      } else if (v < threshold + 0.012) {
+      } else if (v < threshold + 0.008) {
         // Hottest edge — bright white
         data[px] = 255; data[px + 1] = 255; data[px + 2] = 255; data[px + 3] = 255;
-      } else if (v < threshold + 0.04) {
+      } else if (v < threshold + 0.025) {
         // Warm glow — white fading to cream
-        const t = (v - threshold - 0.012) / 0.028;
+        const t = (v - threshold - 0.008) / 0.017;
         data[px]     = 255 - Math.round(15 * t);
         data[px + 1] = 255 - Math.round(20 * t);
         data[px + 2] = 255 - Math.round(31 * t);
         data[px + 3] = 255;
-      } else if (v < threshold + 0.10) {
+      } else if (v < threshold + 0.06) {
         // Cream fading to black
-        const t = (v - threshold - 0.04) / 0.06;
+        const t = (v - threshold - 0.025) / 0.035;
         data[px]     = Math.round(240 * (1 - t));
         data[px + 1] = Math.round(235 * (1 - t));
         data[px + 2] = Math.round(224 * (1 - t));
@@ -165,7 +170,7 @@ export default function Loader({ onComplete, geoRef }) {
   useLayoutEffect(() => {
     const svg = geoRef?.current;
     if (!svg) return;
-    svg.querySelectorAll(".geo-path").forEach((p) => {
+    svg.querySelectorAll(".geo-path, .geo-box").forEach((p) => {
       const len = p.getTotalLength();
       p.style.strokeDasharray  = len;
       p.style.strokeDashoffset = len;
@@ -175,6 +180,8 @@ export default function Loader({ onComplete, geoRef }) {
   // ── Main animation sequence ──
   useEffect(() => {
     const svg = geoRef?.current;
+    const heroText = heroTextRef?.current;
+
     if (svg) {
       gsap.to(svg.querySelectorAll(".geo-path"), {
         strokeDashoffset: 0,
@@ -183,13 +190,25 @@ export default function Loader({ onComplete, geoRef }) {
         ease:             "power2.inOut",
         delay:            0.2,
       });
+
+      // Box draws slower — still animating during burn, finishes after transition
+      gsap.to(svg.querySelectorAll(".geo-box"), {
+        strokeDashoffset: 0,
+        duration:         4,
+        stagger:          0.15,
+        ease:             "power2.inOut",
+        delay:            0.3,
+      });
     }
 
-    gsap.fromTo(
-      textRef.current,
-      { opacity: 0, y: 10 },
-      { opacity: 1, y: 0, duration: 0.9, ease: "power2.out", delay: 0.35 }
-    );
+    // Fade in hero text (lives in App.jsx, animated via ref)
+    if (heroText) {
+      gsap.fromTo(
+        heroText,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.9, ease: "power2.out", delay: 0.35 }
+      );
+    }
 
     let count = 0;
 
@@ -208,13 +227,10 @@ export default function Loader({ onComplete, geoRef }) {
           const burn = { t: -0.05 };
           const exit = gsap.timeline();
 
-          // 1. Text + progress fade together
-          exit.to(textRef.current, {
-            y: -20, opacity: 0, duration: 0.35, ease: "power3.in",
-          });
+          // 1. Progress bar fades (hero text stays visible)
           exit.to(progressRef.current, {
             opacity: 0, duration: 0.3, ease: "power2.in",
-          }, "<");
+          });
 
           // 2. Burn dissolve — threshold sweeps from -0.05 to 1.4
           exit.to(burn, {
@@ -231,11 +247,24 @@ export default function Loader({ onComplete, geoRef }) {
           exit.call(() => onComplete?.());
           exit.set(wrapper, { display: "none" });
 
-          // 5. Geo background transition
+          // 5. Hero text settle animation — subtle scale settle
+          if (heroText) {
+            exit.fromTo(heroText, {
+              scale: 1.03,
+              y:     -5,
+            }, {
+              scale:    1,
+              y:        0,
+              duration: 1.2,
+              ease:     "power2.out",
+            });
+          }
+
+          // 6. Geo background transition
           if (svg) {
             exit.to(svg.querySelectorAll(".geo-rect"), {
               opacity: 0, duration: 1.2, ease: "power2.inOut",
-            });
+            }, "<-1.0");
           }
           exit.to(geoEl, {
             opacity: 0.6, duration: 2.5, ease: "power2.inOut",
@@ -254,7 +283,7 @@ export default function Loader({ onComplete, geoRef }) {
     };
 
     setTimeout(tick, 44);
-  }, [onComplete, geoRef, drawBurn]);
+  }, [onComplete, geoRef, heroTextRef, drawBurn]);
 
   return (
     <div
@@ -265,7 +294,7 @@ export default function Loader({ onComplete, geoRef }) {
         zIndex:   99996,
       }}
     >
-      {/* ── Canvas overlay — black, burns away from center ── */}
+      {/* ── Canvas overlay — black, burns away from two origins ── */}
       <canvas
         ref={canvasRef}
         style={{
@@ -273,42 +302,6 @@ export default function Loader({ onComplete, geoRef }) {
           inset:    0,
         }}
       />
-
-      {/* ── Loading text ── */}
-      <div
-        ref={textRef}
-        style={{
-          position:  "absolute",
-          left:      "35%",
-          top:       "48%",
-          transform: "translateY(-50%)",
-          opacity:   0,
-          zIndex:    2,
-        }}
-      >
-        <div style={{
-          fontFamily:    "var(--font-body)",
-          fontWeight:    400,
-          fontSize:      "1rem",
-          color:         "var(--cream)",
-          letterSpacing: "0.05em",
-          lineHeight:    1.2,
-          marginBottom:  "0.15rem",
-        }}>
-          The Art of
-        </div>
-
-        <div style={{
-          fontFamily: "var(--font-display)",
-          fontWeight: 300,
-          fontStyle:  "italic",
-          fontSize:   "clamp(2.2rem, 4.8vw, 4.5rem)",
-          color:      "var(--cream)",
-          lineHeight: 1,
-        }}>
-          Engineering
-        </div>
-      </div>
 
       {/* ── Bottom progress strip ── */}
       <div

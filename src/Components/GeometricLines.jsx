@@ -19,13 +19,13 @@ const GeometricLines = forwardRef(function GeometricLines(_, ref) {
       ref={ref}
       aria-hidden="true"
       style={{
-        position:      "fixed",
-        inset:         0,
-        width:         "100%",
-        height:        "100%",
+        position: "fixed",
+        inset: 0,
+        width: "100%",
+        height: "100%",
         pointerEvents: "none",
-        zIndex:        99997,
-        overflow:      "visible",
+        zIndex: 99997,
+        overflow: "visible",
       }}
       viewBox="0 0 1440 900"
       preserveAspectRatio="xMidYMid slice"
@@ -192,6 +192,18 @@ const GeometricLines = forwardRef(function GeometricLines(_, ref) {
       {/* 32 · Registration crosshair at grid intersection (1045, 750) */}
       <path className="geo-path" d="M 1035,750 L 1055,750 M 1045,740 L 1045,760"
         stroke={c(0.22)} strokeWidth="0.6" fill="none" strokeLinecap="round" />
+
+      {/* ╔══════════════════════════════════════════════════════════════╗
+          ║  CENTERED BOX — draws from two opposite corners             ║
+          ╚══════════════════════════════════════════════════════════════╝ */}
+
+      {/* Box path A: top-left → right along top → down right side */}
+      <path className="geo-box" d="M 560,180 L 880,180 L 880,720"
+        stroke={c(0.16)} strokeWidth="3.0" fill="none" strokeLinecap="round" />
+
+      {/* Box path B: bottom-right → left along bottom → up left side */}
+      <path className="geo-box" d="M 880,720 L 560,720 L 560,180"
+        stroke={c(0.16)} strokeWidth="3.0" fill="none" strokeLinecap="round" />
     </svg>
   );
 });

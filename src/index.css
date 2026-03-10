@@ -194,6 +194,32 @@ body::after {
   color: var(--cream);
 }
 
+/* ============ HERO NAV ============ */
+.hero-nav-item {
+  cursor: none !important;
+  transition: padding-left 0.4s var(--ease-expo);
+}
+
+.hero-nav-item:hover {
+  padding-left: 4px !important;
+}
+
+.hero-nav-item .hero-nav-label {
+  transition: letter-spacing 0.4s var(--ease-expo), color 0.3s ease;
+}
+
+.hero-nav-item:hover .hero-nav-label {
+  letter-spacing: 0.06em;
+}
+
+.hero-nav-item .hero-nav-numeral {
+  transition: color 0.3s ease;
+}
+
+.hero-nav-item:hover .hero-nav-numeral {
+  color: var(--cream);
+}
+
 /* ============ IDENTITY PANEL ============ */
 .id-panel {
   flex: 1;

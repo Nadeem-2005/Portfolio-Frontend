@@ -19,9 +19,9 @@ const NAV_ITEMS = [
   { label: "Contact", numeral: "V", id: "contact" },
 ];
 
-const DOT_COUNT = 7;
+const DOT_COUNT = 15;
 
-const HeroFrame = forwardRef(function HeroFrame({ loaded }, ref) {
+const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
   const containerRef = useRef(null);
   const titleRef = useRef(null);
   const navRef = useRef(null);
@@ -59,9 +59,9 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded }, ref) {
 
     const tl = gsap.timeline({ delay: 1.5 });
 
-    // Title shifts upward to make room for nav
+    // Title moves from center of box to top of box
     tl.to(title, {
-      y: -25,
+      top: "33%",
       duration: 1.0,
       ease: "power3.out",
     });
@@ -102,23 +102,29 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded }, ref) {
         onUpdate: (self) => {
           const p = self.progress;
 
-          // Title: centered → top-left
+          // Title: top-of-box → top-left corner
           gsap.set(title, {
-            top: `${gsap.utils.interpolate(42, 5, p)}%`,
+            top: `${gsap.utils.interpolate(33, 5, p)}%`,
             left: `${gsap.utils.interpolate(50, 4, p)}%`,
             xPercent: gsap.utils.interpolate(-50, 0, p),
             yPercent: gsap.utils.interpolate(-50, 0, p),
-            y: gsap.utils.interpolate(-25, 0, p),
             scale: gsap.utils.interpolate(1, 0.5, p),
             transformOrigin: "top left",
           });
 
-          // Nav: below title center → bottom-left
+          // Nav: below title → bottom-left
           gsap.set(nav, {
-            top: `${gsap.utils.interpolate(56, 80, p)}%`,
+            top: `${gsap.utils.interpolate(46, 80, p)}%`,
             left: `${gsap.utils.interpolate(50, 4, p)}%`,
             xPercent: gsap.utils.interpolate(-50, 0, p),
           });
+
+          // Geo box: fade out on scroll
+          const svg = geoRef?.current;
+          if (svg) {
+            const boxes = svg.querySelectorAll(".geo-box");
+            gsap.set(boxes, { opacity: 1 - p });
+          }
         },
       });
     }, 3500);
@@ -186,7 +192,7 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded }, ref) {
         ref={titleRef}
         style={{
           position: "absolute",
-          top: "42%",
+          top: "50%",
           left: "50%",
           textAlign: "left",
           whiteSpace: "nowrap",
@@ -227,7 +233,7 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded }, ref) {
         ref={navRef}
         style={{
           position: "absolute",
-          top: "56%",
+          top: "46%",
           left: "50%",
           opacity: 0,
           pointerEvents: "auto",

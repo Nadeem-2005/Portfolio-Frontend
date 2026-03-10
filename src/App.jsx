@@ -20,7 +20,7 @@ function App() {
           heroTextRef={heroTextRef}
         />
       )}
-      <HeroFrame ref={heroTextRef} loaded={loaded} />
+      <HeroFrame ref={heroTextRef} loaded={loaded} geoRef={geoRef} />
       <main className="relative z-[2]">
         {/* Scroll spacer — will be replaced by actual sections */}
         <div style={{ height: "200vh" }} />

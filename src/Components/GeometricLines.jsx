@@ -199,11 +199,11 @@ const GeometricLines = forwardRef(function GeometricLines(_, ref) {
 
       {/* Box path A: top-left → right along top → down right side */}
       <path className="geo-box" d="M 560,180 L 880,180 L 880,720"
-        stroke={c(0.16)} strokeWidth="3.0" fill="none" strokeLinecap="round" />
+        stroke="#fff" strokeWidth="3.0" fill="none" strokeLinecap="round" />
 
       {/* Box path B: bottom-right → left along bottom → up left side */}
       <path className="geo-box" d="M 880,720 L 560,720 L 560,180"
-        stroke={c(0.16)} strokeWidth="3.0" fill="none" strokeLinecap="round" />
+        stroke="#fff" strokeWidth="3.0" fill="none" strokeLinecap="round" />
     </svg>
   );
 });

@@ -4,6 +4,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Video scrubs through the hero scroll zone (first viewport-height of scroll)
+const HERO_SCROLL = () => window.innerHeight;
+
 export default function HeroVideo({ loaded, src = "/hero-bg.mp4" }) {
   const videoRef = useRef(null);
   const scrollTriggerRef = useRef(null);
@@ -18,16 +21,13 @@ export default function HeroVideo({ loaded, src = "/hero-bg.mp4" }) {
       if (frameShown.current) return;
       frameShown.current = true;
       v.pause();
-      // Skip to 0.1s to avoid potential black intro frames
       v.currentTime = 0.1;
     };
 
-    // readyState >= 2 means enough data to show current frame
     if (v.readyState >= 2) {
       showFrame();
     } else {
       v.addEventListener("loadeddata", showFrame, { once: true });
-      // Fallback: also try canplay
       v.addEventListener("canplay", showFrame, { once: true });
     }
 
@@ -37,27 +37,24 @@ export default function HeroVideo({ loaded, src = "/hero-bg.mp4" }) {
     };
   }, []);
 
-  // Scroll-scrubbed playback
+  // Scroll-scrubbed playback — fixed to hero zone, not full page
   useEffect(() => {
     if (!loaded) return;
     const v = videoRef.current;
     if (!v) return;
 
     const onReady = () => {
-      // Ensure a frame is visible at current scroll position
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.body.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
-      v.currentTime = v.duration ? progress * v.duration : 0.1;
+      v.currentTime = 0.1;
 
       scrollTriggerRef.current = ScrollTrigger.create({
         trigger: document.body,
         start: "top top",
-        end: "bottom bottom",
+        end: `+=${HERO_SCROLL()}`,
         scrub: true,
         onUpdate: (self) => {
           if (v.duration) {
-            v.currentTime = self.progress * v.duration;
+            // Clamp minimum to 0.1s so we never show the black first frame
+            v.currentTime = Math.max(self.progress * v.duration, 0.1);
           }
         },
       });

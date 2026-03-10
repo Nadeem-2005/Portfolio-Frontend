@@ -241,7 +241,7 @@ export default function Loader({ onComplete, geoRef, heroTextRef }) {
           }, "-=0.1");
 
           // 3. Drop geo to background layer
-          exit.set(geoEl, { zIndex: 1 });
+          exit.set(geoEl, { zIndex: 3 });
 
           // 4. Unmount loader
           exit.call(() => onComplete?.());

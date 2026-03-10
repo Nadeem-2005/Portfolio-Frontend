@@ -22,6 +22,7 @@ const NAV_ITEMS = [
 
 const DOT_COUNT = 15;
 const MOBILE_BP = 768;
+const HERO_SCROLL = () => window.innerHeight;
 
 const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
   const containerRef = useRef(null);
@@ -29,6 +30,7 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
   const navRef = useRef(null);
   const dotsRefs = useRef([]);
   const scrollTriggerRef = useRef(null);
+  const colorTriggerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
   // Expose title element so Loader can animate it
@@ -179,6 +181,52 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
     };
   }, [loaded, isMobile]);
 
+  // ── Color flip when cream explosion covers screen ──
+  useEffect(() => {
+    if (!loaded) return;
+    const title = titleRef.current;
+    const nav = navRef.current;
+    if (!title || !nav) return;
+
+    const delay = setTimeout(() => {
+      colorTriggerRef.current = ScrollTrigger.create({
+        trigger: document.body,
+        start: "top top",
+        end: `+=${HERO_SCROLL()}`,
+        scrub: 0.3,
+        onUpdate: (self) => {
+          const raw = self.progress;
+          // Match explosion timing: starts at 75%, full at 90%
+          const p = raw < 0.75 ? 0 : Math.min((raw - 0.75) / 0.15, 1.0);
+          const dark = "var(--bg)";
+          const light = "var(--cream)";
+          const color = p > 0.5 ? dark : light;
+          const dimColor = p > 0.5 ? "rgba(10,9,8,0.55)" : "var(--cream-dim)";
+
+          // Title
+          title.querySelector("[data-title]").style.color = color;
+          title.querySelector("[data-subtitle]").style.color = p > 0.5 ? dimColor : light;
+
+          // Nav labels + numerals
+          nav.querySelectorAll(".hero-nav-label").forEach((el) => {
+            el.style.color = color;
+          });
+          nav.querySelectorAll(".hero-nav-numeral").forEach((el) => {
+            el.style.color = dimColor;
+          });
+          nav.querySelectorAll(".hero-dot").forEach((el) => {
+            el.style.background = dimColor;
+          });
+        },
+      });
+    }, 3600);
+
+    return () => {
+      clearTimeout(delay);
+      colorTriggerRef.current?.kill();
+    };
+  }, [loaded]);
+
   // ── Dot hover handlers ──
   const handleMouseEnter = useCallback((index) => {
     const dots = dotsRefs.current[index];
@@ -265,10 +313,10 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
           opacity: 0,
           willChange: "transform",
           backfaceVisibility: "hidden",
-          mixBlendMode: "difference",
         }}
       >
         <div
+          data-title
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 500,
@@ -277,11 +325,13 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
             color: "var(--cream)",
             lineHeight: 1.05,
             letterSpacing: "-0.02em",
+            transition: "color 0.4s ease",
           }}
         >
           Nadeem&rsquo;s
         </div>
         <div
+          data-subtitle
           style={{
             fontFamily: "var(--font-body)",
             fontWeight: 400,
@@ -291,6 +341,7 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
             letterSpacing: "0.3em",
             textTransform: "uppercase",
             marginTop: "0.3rem",
+            transition: "color 0.4s ease",
           }}
         >
           Portfolio
@@ -308,7 +359,6 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
           pointerEvents: "auto",
           willChange: "transform",
           backfaceVisibility: "hidden",
-          mixBlendMode: "difference",
         }}
       >
         {NAV_ITEMS.map((item, i) => (

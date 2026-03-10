@@ -155,7 +155,7 @@ body::after {
 
 /* ============ SECTIONS ============ */
 .section {
-  padding: 9rem 3rem;
+  padding: 9rem 0;
   position: relative;
 }
 
@@ -176,6 +176,34 @@ body::after {
   display: block;
   width: 1.5rem; height: 1px;
   background: var(--cream-dim);
+}
+
+/* ── Cream-background sections (post-explosion) ── */
+.section--cream .section-label {
+  color: rgba(10, 9, 8, 0.45);
+}
+
+.section--cream .section-label::before {
+  background: rgba(10, 9, 8, 0.3);
+}
+
+.section--cream h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  color: var(--bg);
+  line-height: 1.15;
+  max-width: 720px;
+  margin-bottom: 2rem;
+}
+
+.section--cream p {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  line-height: 1.8;
+  color: rgba(10, 9, 8, 0.7);
+  max-width: 560px;
 }
 
 /* ============ HERO ============ */
@@ -408,6 +436,14 @@ body::after {
 :focus-visible {
   outline: 2px solid var(--cream);
   outline-offset: 4px;
+}
+
+/* ============ SECTIONS CONTENT (sidebar offset) ============ */
+@media (max-width: 768px) {
+  .sections-content {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
 }
 
 /* ============ TOUCH DEVICES ============ */

@@ -124,7 +124,7 @@ export default function CreamExplosion({ loaded }) {
           drawExplosion(p);
         },
       });
-    }, 3600);
+    }, 2200);
 
     return () => {
       clearTimeout(delay);

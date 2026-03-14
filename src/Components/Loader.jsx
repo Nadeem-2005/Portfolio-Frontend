@@ -185,19 +185,19 @@ export default function Loader({ onComplete, geoRef, heroTextRef }) {
     if (svg) {
       gsap.to(svg.querySelectorAll(".geo-path"), {
         strokeDashoffset: 0,
-        duration:         1.8,
-        stagger:          0.07,
+        duration:         1.1,
+        stagger:          0.04,
         ease:             "power2.inOut",
-        delay:            0.2,
+        delay:            0.15,
       });
 
       // Box draws slower — still animating during burn, finishes after transition
       gsap.to(svg.querySelectorAll(".geo-box"), {
         strokeDashoffset: 0,
-        duration:         4,
-        stagger:          0.15,
+        duration:         2.2,
+        stagger:          0.1,
         ease:             "power2.inOut",
-        delay:            0.3,
+        delay:            0.15,
       });
     }
 
@@ -206,7 +206,7 @@ export default function Loader({ onComplete, geoRef, heroTextRef }) {
       gsap.fromTo(
         heroText,
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.9, ease: "power2.out", delay: 0.35 }
+        { opacity: 1, y: 0, duration: 0.65, ease: "power2.out", delay: 0.2 }
       );
     }
 
@@ -229,14 +229,14 @@ export default function Loader({ onComplete, geoRef, heroTextRef }) {
 
           // 1. Progress bar fades (hero text stays visible)
           exit.to(progressRef.current, {
-            opacity: 0, duration: 0.3, ease: "power2.in",
+            opacity: 0, duration: 0.2, ease: "power2.in",
           });
 
           // 2. Burn dissolve — threshold sweeps from -0.05 to 1.4
           exit.to(burn, {
             t:        1.4,
-            duration: 2.2,
-            ease:     "power2.inOut",
+            duration: 1.5,
+            ease:     "power3.inOut",
             onUpdate: () => drawBurn(burn.t),
           }, "-=0.1");
 
@@ -255,21 +255,21 @@ export default function Loader({ onComplete, geoRef, heroTextRef }) {
             }, {
               scale:    1,
               y:        0,
-              duration: 1.2,
-              ease:     "power2.out",
+              duration: 0.8,
+              ease:     "power3.out",
             });
           }
 
           // 6. Geo background transition
           if (svg) {
             exit.to(svg.querySelectorAll(".geo-rect"), {
-              opacity: 0, duration: 1.2, ease: "power2.inOut",
+              opacity: 0, duration: 0.8, ease: "power2.inOut",
             }, "<-1.0");
           }
           exit.to(geoEl, {
-            opacity: 0.6, duration: 2.5, ease: "power2.inOut",
+            opacity: 0.6, duration: 1.5, ease: "power2.inOut",
           }, "<");
-        }, 200);
+        }, 100);
 
         return;
       }
@@ -279,7 +279,7 @@ export default function Loader({ onComplete, geoRef, heroTextRef }) {
       if (barRef.current)
         gsap.set(barRef.current, { scaleX: count / 100 });
 
-      setTimeout(tick, 44);
+      setTimeout(tick, 28);
     };
 
     setTimeout(tick, 44);

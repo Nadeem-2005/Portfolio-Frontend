@@ -70,12 +70,12 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
     const title = titleRef.current;
     if (!nav || !title) return;
 
-    const tl = gsap.timeline({ delay: 1.5 });
+    const tl = gsap.timeline({ delay: 0.8 });
 
     // Title moves from center of box to top of box
     tl.to(title, {
       top: "33%",
-      duration: 1.0,
+      duration: 0.7,
       ease: "power3.out",
     });
 
@@ -145,7 +145,7 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
           }
         },
       });
-    }, 3500);
+    }, 2200);
 
     return () => {
       clearTimeout(delay);
@@ -173,7 +173,7 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
           });
         },
       });
-    }, 3500);
+    }, 2200);
 
     return () => {
       clearTimeout(delay);
@@ -203,13 +203,19 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
           const color = p > 0.5 ? dark : light;
           const dimColor = p > 0.5 ? "rgba(10,9,8,0.55)" : "var(--cream-dim)";
 
+          const glow = p > 0.5 ? "none" : "0 0 10px rgba(240,235,224,0.9), 0 0 40px rgba(240,235,224,0.7), 0 0 80px rgba(240,235,224,0.4), 0 0 120px rgba(240,235,224,0.2)";
+          const glowSm = p > 0.5 ? "none" : "0 0 8px rgba(240,235,224,0.8), 0 0 30px rgba(240,235,224,0.6), 0 0 60px rgba(240,235,224,0.3)";
+
           // Title
           title.querySelector("[data-title]").style.color = color;
+          title.querySelector("[data-title]").style.textShadow = glow;
           title.querySelector("[data-subtitle]").style.color = p > 0.5 ? dimColor : light;
+          title.querySelector("[data-subtitle]").style.textShadow = glowSm;
 
           // Nav labels + numerals
           nav.querySelectorAll(".hero-nav-label").forEach((el) => {
             el.style.color = color;
+            el.style.textShadow = glowSm;
           });
           nav.querySelectorAll(".hero-nav-numeral").forEach((el) => {
             el.style.color = dimColor;
@@ -217,15 +223,31 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
           nav.querySelectorAll(".hero-dot").forEach((el) => {
             el.style.background = dimColor;
           });
+
+          // Geo lines: smoothly flip from cream to dark as explosion covers
+          const svg = geoRef?.current;
+          if (svg) {
+            svg.style.opacity = String(0.6 + 0.4 * p);
+            svg.querySelectorAll('.geo-path').forEach(el => {
+              const a = parseFloat(el.dataset.alpha);
+              if (isNaN(a)) return;
+              const darkA = Math.min(a * 1.5, 0.22);
+              const r = Math.round(240 - 230 * p);
+              const g = Math.round(235 - 226 * p);
+              const b = Math.round(224 - 216 * p);
+              const alpha = a + (darkA - a) * p;
+              el.style.stroke = `rgba(${r},${g},${b},${alpha})`;
+            });
+          }
         },
       });
-    }, 3600);
+    }, 2400);
 
     return () => {
       clearTimeout(delay);
       colorTriggerRef.current?.kill();
     };
-  }, [loaded]);
+  }, [loaded, geoRef]);
 
   // ── Dot hover handlers ──
   const handleMouseEnter = useCallback((index) => {
@@ -325,7 +347,8 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
             color: "var(--cream)",
             lineHeight: 1.05,
             letterSpacing: "-0.02em",
-            transition: "color 0.4s ease",
+            transition: "color 0.4s ease, text-shadow 0.4s ease",
+            textShadow: "0 0 10px rgba(240,235,224,0.9), 0 0 40px rgba(240,235,224,0.7), 0 0 80px rgba(240,235,224,0.4), 0 0 120px rgba(240,235,224,0.2)",
           }}
         >
           Nadeem&rsquo;s
@@ -341,7 +364,8 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
             letterSpacing: "0.3em",
             textTransform: "uppercase",
             marginTop: "0.3rem",
-            transition: "color 0.4s ease",
+            transition: "color 0.4s ease, text-shadow 0.4s ease",
+            textShadow: "0 0 8px rgba(240,235,224,0.8), 0 0 30px rgba(240,235,224,0.6), 0 0 60px rgba(240,235,224,0.3)",
           }}
         >
           Portfolio
@@ -387,6 +411,8 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
                 color: "var(--cream)",
                 letterSpacing: "0.02em",
                 whiteSpace: "nowrap",
+                textShadow: "0 0 8px rgba(240,235,224,0.8), 0 0 30px rgba(240,235,224,0.6), 0 0 60px rgba(240,235,224,0.3)",
+                transition: "color 0.4s ease, text-shadow 0.4s ease, letter-spacing 0.4s var(--ease-expo)",
               }}
             >
               {item.label}

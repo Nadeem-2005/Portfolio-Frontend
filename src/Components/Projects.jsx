@@ -8,57 +8,61 @@ import { motion, LayoutGroup } from "framer-motion";
 const PROJECTS = [
   {
     id: 1,
-    title: "Portfolio Website",
+    title: "CliniCall",
     description:
-      "A personal portfolio built with React, GSAP, and editorial design principles. Features scroll-driven animations, geometric overlays, and a cream explosion transition.",
-    github: "https://github.com/mohammednadeem",
-    tags: ["React", "GSAP", "Vite"],
+      "A production-grade healthcare appointment platform for Vellore residents. Features a Redis-powered caching layer (cutting DB queries by 70–85%), BullMQ background job queues with exponential backoff for 95%+ reliable email delivery, Pusher real-time notifications with batching pipelines (cutting infra costs ~40%), distributed Redis rate limiting, and role-based auth via Auth.js.",
+    github: "https://github.com/Nadeem-2005/CliniCall",
+    live: "https://clini-call.vercel.app",
+    tags: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "Redis", "BullMQ", "Pusher", "Auth.js", "Tailwind CSS"],
     colSpan: 2,
   },
   {
     id: 2,
-    title: "Project Two",
+    title: "ConnectPLUS",
     description:
-      "Placeholder project description. Replace with your actual project details.",
-    github: "https://github.com/mohammednadeem",
-    tags: ["Node.js", "Express"],
-    colSpan: 1,
+      "A full-featured video conferencing platform built with Next.js and GetStream. Supports real-time meeting controls, screen sharing, emoji reactions, recording, personal rooms, scheduled meetings, and secure Clerk-based authentication. Includes E2E tests with Playwright.",
+    github: "https://github.com/Nadeem-2005/ConnectPLUS",
+    live: "https://connectplus-ebon.vercel.app",
+    tags: ["Next.js", "TypeScript", "Clerk", "GetStream", "Shadcn", "Tailwind CSS", "Playwright"],
+    colSpan: 2,
   },
   {
     id: 3,
-    title: "Project Three",
+    title: "Neural Acoustic Emotion Interpreter",
     description:
-      "Placeholder project description. Replace with your actual project details.",
-    github: "https://github.com/mohammednadeem",
-    tags: ["Python", "Flask"],
+      "A deep learning speech emotion recognition system that classifies audio into eight emotions — angry, calm, disgust, fear, happy, neutral, sad, and surprise — using acoustic feature extraction and neural network models.",
+    github: "https://github.com/Nadeem-2005/Neural-Acoustic-Emotion-Interpreter",
+    tags: ["Python", "Jupyter Notebook", "Deep Learning", "Librosa", "scikit-learn"],
     colSpan: 1,
   },
   {
     id: 4,
-    title: "Project Four",
+    title: "DWT-SVD Image Watermarking",
     description:
-      "Placeholder project description. A longer description to show how the card expands to accommodate more text content in the masonry layout.",
-    github: "https://github.com/mohammednadeem",
-    tags: ["Swift", "UIKit"],
+      "Robust digital image watermarking in MATLAB using Discrete Wavelet Transform and Singular Value Decomposition. Supports embedding, extraction, and comprehensive attack resistance testing — validating watermark integrity across noise, compression, and geometric distortions.",
+    github: "https://github.com/Nadeem-2005/Watermarking-based-on-DWT-SVD",
+    tags: ["MATLAB", "DWT", "SVD", "Signal Processing"],
     colSpan: 1,
   },
   {
     id: 5,
-    title: "Project Five",
-    description: "Placeholder project description.",
-    github: "https://github.com/mohammednadeem",
-    tags: ["Next.js", "Tailwind"],
-    colSpan: 2,
+    title: "Haar-Based Image Steganography",
+    description:
+      "MATLAB implementation of image steganography using the Haar wavelet transform. Hides secret messages in LL and HH frequency sub-bands of a cover image, with extraction logic and robustness testing against 10+ attack types including noise, compression, and geometric transformations.",
+    github: "https://github.com/Nadeem-2005/Haar-based-image-steganography",
+    tags: ["MATLAB", "Steganography", "Haar Wavelet", "Image Processing"],
+    colSpan: 1,
   },
   {
     id: 6,
-    title: "Project Six",
+    title: "The Climate",
     description:
-      "Placeholder project description. Replace with your actual project details and a brief summary of what the project does.",
-    github: "https://github.com/mohammednadeem",
-    tags: ["Java", "Spring Boot"],
+      "A native iOS weather app that delivers 92%+ accurate forecasts for any desired location. Built entirely in Swift with Xcode, featuring a clean, minimal UI, live API integration, and tested via Xcode's UI test suite.",
+    github: "https://github.com/Nadeem-2005/The-Climate",
+    tags: ["Swift", "iOS", "UIKit", "Xcode", "REST API"],
     colSpan: 1,
   },
+
 ];
 
 function GitHubIcon() {

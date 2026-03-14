@@ -5,6 +5,55 @@ import GeometricLines from "./Components/GeometricLines";
 import HeroFrame from "./Components/HeroFrame";
 import HeroVideo from "./Components/HeroVideo";
 import CreamExplosion from "./Components/CreamExplosion";
+import LogoLoop from "./Components/LogoLoop";
+import Projects from "./Components/Projects";
+
+const LANGUAGES = [
+  { src: "/SkillIcons/c.svg", alt: "C" },
+  { src: "/SkillIcons/c++.svg", alt: "C++" },
+  { src: "/SkillIcons/java.svg", alt: "Java" },
+  { src: "/SkillIcons/python.svg", alt: "Python" },
+  { src: "/SkillIcons/swift.svg", alt: "Swift" },
+  { src: "/SkillIcons/Objective-C.svg", alt: "Objective-C" },
+  { src: "/SkillIcons/html.svg", alt: "HTML" },
+  { src: "/SkillIcons/css.svg", alt: "CSS" },
+  { src: "/SkillIcons/javascript.svg", alt: "JavaScript" },
+  { src: "/SkillIcons/typescript.svg", alt: "TypeScript" },
+];
+
+const FRAMEWORKS = [
+  { node: <span className="tech-text-logo">SpringBoot</span>, alt: "SpringBoot" },
+  { src: "/SkillIcons/FrameWorks/node-js.svg", alt: "Node.js" },
+  { src: "/SkillIcons/FrameWorks/react.svg", alt: "React.js" },
+  { src: "/SkillIcons/FrameWorks/nextjs.svg", alt: "Next.js" },
+  { src: "/SkillIcons/FrameWorks/express-js.svg", alt: "Express" },
+  { src: "/SkillIcons/FrameWorks/ejs.svg", alt: "EJS" },
+  { src: "/SkillIcons/FrameWorks/bootstrap.svg", alt: "Bootstrap" },
+  { src: "/SkillIcons/FrameWorks/tailwind-css.svg", alt: "Tailwind CSS" },
+  { src: "/SkillIcons/FrameWorks/shadcn-ui.svg", alt: "Shadcn" },
+];
+
+const TOOLS = [
+  { src: "/SkillIcons/Tools/git.svg", alt: "Git" },
+  { src: "/SkillIcons/Tools/github.svg", alt: "GitHub" },
+  { src: "/SkillIcons/Tools/bash.svg", alt: "Unix Shell" },
+  { src: "/SkillIcons/Tools/aws.svg", alt: "AWS" },
+  { src: "/SkillIcons/Tools/azure.svg", alt: "Azure" },
+  { src: "/SkillIcons/Tools/firebase.svg", alt: "Firebase" },
+  { src: "/SkillIcons/Tools/vs-code.svg", alt: "VS Code" },
+  { node: <span className="tech-text-logo">PyCharm</span>, alt: "PyCharm" },
+  { src: "/SkillIcons/Tools/xcode.svg", alt: "Xcode" },
+  { src: "/SkillIcons/Tools/vercel.svg", alt: "Vercel" },
+  { src: "/SkillIcons/Tools/unityhub.svg", alt: "Unity Hub" },
+  { node: <span className="tech-text-logo">Colab</span>, alt: "Colab" },
+];
+
+const DATABASES = [
+  { node: <span className="tech-text-logo">MySQL</span>, alt: "MySQL" },
+  { src: "/SkillIcons/Tools/firebase.svg", alt: "Firestore" },
+  { node: <span className="tech-text-logo">MongoDB</span>, alt: "MongoDB" },
+  { node: <span className="tech-text-logo">PostgreSQL</span>, alt: "PostgreSQL" },
+];
 
 const MOBILE_BP = 768;
 
@@ -153,6 +202,81 @@ function App() {
               for the next thing to get good at.
             </p>
           </section>
+
+          {/* Tech Stack section */}
+          <section id="tech-stack" className="section section--cream">
+            <span className="section-label">Tech Stack</span>
+            <h2>The tools I think in.</h2>
+
+            <div className="tech-loops">
+              <div className="tech-loop-row">
+                <span className="tech-loop-label">Languages</span>
+                <LogoLoop
+                  logos={LANGUAGES}
+                  speed={60}
+                  direction="left"
+                  logoHeight={40}
+                  gap={48}
+                  pauseOnHover
+                  scaleOnHover
+                  fadeOut
+                  fadeOutColor="#F0EBE0"
+                  ariaLabel="Programming languages"
+                />
+              </div>
+
+              <div className="tech-loop-row">
+                <span className="tech-loop-label">Frameworks</span>
+                <LogoLoop
+                  logos={FRAMEWORKS}
+                  speed={50}
+                  direction="right"
+                  logoHeight={40}
+                  gap={48}
+                  pauseOnHover
+                  scaleOnHover
+                  fadeOut
+                  fadeOutColor="#F0EBE0"
+                  ariaLabel="Frameworks"
+                />
+              </div>
+
+              <div className="tech-loop-row">
+                <span className="tech-loop-label">Tools</span>
+                <LogoLoop
+                  logos={TOOLS}
+                  speed={45}
+                  direction="left"
+                  logoHeight={40}
+                  gap={48}
+                  pauseOnHover
+                  scaleOnHover
+                  fadeOut
+                  fadeOutColor="#F0EBE0"
+                  ariaLabel="Developer tools"
+                />
+              </div>
+
+              <div className="tech-loop-row">
+                <span className="tech-loop-label">Databases</span>
+                <LogoLoop
+                  logos={DATABASES}
+                  speed={35}
+                  direction="right"
+                  logoHeight={40}
+                  gap={48}
+                  pauseOnHover
+                  scaleOnHover
+                  fadeOut
+                  fadeOutColor="#F0EBE0"
+                  ariaLabel="Databases"
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* Projects section */}
+          <Projects />
         </div>
       </main>
     </>

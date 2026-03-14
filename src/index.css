@@ -210,6 +210,151 @@ body::after {
   margin-top: 1.25rem;
 }
 
+/* ============ TECH STACK ============ */
+.tech-loops {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  margin-top: 3rem;
+  /* Pull left to align with section edge, extend right to viewport */
+  margin-left: calc(-4% - 260px - 3rem);
+  margin-right: -6vw;
+  padding-left: calc(4% + 260px + 3rem);
+  padding-right: 0;
+  overflow: hidden;
+}
+
+.tech-loop-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tech-loop-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(10, 9, 8, 0.35);
+}
+
+.tech-text-logo {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: rgba(10, 9, 8, 0.65);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 0.6rem;
+  border: 1px solid rgba(10, 9, 8, 0.15);
+  border-radius: 4px;
+}
+
+/* Make all tech logo SVGs dark/black on the cream background */
+.tech-loops .logoloop__item img {
+  filter: brightness(0) saturate(100%);
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tech-loops .logoloop__item:hover img {
+  opacity: 1;
+}
+
+/* ============ MASONRY PROJECTS ============ */
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: auto;
+  grid-auto-flow: dense;
+  gap: 1.25rem;
+  margin-top: 3rem;
+}
+
+.masonry-card {
+  border: 1px solid rgba(10, 9, 8, 0.1);
+  border-radius: 6px;
+  padding: 1.5rem 1.6rem;
+  background: rgba(10, 9, 8, 0.025);
+  transition: border-color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.masonry-card:hover,
+.masonry-card--expanded {
+  border-color: rgba(10, 9, 8, 0.22);
+  background: rgba(10, 9, 8, 0.045);
+  box-shadow: 0 4px 24px rgba(10, 9, 8, 0.06);
+}
+
+.masonry-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.masonry-card__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  color: var(--bg);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.masonry-card__github {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  color: rgba(10, 9, 8, 0.35);
+  text-decoration: none;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.3s ease;
+  pointer-events: auto;
+}
+
+.masonry-card__github:hover {
+  color: var(--bg);
+}
+
+.masonry-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+}
+
+.masonry-card__tag {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(10, 9, 8, 0.4);
+  padding: 0.25rem 0.55rem;
+  border: 1px solid rgba(10, 9, 8, 0.1);
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.masonry-card__desc-wrap {
+  overflow: hidden;
+}
+
+.masonry-card__desc {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: rgba(10, 9, 8, 0.6);
+  padding-top: 1rem;
+}
+
 /* ============ HERO ============ */
 .hero-display {
   font-family: var(--font-display);

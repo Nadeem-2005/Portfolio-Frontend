@@ -6,10 +6,107 @@ import HeroFrame from "./Components/HeroFrame";
 import HeroVideo from "./Components/HeroVideo";
 import CreamExplosion from "./Components/CreamExplosion";
 
+const MOBILE_BP = 768;
+
+function MobileGate() {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "var(--bg)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "2rem",
+        textAlign: "center",
+        zIndex: 999999,
+      }}
+    >
+      {/* Decorative line */}
+      <div
+        style={{
+          width: "40px",
+          height: "1px",
+          background: "var(--gold)",
+          marginBottom: "2.5rem",
+          opacity: 0.6,
+        }}
+      />
+
+      <div
+        style={{
+          fontFamily: "var(--font-display)",
+          fontWeight: 300,
+          fontStyle: "italic",
+          fontSize: "clamp(1.6rem, 5vw, 2.2rem)",
+          color: "var(--cream)",
+          lineHeight: 1.2,
+          letterSpacing: "-0.02em",
+          marginBottom: "1.2rem",
+        }}
+      >
+        This experience was
+        <br />
+        crafted for larger screens.
+      </div>
+
+      <p
+        style={{
+          fontFamily: "var(--font-body)",
+          fontSize: "0.85rem",
+          color: "var(--cream-dim)",
+          lineHeight: 1.6,
+          maxWidth: "280px",
+          marginBottom: "2.5rem",
+        }}
+      >
+        Please revisit on a desktop or laptop
+        for the full experience.
+      </p>
+
+      {/* Decorative line */}
+      <div
+        style={{
+          width: "40px",
+          height: "1px",
+          background: "var(--gold)",
+          marginBottom: "2rem",
+          opacity: 0.6,
+        }}
+      />
+
+      <span
+        style={{
+          fontFamily: "var(--font-mono)",
+          fontSize: "0.55rem",
+          letterSpacing: "0.15em",
+          textTransform: "uppercase",
+          color: "var(--cream-dim)",
+          opacity: 0.5,
+        }}
+      >
+        nadeem.dev
+      </span>
+    </div>
+  );
+}
+
 function App() {
   const [loaded, setLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const geoRef = useRef(null);
   const heroTextRef = useRef(null);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= MOBILE_BP);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  if (isMobile) return <MobileGate />;
 
   return (
     <>

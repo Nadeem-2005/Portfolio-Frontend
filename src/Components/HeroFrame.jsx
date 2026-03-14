@@ -300,29 +300,6 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
         pointerEvents: "none",
       }}
     >
-      {/* ── Mobile: "View on desktop" banner ── */}
-      {isMobile && (
-        <div
-          style={{
-            position: "absolute",
-            bottom: "2rem",
-            left: "50%",
-            transform: "translateX(-50%)",
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.55rem",
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            color: "var(--cream-dim)",
-            whiteSpace: "nowrap",
-            opacity: loaded ? 1 : 0,
-            transition: "opacity 0.8s ease 2s",
-            pointerEvents: "none",
-          }}
-        >
-          Best viewed on desktop
-        </div>
-      )}
-
       {/* ── Title ── */}
       <div
         ref={titleRef}

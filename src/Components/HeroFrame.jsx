@@ -382,8 +382,8 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
               className="hero-nav-label"
               style={{
                 fontFamily: "var(--font-body)",
-                fontSize: "0.82rem",
-                fontWeight: 500,
+                fontSize: "0.85rem",
+                fontWeight: 600,
                 color: "var(--cream)",
                 letterSpacing: "0.02em",
                 whiteSpace: "nowrap",

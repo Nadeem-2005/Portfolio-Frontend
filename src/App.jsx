@@ -40,11 +40,20 @@ function App() {
           {/* About section — revealed after cream explosion covers the screen */}
           <section id="about" className="section section--cream">
             <span className="section-label">About</span>
-            <h2>Engineer who appreciates the craft.</h2>
+            <h2>I build what you don't see — and obsess over how it feels.</h2>
             <p>
-              I build thoughtful digital experiences where engineering precision
-              meets creative intent. Every detail is considered, every interaction
-              intentional.
+              Backend engineer by trade, currently wrapping up my final year and
+              transitioning into a full-time engineering role this summer. I'm drawn
+              to the invisible architecture — the systems, APIs, and logic layers
+              that make products feel effortless. But I care just as much about
+              what's on the surface.
+            </p>
+            <p>
+              Away from the editor, I'm on the badminton court chasing every point,
+              digging into film and cinematography, or lost in a playlist that
+              somehow ends up shaping how I think about rhythm in code. I'm
+              endlessly curious — always picking up something new, always looking
+              for the next thing to get good at.
             </p>
           </section>
         </div>

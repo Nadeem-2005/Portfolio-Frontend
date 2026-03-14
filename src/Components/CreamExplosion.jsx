@@ -44,13 +44,14 @@ export default function CreamExplosion({ loaded }) {
     const cx = w * OX;
     const cy = h * OY;
 
-    // Max radius = distance from origin to farthest corner
+    // Max radius = distance from origin to farthest corner + buffer
+    // so the solid fill (radius - edgeWidth*0.5) still covers every pixel
     const maxR = Math.max(
       Math.hypot(cx, cy),
       Math.hypot(w - cx, cy),
       Math.hypot(cx, h - cy),
       Math.hypot(w - cx, h - cy)
-    );
+    ) * 1.15;
 
     const radius = progress * maxR;
     const edgeWidth = 30 + progress * 60; // soft glow band width

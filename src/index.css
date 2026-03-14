@@ -206,6 +206,10 @@ body::after {
   max-width: 560px;
 }
 
+.section--cream p + p {
+  margin-top: 1.25rem;
+}
+
 /* ============ HERO ============ */
 .hero-display {
   font-family: var(--font-display);

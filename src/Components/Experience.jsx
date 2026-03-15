@@ -7,40 +7,41 @@ import "./Experience.css";
 const EXPERIENCES = [
   {
     id: 1,
-    role: "Software Engineer",
-    company: "TechCorp Inc.",
-    dateRange: "2024 — Present",
+    role: "Backend Engineering Intern",
+    company: "Jar",
+    dateRange: "Jan 2026 - Present",
     description:
-      "Building scalable microservices and designing distributed system architectures for high-traffic applications serving millions of users.",
-    tags: ["Node.js", "AWS", "PostgreSQL", "Redis"],
+      "Joined Jar's backend team in Bangalore to contribute to large-scale distributed systems and cutting-edge backend infrastructure powering one of India's fastest-growing fintech platforms.",
+    tags: ["Node.js", "Java", "Kafka", "Redis", "Cloud Technologies", "SQL"],
   },
   {
     id: 2,
-    role: "Frontend Developer",
-    company: "DesignStudio",
-    dateRange: "2023 — 2024",
+    role: "Software Development Engineer",
+    company: "Verizon",
+    dateRange: "2026 — Upcoming",
     description:
-      "Crafted responsive, accessible interfaces with a focus on performance optimization and animation fidelity across devices.",
-    tags: ["React", "TypeScript", "GSAP", "Tailwind CSS"],
+      "Incoming SDE role contributing to enterprise-grade telecom software systems, building full-stack applications and working on large-scale distributed infrastructure at Verizon India.",
+    tags: ["Java", "React", "Node.js", "TypeScript", "Cloud Technologies", "SQL"],
   },
   {
     id: 3,
-    role: "Backend Intern",
-    company: "DataFlow Systems",
-    dateRange: "2022 — 2023",
+    role: "Software Developer Intern",
+    company: "Adappt Mobile Cloud Applications",
+    dateRange: "May 2025 — Jun 2025",
     description:
-      "Developed RESTful APIs and optimized database queries, reducing average response times by 40% across critical endpoints.",
-    tags: ["Express", "MongoDB", "Docker", "CI/CD"],
+      "Contributed to enterprise-level healthcare management systems at Adappt's Pondicherry office. Implemented Redis caching and background job processing pipelines, delivering measurable performance improvements in production.",
+    tags: ["Redis", "Node.js", "React", "PostgreSQL", "TypeScript", "Real-time"],
   },
   {
     id: 4,
-    role: "Research Assistant",
-    company: "University Lab",
-    dateRange: "2021 — 2022",
+    role: "Full Stack & iOS Developer",
+    company: "Freelance / Personal Projects",
+    dateRange: "2023 — Present",
     description:
-      "Implemented deep learning models for speech and image processing, contributing to two published research papers.",
-    tags: ["Python", "PyTorch", "MATLAB", "LaTeX"],
+      "Always trying to learn and build cool stuff! Developed several full-stack web applications and native iOS apps, honing skills across the stack and exploring new technologies in the process.",
+    tags: ["Next.js", "Swift", "Redis", "BullMQ", "Prisma", "Pusher", "Tailwind CSS"],
   },
+
 ];
 
 /* ── Sun geometry ── */
@@ -185,9 +186,8 @@ export default function Experience() {
               <polygon
                 key={`lg-${angle}`}
                 points={spikePoints(angle, LARGE_BASE, LARGE_LEN)}
-                className={`exp-sun-spike exp-sun-spike--large${
-                  i === activeIndex ? " exp-sun-spike--active" : ""
-                }`}
+                className={`exp-sun-spike exp-sun-spike--large${i === activeIndex ? " exp-sun-spike--active" : ""
+                  }`}
               />
             ))}
 
@@ -245,9 +245,8 @@ export default function Experience() {
           {EXPERIENCES.map((_, i) => (
             <button
               key={i}
-              className={`exp-sun-dot${
-                i === activeIndex ? " exp-sun-dot--active" : ""
-              }`}
+              className={`exp-sun-dot${i === activeIndex ? " exp-sun-dot--active" : ""
+                }`}
               onClick={() => setActiveIndex(i)}
               aria-label={`Experience ${i + 1}`}
             />

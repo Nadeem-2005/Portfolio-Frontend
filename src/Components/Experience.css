@@ -1,0 +1,210 @@
+/* ============ EXPERIENCE — RENAISSANCE SUN ============ */
+
+.section--experience {
+  padding-bottom: 0;
+}
+
+.exp-sun-viewport {
+  /* Break out of .sections-content padding */
+  margin-left: calc(-4% - 260px - 3rem);
+  margin-right: -6vw;
+  position: relative;
+  height: 80vh;
+  min-height: 600px;
+  overflow: hidden;
+  margin-top: 3rem;
+}
+
+/* ── Card ── */
+
+.exp-sun-card-anchor {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.exp-sun-card {
+  width: 320px;
+  padding: 1.75rem 2rem;
+  background: rgba(240, 235, 224, 0.97);
+  border: 1px solid rgba(10, 9, 8, 0.1);
+  border-radius: 4px;
+  box-shadow: 0 8px 40px rgba(10, 9, 8, 0.06);
+}
+
+.exp-sun-card__date {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(10, 9, 8, 0.35);
+  margin-bottom: 0.75rem;
+}
+
+.exp-sun-card__role {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  color: #0a0908;
+  line-height: 1.2;
+  margin: 0 0 0.25rem;
+}
+
+.exp-sun-card__company {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: rgba(10, 9, 8, 0.5);
+  margin-bottom: 1rem;
+}
+
+.exp-sun-card__desc {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: rgba(10, 9, 8, 0.6);
+  margin: 0 0 1rem;
+}
+
+.exp-sun-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.exp-sun-card__tag {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid rgba(10, 9, 8, 0.12);
+  border-radius: 2px;
+  color: rgba(10, 9, 8, 0.45);
+}
+
+/* ── Connector line ── */
+
+.exp-sun-connector {
+  position: absolute;
+  top: 38%;
+  bottom: 45%;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 9, 8, 0.08),
+    rgba(10, 9, 8, 0.02)
+  );
+  z-index: 1;
+}
+
+/* ── Sun SVG ── */
+
+.exp-sun-svg {
+  position: absolute;
+  bottom: -8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(85vw, 1100px);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.exp-sun-base {
+  fill: rgba(10, 9, 8, 0.03);
+  stroke: rgba(10, 9, 8, 0.08);
+  stroke-width: 0.5;
+}
+
+.exp-sun-ray {
+  stroke: rgba(10, 9, 8, 0.04);
+  stroke-width: 0.3;
+}
+
+.exp-sun-spike {
+  transition: fill 0.6s ease, stroke 0.6s ease;
+}
+
+.exp-sun-spike--large {
+  fill: rgba(10, 9, 8, 0.04);
+  stroke: rgba(10, 9, 8, 0.1);
+  stroke-width: 0.5;
+}
+
+.exp-sun-spike--small {
+  fill: rgba(10, 9, 8, 0.02);
+  stroke: rgba(10, 9, 8, 0.06);
+  stroke-width: 0.5;
+}
+
+.exp-sun-spike--active {
+  fill: rgba(201, 163, 94, 0.08);
+  stroke: rgba(201, 163, 94, 0.2);
+}
+
+/* ── Navigation ── */
+
+.exp-sun-nav {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(10, 9, 8, 0.12);
+  background: transparent;
+  color: rgba(10, 9, 8, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: none;
+  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+  z-index: 3;
+}
+
+.exp-sun-nav:hover {
+  border-color: rgba(10, 9, 8, 0.25);
+  color: rgba(10, 9, 8, 0.7);
+  background: rgba(10, 9, 8, 0.03);
+}
+
+.exp-sun-nav--prev {
+  left: 5%;
+}
+
+.exp-sun-nav--next {
+  right: 5%;
+}
+
+/* ── Dots ── */
+
+.exp-sun-dots {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 3;
+}
+
+.exp-sun-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(10, 9, 8, 0.15);
+  cursor: none;
+  padding: 0;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.exp-sun-dot--active {
+  background: rgba(10, 9, 8, 0.5);
+  transform: scale(1.4);
+}

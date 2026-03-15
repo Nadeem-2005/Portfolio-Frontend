@@ -7,6 +7,7 @@ import HeroVideo from "./Components/HeroVideo";
 import CreamExplosion from "./Components/CreamExplosion";
 import LogoLoop from "./Components/LogoLoop";
 import Projects from "./Components/Projects";
+import Experience from "./Components/Experience";
 
 const LANGUAGES = [
   { src: "/SkillIcons/c.svg", alt: "C" },
@@ -277,6 +278,9 @@ function App() {
 
           {/* Projects section */}
           <Projects />
+
+          {/* Experience section */}
+          <Experience />
         </div>
       </main>
     </>

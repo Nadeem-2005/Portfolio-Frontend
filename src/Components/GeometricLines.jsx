@@ -197,6 +197,10 @@ const GeometricLines = forwardRef(function GeometricLines(_, ref) {
           ║  CENTERED BOX — draws from two opposite corners             ║
           ╚══════════════════════════════════════════════════════════════╝ */}
 
+      {/* Box fill — translucent backdrop for text readability */}
+      <rect className="geo-box" x="560" y="180" width="320" height="540"
+        fill="rgba(10,9,8,0.25)" stroke="none" />
+
       {/* Box path A: top-left → right along top → down right side */}
       <path className="geo-box" d="M 560,180 L 880,180 L 880,720"
         stroke="#fff" strokeWidth="3.0" fill="none" strokeLinecap="round" />

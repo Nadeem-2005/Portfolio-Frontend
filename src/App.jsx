@@ -8,6 +8,8 @@ import CreamExplosion from "./Components/CreamExplosion";
 import LogoLoop from "./Components/LogoLoop";
 import Projects from "./Components/Projects";
 import Experience from "./Components/Experience";
+import Contact from "./Components/Contact";
+import Footer from "./Components/Footer";
 
 const LANGUAGES = [
   { src: "/SkillIcons/c.svg", alt: "C" },
@@ -282,6 +284,12 @@ function App() {
           {/* Experience section */}
           <Experience />
         </div>
+
+        {/* Contact — dark section, outside cream content area */}
+        <Contact />
+
+        {/* Footer — dark, below contact */}
+        <Footer />
       </main>
     </>
   );

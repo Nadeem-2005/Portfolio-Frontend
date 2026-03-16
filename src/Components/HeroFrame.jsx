@@ -31,6 +31,7 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
   const dotsRefs = useRef([]);
   const scrollTriggerRef = useRef(null);
   const colorTriggerRef = useRef(null);
+  const activeSectionRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
   // Expose title element so Loader can animate it
@@ -63,14 +64,21 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
     return () => clearTimeout(t);
   }, [loaded]);
 
-  // ── Nav reveal + title shift (after loading) ──
+  // ── Nav reveal + title shift (after loading, scroll blocked until done) ──
   useEffect(() => {
     if (!loaded) return;
     const nav = navRef.current;
     const title = titleRef.current;
     if (!nav || !title) return;
 
-    const tl = gsap.timeline({ delay: 0.8 });
+    document.body.style.overflow = "hidden";
+
+    const tl = gsap.timeline({
+      delay: 0.8,
+      onComplete: () => {
+        document.body.style.overflow = "";
+      },
+    });
 
     // Title moves from center of box to top of box
     tl.to(title, {
@@ -96,7 +104,10 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
       "<"
     );
 
-    return () => tl.kill();
+    return () => {
+      tl.kill();
+      document.body.style.overflow = "";
+    };
   }, [loaded]);
 
   // ── Scroll-driven repositioning (desktop only) ──
@@ -135,6 +146,8 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
             top: `${gsap.utils.interpolate(46, finalNavTop, p)}%`,
             left: `${gsap.utils.interpolate(50, 4, p)}%`,
             xPercent: gsap.utils.interpolate(-50, 0, p),
+            scale: gsap.utils.interpolate(1.15, 0.85, p),
+            transformOrigin: "top left",
             force3D: true,
           });
 
@@ -205,17 +218,24 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
 
           const glow = p > 0.5 ? "none" : "0 0 10px rgba(240,235,224,0.9), 0 0 40px rgba(240,235,224,0.7), 0 0 80px rgba(240,235,224,0.4), 0 0 120px rgba(240,235,224,0.2)";
           const glowSm = p > 0.5 ? "none" : "0 0 8px rgba(240,235,224,0.8), 0 0 30px rgba(240,235,224,0.6), 0 0 60px rgba(240,235,224,0.3)";
+          const stroke = p > 0.5 ? "0px rgba(0,0,0,0)" : "0.6px rgba(0,0,0,0.5)";
+          const strokeSm = p > 0.5 ? "0px rgba(0,0,0,0)" : "0.4px rgba(0,0,0,0.4)";
 
           // Title
-          title.querySelector("[data-title]").style.color = color;
-          title.querySelector("[data-title]").style.textShadow = glow;
-          title.querySelector("[data-subtitle]").style.color = p > 0.5 ? dimColor : light;
-          title.querySelector("[data-subtitle]").style.textShadow = glowSm;
+          const titleEl = title.querySelector("[data-title]");
+          titleEl.style.color = color;
+          titleEl.style.textShadow = glow;
+          titleEl.style.webkitTextStroke = stroke;
+          const subtitleEl = title.querySelector("[data-subtitle]");
+          subtitleEl.style.color = p > 0.5 ? dimColor : light;
+          subtitleEl.style.textShadow = glowSm;
+          subtitleEl.style.webkitTextStroke = strokeSm;
 
           // Nav labels + numerals
           nav.querySelectorAll(".hero-nav-label").forEach((el) => {
             el.style.color = color;
             el.style.textShadow = glowSm;
+            el.style.webkitTextStroke = strokeSm;
           });
           nav.querySelectorAll(".hero-nav-numeral").forEach((el) => {
             el.style.color = dimColor;
@@ -248,6 +268,109 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
       colorTriggerRef.current?.kill();
     };
   }, [loaded, geoRef]);
+
+  // ── Active section highlighting + dark-bg color fix ──
+  useEffect(() => {
+    if (!loaded) return;
+    const nav = navRef.current;
+    const title = titleRef.current;
+    if (!nav || !title) return;
+
+    const sectionIds = NAV_ITEMS.map((item) => item.id);
+    let rafId = null;
+
+    const update = () => {
+      const scrollY = window.scrollY;
+      const heroEnd = window.innerHeight * 1.2;
+
+      // Only run after hero scroll zone
+      if (scrollY < heroEnd) {
+        activeSectionRef.current = null;
+        rafId = null;
+        return;
+      }
+
+      // Find which section is at 40% viewport height
+      const checkY = window.innerHeight * 0.4;
+      let activeId = null;
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= checkY && rect.bottom > checkY) {
+          activeId = id;
+          break;
+        }
+      }
+
+      // Highlight active nav item
+      const navItems = nav.querySelectorAll(".hero-nav-item");
+      navItems.forEach((item, i) => {
+        const label = item.querySelector(".hero-nav-label");
+        const numeral = item.querySelector(".hero-nav-numeral");
+        if (!label || !numeral) return;
+        const isActive = NAV_ITEMS[i].id === activeId;
+        label.style.letterSpacing = isActive ? "0.08em" : "0.01em";
+        label.style.opacity = isActive ? "1" : "0.6";
+        numeral.style.opacity = isActive ? "0.8" : "0.4";
+      });
+
+      // Detect dark section (contact) and flip nav/title colors
+      const onDark = activeId === "contact";
+      if (onDark !== (activeSectionRef.current === "contact")) {
+        const color = onDark ? "var(--cream)" : "var(--bg)";
+        const dimColor = onDark ? "var(--cream-dim)" : "rgba(10,9,8,0.55)";
+
+        const titleEl = title.querySelector("[data-title]");
+        const subtitleEl = title.querySelector("[data-subtitle]");
+        if (titleEl) {
+          titleEl.style.color = color;
+          titleEl.style.textShadow = onDark ? "0 0 10px rgba(240,235,224,0.9), 0 0 40px rgba(240,235,224,0.7), 0 0 80px rgba(240,235,224,0.4)" : "none";
+          titleEl.style.webkitTextStroke = onDark ? "0.6px rgba(0,0,0,0.5)" : "0px rgba(0,0,0,0)";
+        }
+        if (subtitleEl) {
+          subtitleEl.style.color = onDark ? dimColor : dimColor;
+          subtitleEl.style.textShadow = onDark ? "0 0 8px rgba(240,235,224,0.8), 0 0 30px rgba(240,235,224,0.6)" : "none";
+          subtitleEl.style.webkitTextStroke = onDark ? "0.4px rgba(0,0,0,0.4)" : "0px rgba(0,0,0,0)";
+        }
+
+        nav.querySelectorAll(".hero-nav-label").forEach((el) => {
+          el.style.color = color;
+          el.style.textShadow = onDark ? "0 0 8px rgba(240,235,224,0.8), 0 0 30px rgba(240,235,224,0.6)" : "none";
+          el.style.webkitTextStroke = onDark ? "0.4px rgba(0,0,0,0.4)" : "0px rgba(0,0,0,0)";
+        });
+        nav.querySelectorAll(".hero-nav-numeral").forEach((el) => {
+          el.style.color = dimColor;
+        });
+        nav.querySelectorAll(".hero-dot").forEach((el) => {
+          el.style.background = dimColor;
+        });
+      }
+
+      activeSectionRef.current = activeId;
+      rafId = null;
+    };
+
+    const onScroll = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [loaded]);
+
+  // ── Smooth scroll handler ──
+  const handleNavClick = useCallback((e, id) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
 
   // ── Dot hover handlers ──
   const handleMouseEnter = useCallback((index) => {
@@ -324,8 +447,10 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
             color: "var(--cream)",
             lineHeight: 1.05,
             letterSpacing: "-0.02em",
-            transition: "color 0.4s ease, text-shadow 0.4s ease",
+            transition: "color 0.4s ease, text-shadow 0.4s ease, -webkit-text-stroke 0.4s ease",
             textShadow: "0 0 10px rgba(240,235,224,0.9), 0 0 40px rgba(240,235,224,0.7), 0 0 80px rgba(240,235,224,0.4), 0 0 120px rgba(240,235,224,0.2)",
+            WebkitTextStroke: "0.6px rgba(0,0,0,0.5)",
+            paintOrder: "stroke fill",
           }}
         >
           Nadeem&rsquo;s
@@ -341,8 +466,10 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
             letterSpacing: "0.3em",
             textTransform: "uppercase",
             marginTop: "0.3rem",
-            transition: "color 0.4s ease, text-shadow 0.4s ease",
+            transition: "color 0.4s ease, text-shadow 0.4s ease, -webkit-text-stroke 0.4s ease",
             textShadow: "0 0 8px rgba(240,235,224,0.8), 0 0 30px rgba(240,235,224,0.6), 0 0 60px rgba(240,235,224,0.3)",
+            WebkitTextStroke: "0.4px rgba(0,0,0,0.4)",
+            paintOrder: "stroke fill",
           }}
         >
           Portfolio
@@ -367,6 +494,7 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
             key={item.id}
             href={`#${item.id}`}
             className="hero-nav-item"
+            onClick={(e) => handleNavClick(e, item.id)}
             onMouseEnter={() => handleMouseEnter(i)}
             onMouseLeave={() => handleMouseLeave(i)}
             style={{
@@ -382,14 +510,17 @@ const HeroFrame = forwardRef(function HeroFrame({ loaded, geoRef }, ref) {
             <span
               className="hero-nav-label"
               style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "0.85rem",
-                fontWeight: 600,
+                fontFamily: "var(--font-display)",
+                fontSize: "1.1rem",
+                fontWeight: 400,
+                fontStyle: "italic",
                 color: "var(--cream)",
-                letterSpacing: "0.02em",
+                letterSpacing: "0.01em",
                 whiteSpace: "nowrap",
                 textShadow: "0 0 8px rgba(240,235,224,0.8), 0 0 30px rgba(240,235,224,0.6), 0 0 60px rgba(240,235,224,0.3)",
-                transition: "color 0.4s ease, text-shadow 0.4s ease, letter-spacing 0.4s var(--ease-expo)",
+                WebkitTextStroke: "0.4px rgba(0,0,0,0.4)",
+                paintOrder: "stroke fill",
+                transition: "color 0.4s ease, text-shadow 0.4s ease, letter-spacing 0.4s var(--ease-expo), -webkit-text-stroke 0.4s ease",
               }}
             >
               {item.label}

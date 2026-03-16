@@ -1,273 +1,161 @@
-import { useRef, useEffect, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ProjectCard from "./ProjectCard";
-import ScrollReveal from "./Animations/ScrollReveal/ScrollReveal";
-import ParticleField from "./Animations/ParticleField/ParticleField";
-import githubService from "../services/githubService";
-import { featuredRepositories, githubUsername, maxRepositories, repositoryConfig } from "../config/featuredRepositories";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger);
+const PROJECTS = [
+  {
+    id: 1,
+    title: "CliniCall",
+    description:
+      "A production-grade healthcare appointment platform for Vellore residents. Features a Redis-powered caching layer (cutting DB queries by 70–85%), BullMQ background job queues with exponential backoff for 95%+ reliable email delivery, Pusher real-time notifications with batching pipelines (cutting infra costs ~40%), distributed Redis rate limiting, and role-based auth via Auth.js.",
+    github: "https://github.com/Nadeem-2005/CliniCall",
+    live: "https://clini-call.vercel.app",
+    tags: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "Redis", "BullMQ", "Pusher", "Auth.js", "Tailwind CSS"],
+  },
+  {
+    id: 2,
+    title: "ConnectPLUS",
+    description:
+      "A full-featured video conferencing platform built with Next.js and GetStream. Supports real-time meeting controls, screen sharing, emoji reactions, recording, personal rooms, scheduled meetings, and secure Clerk-based authentication. Includes E2E tests with Playwright.",
+    github: "https://github.com/Nadeem-2005/ConnectPLUS",
+    live: "https://connectplus-ebon.vercel.app",
+    tags: ["Next.js", "TypeScript", "Clerk", "GetStream", "Shadcn", "Tailwind CSS", "Playwright"],
+  },
+  {
+    id: 3,
+    title: "Neural Acoustic Emotion Interpreter",
+    description:
+      "A deep learning speech emotion recognition system that classifies audio into eight emotions — angry, calm, disgust, fear, happy, neutral, sad, and surprise — using acoustic feature extraction and neural network models.",
+    github: "https://github.com/Nadeem-2005/Neural-Acoustic-Emotion-Interpreter",
+    tags: ["Python", "Jupyter Notebook", "Deep Learning", "Librosa", "scikit-learn"],
+  },
+  {
+    id: 4,
+    title: "DWT-SVD Image Watermarking",
+    description:
+      "Robust digital image watermarking in MATLAB using Discrete Wavelet Transform and Singular Value Decomposition. Supports embedding, extraction, and comprehensive attack resistance testing — validating watermark integrity across noise, compression, and geometric distortions.",
+    github: "https://github.com/Nadeem-2005/Watermarking-based-on-DWT-SVD",
+    tags: ["MATLAB", "DWT", "SVD", "Signal Processing"],
+  },
+  {
+    id: 5,
+    title: "Haar-Based Image Steganography",
+    description:
+      "MATLAB implementation of image steganography using the Haar wavelet transform. Hides secret messages in LL and HH frequency sub-bands of a cover image, with extraction logic and robustness testing against 10+ attack types including noise, compression, and geometric transformations.",
+    github: "https://github.com/Nadeem-2005/Haar-based-image-steganography",
+    tags: ["MATLAB", "Steganography", "Haar Wavelet", "Image Processing"],
+  },
+  {
+    id: 6,
+    title: "The Climate",
+    description:
+      "A native iOS weather app that delivers 92%+ accurate forecasts for any desired location. Built entirely in Swift with Xcode, featuring a clean, minimal UI, live API integration, and tested via Xcode's UI test suite.",
+    github: "https://github.com/Nadeem-2005/The-Climate",
+    tags: ["Swift", "iOS", "UIKit", "Xcode", "REST API"],
+  },
+];
 
-function Projects() {
-    const cardsRef = useRef([]);
-    const [projects, setProjects] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    const username = import.meta.env.VITE_GITHUB_USERNAME || githubUsername;
-
-    useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-
-                // Validate environment first
-                try {
-                    githubService.validateEnvironment();
-                } catch (validationError) {
-                    console.warn('Environment validation warning:', validationError.message);
-                    // Continue anyway - might work with fallbacks
-                }
-
-                // Fetch specific featured repositories
-                const repositories = await githubService.fetchFeaturedRepositories(
-                    username,
-                    featuredRepositories.slice(0, maxRepositories),
-                    repositoryConfig.fallbackToRecent
-                );
-
-                setProjects(repositories);
-            } catch (err) {
-                console.error('Failed to fetch GitHub repositories:', err);
-
-                // Enhanced error messages based on error type
-                let errorMessage = 'Failed to load projects. Please try again later.';
-
-                if (err.message.includes('token is invalid')) {
-                    errorMessage = 'GitHub token is invalid. Please check the configuration.';
-                } else if (err.message.includes('rate limit')) {
-                    errorMessage = 'GitHub API rate limit exceeded. Please try again in a few minutes.';
-                } else if (err.message.includes('not found')) {
-                    errorMessage = 'Some repositories were not found. Showing available projects.';
-                } else if (err.message.includes('Network error')) {
-                    errorMessage = 'Network error. Please check your internet connection and try again.';
-                }
-
-                setError(errorMessage);
-
-                // Enhanced fallback mechanism
-                if (repositoryConfig.fallbackToRecent) {
-                    try {
-                        console.log('Attempting fallback to recent repositories...');
-                        const fallbackRepos = await githubService.fetchRepositories(username, maxRepositories);
-
-                        if (fallbackRepos && fallbackRepos.length > 0) {
-                            setProjects(fallbackRepos);
-                            setError(null); // Clear error if fallback succeeds
-                            console.log(`Fallback successful: loaded ${fallbackRepos.length} repositories`);
-                        } else {
-                            throw new Error('No repositories found in fallback');
-                        }
-                    } catch (fallbackErr) {
-                        console.error('Fallback also failed:', fallbackErr);
-
-                        // Enhanced placeholder data with better variety
-                        const placeholderProjects = [
-                            {
-                                id: 'placeholder-1',
-                                title: "Portfolio Website",
-                                description: "A modern, responsive portfolio website built with React and advanced animations using GSAP and Tailwind CSS.",
-                                techStack: ["React", "Tailwind CSS", "GSAP", "JavaScript"],
-                                githubUrl: `https://github.com/${username}`,
-                                imageUrl: "https://ui-avatars.com/api/?name=Portfolio+Website&size=400&background=0ea5e9&color=fff&bold=true&format=png"
-                            },
-                            {
-                                id: 'placeholder-2',
-                                title: "Full Stack Web Application",
-                                description: "A complete web application demonstrating modern full-stack development practices with React frontend and Node.js backend.",
-                                techStack: ["React", "Node.js", "Express", "MongoDB"],
-                                githubUrl: `https://github.com/${username}`,
-                                imageUrl: "https://ui-avatars.com/api/?name=Full+Stack+App&size=400&background=10b981&color=fff&bold=true&format=png"
-                            },
-                            {
-                                id: 'placeholder-3',
-                                title: "API Development Project",
-                                description: "RESTful API development project showcasing backend development skills with proper authentication and data validation.",
-                                techStack: ["Node.js", "Express", "JWT", "PostgreSQL"],
-                                githubUrl: `https://github.com/${username}`,
-                                imageUrl: "https://ui-avatars.com/api/?name=API+Project&size=400&background=f59e0b&color=fff&bold=true&format=png"
-                            }
-                        ];
-
-                        setProjects(placeholderProjects.slice(0, maxRepositories));
-                        setError('Unable to load GitHub projects. Showing sample projects.');
-                    }
-                } else {
-                    // If fallback is disabled, still provide some placeholder content
-                    setProjects([]);
-                    setError('Unable to load projects. Please check your network connection.');
-                }
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchProjects();
-    }, [username]);
-
-    useEffect(() => {
-        if (loading || projects.length === 0) return;
-
-        const cards = cardsRef.current;
-        const cardTriggers = [];
-
-        // Animate cards on scroll
-        cards.forEach((card, index) => {
-            if (card) {
-                const animation = gsap.fromTo(card,
-                    {
-                        y: 100,
-                        opacity: 0,
-                        scale: 0.8
-                    },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        scale: 1,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: card,
-                            start: "top 85%",
-                            end: "bottom 15%",
-                            toggleActions: "play none none reverse"
-                        },
-                        delay: index * 0.1
-                    }
-                );
-                cardTriggers.push(animation.scrollTrigger);
-            }
-        });
-
-        return () => {
-            // Only kill ScrollTrigger instances for our cards
-            cardTriggers.forEach(trigger => {
-                if (trigger) trigger.kill();
-            });
-        };
-    }, [loading, projects]);
-
-    return (
-        <div className="relative min-h-screen text-white p-8 md:p-20" id="Projects">
-            {/* Background Animation */}
-            <ParticleField
-                particleCount={30}
-                color="#06b6d4"
-                opacity={0.15}
-                speed={0.5}
-                size={1.5}
-            />
-
-            {/* Section Header */}
-            <div className="text-center mb-16">
-                <ScrollReveal
-                    baseOpacity={1}
-                    enableBlur={true}
-                    baseRotation={3}
-                    blurStrength={10}
-                    textClassName="text-center"
-                    wordAnimationEnd="bottom bottom"
-                >
-                    "Code is like art — it's not just about making it work, it's about making it beautiful."
-                </ScrollReveal>
-            </div>
-
-            {/* Loading State */}
-            {loading && (
-                <div className="flex justify-center items-center min-h-[400px]">
-                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-400"></div>
-                </div>
-            )}
-
-            {/* Error State */}
-            {error && !loading && (
-                <div className="text-center py-12">
-                    <div className="text-red-400 text-lg mb-4">⚠️ {error}</div>
-                    {!error.includes('sample projects') && !error.includes('Unable to load GitHub projects') && (
-                        <div className="flex gap-4 justify-center">
-                            <button
-                                onClick={() => {
-                                    setError(null);
-                                    window.location.reload();
-                                }}
-                                className="px-6 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg transition-colors"
-                            >
-                                Retry
-                            </button>
-                            <button
-                                onClick={() => {
-                                    setError(null);
-                                    setProjects([]);
-                                }}
-                                className="px-6 py-3 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors"
-                            >
-                                Dismiss
-                            </button>
-                        </div>
-                    )}
-                    {(error.includes('sample projects') || error.includes('Unable to load GitHub projects')) && (
-                        <div className="text-gray-400 text-sm mt-2">
-                            Showing placeholder content. Check your network connection or GitHub token configuration.
-                        </div>
-                    )}
-                </div>
-            )}
-
-            {/* Projects Grid */}
-            {!loading && !error && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                    {projects.map((project, index) => (
-                        <div
-                            key={project.id || index}
-                            ref={el => cardsRef.current[index] = el}
-                        >
-                            <ProjectCard
-                                title={project.title}
-                                description={project.description}
-                                techStack={project.techStack}
-                                githubUrl={project.githubUrl}
-                                liveUrl={project.liveUrl}
-                                imageUrl={project.imageUrl}
-                                imageAlt={`${project.title} screenshot`}
-                            />
-                        </div>
-                    ))}
-                </div>
-            )}
-
-            {/* No Projects State */}
-            {!loading && !error && projects.length === 0 && (
-                <div className="text-center py-12">
-                    <div className="text-gray-400 text-lg">No projects found</div>
-                </div>
-            )}
-
-            {/* Bottom Quote */}
-            <div className="mt-20 text-center">
-                <ScrollReveal
-                    baseOpacity={0.8}
-                    enableBlur={false}
-                    baseRotation={1}
-                    textClassName="text-center"
-                    wordAnimationEnd="bottom bottom"
-                >
-                    "Every project is a step forward in the journey of innovation."
-                </ScrollReveal>
-            </div>
-        </div>
-    );
+function GitHubIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+    </svg>
+  );
 }
 
-export default Projects;
+function ArrowUpRight() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M2 10L10 2M10 2H4M10 2v6" />
+    </svg>
+  );
+}
+
+function ProjectRow({ project, index, isActive, onToggle }) {
+  const num = String(index + 1).padStart(2, "0");
+
+  return (
+    <div className="proj-row" data-active={isActive || undefined}>
+      {/* Clickable / hoverable header strip */}
+      <button
+        className="proj-row__trigger"
+        onClick={() => onToggle(isActive ? null : project.id)}
+        aria-expanded={isActive}
+      >
+        <span className="proj-row__num">{num}</span>
+        <span className="proj-row__title">{project.title}</span>
+
+        <span className="proj-row__links">
+          {project.live && (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="proj-row__icon-link"
+              aria-label="Live demo"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <ArrowUpRight />
+            </a>
+          )}
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="proj-row__icon-link"
+            aria-label="GitHub"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <GitHubIcon />
+          </a>
+        </span>
+
+        <span className="proj-row__toggle">{isActive ? "\u2212" : "+"}</span>
+      </button>
+
+      {/* Expanding panel */}
+      <AnimatePresence initial={false}>
+        {isActive && (
+          <motion.div
+            className="proj-row__panel"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="proj-row__inner">
+              <p className="proj-row__desc">{project.description}</p>
+              <div className="proj-row__tags">
+                {project.tags.map((t) => (
+                  <span key={t} className="proj-row__tag">{t}</span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export default function Projects() {
+  const [activeId, setActiveId] = useState(null);
+
+  return (
+    <section id="projects" className="section section--cream">
+      <span className="section-label">Projects</span>
+      <h2>Things I've built.</h2>
+
+      <div className="proj-list">
+        {PROJECTS.map((p, i) => (
+          <ProjectRow
+            key={p.id}
+            project={p}
+            index={i}
+            isActive={activeId === p.id}
+            onToggle={setActiveId}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
